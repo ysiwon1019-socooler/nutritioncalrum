@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>우리 아이 식사, 어떻게 차려 주면 좋을까요?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F8F1;        /* 연한 잎맥색 종이 */
+    --ink:#26332A;          /* 짙은 먹색 */
+    --pine:#1E5631;         /* 소나무 녹색 */
+    --pine-soft:#DCEBDC;    /* 옅은 녹색 면 */
+    --carrot:#D9750F;       /* 당근 주황 */
+    --carrot-soft:#FBEEDC;  /* 옅은 주황 면 */
+    --grain:#B98A2E;        /* 곡류(탄수화물) 톤 */
+    --grain-soft:#F6EED7;
+    --fish:#3A6B9A;         /* 어육류(단백질) 톤 */
+    --fish-soft:#E2ECF5;
+    --line:#C9D8C6;
+    --serif:'Gowun Batang', serif;
+    --sans:'IBM Plex Sans KR', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    background:var(--paper);color:var(--ink);font-family:var(--serif);
+    line-height:1.85;font-size:17px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px 80px}
+
+  /* ---- 헤더 ---- */
+  header{padding:44px 0 28px;border-bottom:3px double var(--pine)}
+  .eyebrow{
+    font-family:var(--sans);font-size:12.5px;font-weight:700;letter-spacing:.14em;
+    color:var(--pine);text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--carrot);display:inline-block}
+  h1{font-size:clamp(26px,6vw,36px);font-weight:700;line-height:1.42;color:var(--pine);word-break:keep-all}
+  h1 em{font-style:normal;color:var(--carrot)}
+  .subtitle{margin-top:14px;font-size:15.5px;color:#4E5D52;word-break:keep-all}
+  .byline{margin-top:20px;font-family:var(--sans);font-size:13.5px;color:#5C6B60;display:flex;align-items:center;gap:10px}
+  .byline .avatar{
+    width:34px;height:34px;border-radius:50%;background:var(--pine);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+  }
+
+  /* ---- 목차 ---- */
+  nav{
+    position:sticky;top:0;z-index:10;background:var(--paper);
+    padding:12px 0;border-bottom:1px solid var(--line);
+    display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none}
+  nav a{
+    font-family:var(--sans);font-size:12.5px;font-weight:500;white-space:nowrap;
+    color:var(--pine);text-decoration:none;background:var(--pine-soft);
+    padding:7px 13px;border-radius:999px;
+  }
+  nav a:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+
+  /* ---- 본문 ---- */
+  section{padding-top:40px}
+  h2{
+    font-size:21px;color:var(--pine);line-height:1.5;word-break:keep-all;
+    padding-left:14px;border-left:4px solid var(--carrot);margin-bottom:18px;
+  }
+  p{margin-bottom:18px;word-break:keep-all;text-align:justify}
+  strong{color:var(--carrot);font-weight:700}
+  .lead::first-letter{font-size:2.6em;float:left;line-height:1;padding:6px 10px 0 0;color:var(--pine);font-weight:700}
+  .pull{
+    margin:28px 0;padding:22px 24px;background:var(--pine-soft);border-radius:4px 22px 4px 22px;
+    font-size:18px;line-height:1.7;color:var(--pine);font-weight:700;text-align:center;word-break:keep-all;
+  }
+
+  /* ---- 3균형 원리 카드 ---- */
+  .trio{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:22px 0;font-family:var(--sans)}
+  @media (max-width:520px){.trio{grid-template-columns:1fr}}
+  .trio-card{border-radius:13px;padding:16px 12px;text-align:center;word-break:keep-all}
+  .trio-card.c1{background:var(--grain-soft)}
+  .trio-card.c2{background:var(--fish-soft)}
+  .trio-card.c3{background:var(--pine-soft)}
+  .trio-card .emo{font-size:26px;line-height:1;display:block;margin-bottom:8px}
+  .trio-card h4{font-size:14.5px;margin-bottom:2px}
+  .trio-card.c1 h4{color:var(--grain)}
+  .trio-card.c2 h4{color:var(--fish)}
+  .trio-card.c3 h4{color:var(--pine)}
+  .trio-card .role{font-size:12px;font-weight:700;margin-bottom:8px}
+  .trio-card.c1 .role{color:#8A6A1E}
+  .trio-card.c2 .role{color:#2C557E}
+  .trio-card.c3 .role{color:#3D5A46}
+  .trio-card .foods{font-size:12.5px;line-height:1.6;color:#4E5D52}
+
+  /* ---- 식판 차리기 (시그니처 탐구 인터랙션) ---- */
+  .plate-lab{
+    margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:24px 20px;font-family:var(--sans);
+  }
+  .plate-lab h3{font-size:16px;color:var(--pine);margin-bottom:6px;word-break:keep-all}
+  .plate-lab .hint{font-size:13.5px;color:#5C6B60;margin-bottom:18px;line-height:1.6;word-break:keep-all;text-align:left}
+  .tray{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px;
+  }
+  .slot{
+    border:2px dashed var(--line);border-radius:12px;background:#FAFCF8;
+    min-height:96px;padding:10px 6px;text-align:center;transition:border-color .25s, background .25s;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  }
+  .slot .slot-name{font-size:11.5px;font-weight:700;color:#8A968D;letter-spacing:.04em}
+  .slot .slot-items{font-size:20px;line-height:1.3;min-height:1.3em;word-break:keep-all}
+  .slot .slot-label{font-size:11px;color:#5C6B60;line-height:1.4;word-break:keep-all}
+  .slot.filled.k-carb{border:2px solid var(--grain);background:var(--grain-soft)}
+  .slot.filled.k-prot{border:2px solid var(--fish);background:var(--fish-soft)}
+  .slot.filled.k-veg{border:2px solid var(--pine);background:var(--pine-soft)}
+  .slot.filled .slot-name{color:var(--ink)}
+  .pantry-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:8px}
+  .pantry{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .food-chip{
+    font-family:var(--sans);font-size:13px;border-radius:999px;padding:8px 13px;cursor:pointer;
+    border:1.5px solid var(--line);background:#fff;color:#3D4A41;
+    display:inline-flex;align-items:center;gap:5px;
+    transition:transform .12s, background .2s, border-color .2s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .food-chip:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .food-chip:active{transform:scale(.95)}
+  .food-chip.picked.k-carb{background:var(--grain-soft);border-color:var(--grain);color:#8A6A1E;font-weight:700}
+  .food-chip.picked.k-prot{background:var(--fish-soft);border-color:var(--fish);color:#2C557E;font-weight:700}
+  .food-chip.picked.k-veg{background:var(--pine-soft);border-color:var(--pine);color:var(--pine);font-weight:700}
+  .lab-btns{display:flex;gap:10px;justify-content:center;margin-bottom:4px}
+  .lab-btn{
+    font-family:var(--sans);font-weight:700;font-size:14px;border-radius:999px;padding:11px 26px;cursor:pointer;
+    border:none;-webkit-tap-highlight-color:transparent;
+  }
+  .lab-btn.go{background:var(--pine);color:#fff}
+  .lab-btn.reset{background:#EFF2EC;color:#5C6B60}
+  .lab-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .lab-btn:active{transform:scale(.97)}
+  .lab-result{
+    margin-top:12px;border-radius:12px;padding:15px 15px;font-size:13.5px;line-height:1.7;
+    background:#FAFCF8;border:1px dashed var(--line);color:#3D4A41;word-break:keep-all;
+    text-align:center;
+  }
+  .lab-result.ok{background:var(--pine-soft);border:1px solid var(--pine);color:var(--pine);font-weight:500}
+  .lab-result.miss{background:var(--carrot-soft);border:1px solid var(--carrot);color:#8A5013;font-weight:500}
+  .lab-result b{display:block;font-size:14.5px;margin-bottom:4px}
+
+  /* ---- 식사 종류 탐구 (탭) ---- */
+  .meal-ex{
+    margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:24px 20px;font-family:var(--sans);
+  }
+  .meal-ex h3{font-size:16px;color:var(--pine);margin-bottom:6px;word-break:keep-all}
+  .meal-ex .hint{font-size:13.5px;color:#5C6B60;margin-bottom:16px;line-height:1.6;word-break:keep-all}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .tab{
+    font-family:var(--sans);font-size:13.5px;font-weight:700;border-radius:999px;padding:9px 18px;
+    border:1.5px solid var(--line);background:#fff;color:#5C6B60;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .tab:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .tab.on{background:var(--pine);border-color:var(--pine);color:#fff}
+  .meal-panel{display:none}
+  .meal-panel.on{display:block;animation:fadeUp .3s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+  .meal-desc{font-size:13.5px;color:#3D4A41;line-height:1.7;margin-bottom:12px;word-break:keep-all}
+  .combo{
+    border:1px solid var(--line);border-radius:12px;padding:14px 14px;margin-bottom:10px;background:#FAFCF8;
+  }
+  .combo .combo-name{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:9px;word-break:keep-all}
+  .combo .row{display:flex;gap:7px;align-items:flex-start;margin-bottom:6px;font-size:13px;line-height:1.55;word-break:keep-all}
+  .combo .row:last-child{margin-bottom:0}
+  .badge{
+    flex-shrink:0;font-size:11px;font-weight:700;border-radius:6px;padding:2px 8px;margin-top:1px;white-space:nowrap;
+  }
+  .badge.b-carb{background:var(--grain-soft);color:#8A6A1E}
+  .badge.b-prot{background:var(--fish-soft);color:#2C557E}
+  .badge.b-veg{background:var(--pine-soft);color:var(--pine)}
+
+  /* ---- 분량 안내 ---- */
+  .amount{
+    margin:22px 0;border-radius:16px;padding:22px 20px;font-family:var(--sans);background:var(--pine-soft);
+  }
+  .amount h3{font-size:16px;color:var(--pine);margin-bottom:4px;word-break:keep-all}
+  .amount .sub{font-size:13.5px;color:#3D5A46;margin-bottom:14px;word-break:keep-all}
+  .amount-card{
+    background:#fff;border-radius:12px;padding:14px 15px;margin-bottom:10px;
+  }
+  .amount-card:last-child{margin-bottom:0}
+  .amount-card h4{font-size:14px;margin-bottom:6px;word-break:keep-all}
+  .amount-card.pr h4{color:var(--fish)}
+  .amount-card.vg h4{color:var(--pine)}
+  .amount-card p{font-size:13px;line-height:1.7;color:#3D4A41;margin-bottom:0;text-align:left}
+  .amount-card .exline{
+    margin-top:8px;background:#FAFCF8;border-left:3px solid var(--line);
+    padding:7px 11px;border-radius:0 8px 8px 0;font-size:12.5px;color:#5C6B60;line-height:1.6;
+  }
+
+  /* ---- 팁 아코디언 ---- */
+  .tips{display:flex;flex-direction:column;gap:12px;margin:22px 0;font-family:var(--sans)}
+  details{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  summary{
+    list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:12px;
+    font-weight:700;font-size:15px;color:var(--ink);word-break:keep-all;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:2px solid var(--carrot);outline-offset:-2px}
+  summary .num{
+    flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--carrot-soft);
+    color:var(--carrot);font-size:14px;display:flex;align-items:center;justify-content:center;
+  }
+  summary .chev{margin-left:auto;color:var(--pine);transition:transform .2s;font-size:13px}
+  details[open] .chev{transform:rotate(180deg)}
+  details .body{padding:0 18px 16px 60px;font-size:14.5px;line-height:1.75;color:#3D4A41;word-break:keep-all}
+  details .body .ex{
+    margin-top:8px;background:#FAFCF8;border-left:3px solid var(--line);
+    padding:8px 12px;border-radius:0 8px 8px 0;font-size:13.5px;
+  }
+
+  /* ---- 7일 챌린지 ---- */
+  .challenge{margin:26px 0;background:var(--carrot-soft);border-radius:16px;padding:24px 20px;font-family:var(--sans)}
+  .challenge h3{font-size:16px;color:var(--carrot);margin-bottom:4px}
+  .challenge .hint{font-size:13.5px;color:#7A5A33;margin-bottom:16px;word-break:keep-all}
+  .week{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:14px}
+  .day{
+    aspect-ratio:1;border-radius:12px;border:2px dashed #E3C99F;background:#fff;
+    font-family:var(--sans);cursor:pointer;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:2px;
+    transition:transform .12s, background .2s, border-color .2s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .day:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .day .d-name{font-size:11.5px;font-weight:700;color:#7A5A33}
+  .day .d-mark{font-size:16px;line-height:1;color:#D9C7AB}
+  .day.on{border:2px solid var(--carrot);background:#fff;transform:scale(1.05)}
+  .day.on .d-mark{color:var(--carrot)}
+  .week-msg{font-size:14px;font-weight:700;color:var(--carrot);text-align:center;min-height:1.5em;margin-bottom:14px;word-break:keep-all}
+  .challenge .goal{
+    background:#fff;border-radius:10px;padding:13px 14px;font-size:13.5px;line-height:1.65;
+    color:#3D4A41;word-break:keep-all;
+  }
+  .challenge .goal b{color:var(--carrot)}
+
+  /* ---- 맺음 ---- */
+  .closing{margin-top:44px;padding:28px 24px;border-top:3px double var(--pine);text-align:center;word-break:keep-all}
+  .closing p{text-align:center}
+  .closing .sign{font-family:var(--sans);font-size:13.5px;color:#5C6B60;margin-top:14px;margin-bottom:0}
+  footer{font-family:var(--sans);font-size:12px;color:#8A968D;text-align:center;margin-top:36px;line-height:1.7;word-break:keep-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">영양교사 칼럼 · 우리 아이 식생활 이야기 · 다섯 번째</span>
+    <h1>우리 아이 식사,<br>어떻게 <em>차려 주면</em> 좋을까요?</h1>
+    <p class="subtitle">반찬 고민은 이제 그만. '탄수화물 + 단백질 + 채소'라는 세 칸만 기억하시면, 밥이든 빵이든 면이든 균형 잡힌 한 끼가 됩니다.</p>
+    <div class="byline">
+      <span class="avatar">🍱</span>
+      <span>영양상담 선도학교 전주서일초등학교 영양교사 · 2026년 7월 · 읽는 시간 약 4분</span>
+    </div>
+  </header>
+
+  <nav aria-label="칼럼 목차">
+    <a href="#s1">3균형이란</a>
+    <a href="#s2">식판 차려 보기</a>
+    <a href="#s3">밥·샐러드·빵·면</a>
+    <a href="#s4">얼마나 먹을까</a>
+    <a href="#s5">7일 챌린지</a>
+  </nav>
+
+  <section id="s0">
+    <p class="lead">"오늘 저녁은 뭘 차리지?" 아마 매일 저녁 가장 많이 하시는 고민일 것입니다. 그런데 상담을 하다 보면, 많은 학부모님들이 '무슨 요리를 할까'는 오래 고민하시면서 정작 '한 끼에 무엇이 들어가야 하는가'는 놓치고 계신 경우가 많습니다. 반찬 가짓수가 많아도 밥과 국수, 빵처럼 탄수화물만 가득한 식탁이라면, 아이는 금방 배가 고파지고 몸속에는 지방이 쌓이기 쉽습니다.</p>
+    <p>오늘은 요리 실력이 아니라 <strong>'구성'</strong>에 대한 이야기입니다. 세 칸만 기억하시면 됩니다.</p>
+    <div class="pull">곡류 중심의 탄수화물,<br>어육류 중심의 단백질,<br>채소 중심의 식이섬유.<br>이 셋이 모이면 어떤 식탁도 균형 잡힌 한 끼가 됩니다.</div>
+  </section>
+
+  <section id="s1">
+    <h2>왜 세 가지 균형일까요?</h2>
+    <p>우리 몸은 에너지를 내고, 몸을 만들고, 기능을 조절하기 위해 서로 다른 영양소를 필요로 합니다. 이 세 가지 역할을 각각 맡고 있는 것이 탄수화물, 단백질, 채소입니다. 어느 하나가 빠지면 그 역할이 통째로 비게 됩니다.</p>
+
+    <div class="trio">
+      <div class="trio-card c1">
+        <span class="emo">🍚</span>
+        <h4>탄수화물</h4>
+        <p class="role">에너지를 냅니다</p>
+        <p class="foods">밥 · 빵 · 감자<br>고구마 · 옥수수 · 면</p>
+      </div>
+      <div class="trio-card c2">
+        <span class="emo">🐟</span>
+        <h4>단백질</h4>
+        <p class="role">몸을 만듭니다</p>
+        <p class="foods">고기 · 생선 · 달걀<br>두부 · 견과류 · 유제품</p>
+      </div>
+      <div class="trio-card c3">
+        <span class="emo">🥦</span>
+        <h4>채소</h4>
+        <p class="role">기능을 조절합니다</p>
+        <p class="foods">녹색 · 빨강 · 노랑 · 흰색<br>다양한 색의 채소</p>
+      </div>
+    </div>
+
+    <p>특히 단백질과 채소 반찬을 함께 먹으면 <strong>포만감이 오래가서</strong> 군것질이 줄고, 몸속에 지방이 쌓이는 것을 막아 비만 예방에 도움이 됩니다. 또 단백질 속 <strong>'트립토판'이라는 아미노산</strong>은 성장 호르몬 분비를 돕고 깊은 잠을 자게 해, 자라는 아이에게 꼭 필요합니다. 반찬 한 가지가 곧 성장의 재료인 셈입니다.</p>
+  </section>
+
+  <section id="s2">
+    <h2>직접 차려 볼까요? — 우리 아이 식판 실험실</h2>
+    <p>글로 읽는 것보다 한 번 차려 보는 것이 훨씬 오래 남습니다. 아래에서 음식을 골라 식판의 세 칸을 채운 뒤, '식판 확인하기'를 눌러 보시기 바랍니다. 오늘 저녁 우리 집 식탁을 떠올리며 골라 보셔도 좋습니다.</p>
+
+    <div class="plate-lab">
+      <h3>🍱 눌러서 채워 보세요 — 3균형 식판 만들기</h3>
+      <p class="hint">냉장고에서 재료를 고르듯 아래 음식을 눌러 담아 보세요. 다시 누르면 뺄 수 있습니다. 세 칸이 모두 찼는지 스스로 확인해 보는 것이 이 실험의 목표입니다.</p>
+
+      <div class="tray" aria-label="식판">
+        <div class="slot k-carb" id="slotCarb">
+          <span class="slot-name">탄수화물</span>
+          <span class="slot-items" aria-live="polite"></span>
+          <span class="slot-label">에너지 칸</span>
+        </div>
+        <div class="slot k-prot" id="slotProt">
+          <span class="slot-name">단백질</span>
+          <span class="slot-items" aria-live="polite"></span>
+          <span class="slot-label">성장 칸</span>
+        </div>
+        <div class="slot k-veg" id="slotVeg">
+          <span class="slot-name">채소</span>
+          <span class="slot-items" aria-live="polite"></span>
+          <span class="slot-label">조절 칸</span>
+        </div>
+      </div>
+
+      <p class="pantry-title">오늘의 재료 창고</p>
+      <div class="pantry" id="pantry"></div>
+
+      <div class="lab-btns">
+        <button class="lab-btn go" id="labGo" type="button">식판 확인하기</button>
+        <button class="lab-btn reset" id="labReset" type="button">다시 차리기</button>
+      </div>
+      <p class="lab-result" id="labResult" aria-live="polite">재료를 담고 '식판 확인하기'를 누르시면 결과가 나타납니다.</p>
+    </div>
+  </section>
+
+  <section id="s3">
+    <h2>밥이 아니어도 괜찮습니다 — 네 가지 한 끼</h2>
+    <p>균형 잡힌 식사라고 하면 밥과 국, 반찬이 갖춰진 상차림부터 떠올리기 쉽습니다. 그러나 핵심은 상차림의 모양이 아니라 <strong>세 칸이 채워졌는가</strong>입니다. 샐러드로도, 빵으로도, 심지어 라면으로도 세 칸을 채울 수 있습니다. 아래에서 우리 가족이 자주 먹는 형태를 눌러 살펴보시기 바랍니다.</p>
+
+    <div class="meal-ex">
+      <h3>🔍 눌러서 탐구해 보세요 — 한 끼 식사의 네 가지 얼굴</h3>
+      <p class="hint">형태는 달라도 구성 원리는 같습니다. 각 예시에서 세 칸이 어떻게 채워지는지 찾아보세요.</p>
+
+      <div class="tabs" role="tablist" aria-label="식사 종류">
+        <button class="tab on" type="button" data-panel="p-rice">🍚 밥식</button>
+        <button class="tab" type="button" data-panel="p-salad">🥗 샐러드식</button>
+        <button class="tab" type="button" data-panel="p-bread">🍞 빵식</button>
+        <button class="tab" type="button" data-panel="p-noodle">🍜 면식</button>
+      </div>
+
+      <div class="meal-panel on" id="p-rice">
+        <p class="meal-desc">가장 익숙한 형태입니다. 밥에 단백질 반찬 하나, 채소 반찬 두세 가지면 완성됩니다.</p>
+        <div class="combo">
+          <p class="combo-name">예시 1 · 밥 + 고기 상차림</p>
+          <div class="row"><span class="badge b-carb">탄수화물</span><span>밥</span></div>
+          <div class="row"><span class="badge b-prot">단백질</span><span>고기(불고기, 제육 등)</span></div>
+          <div class="row"><span class="badge b-veg">채소</span><span>3가지 색 채소 (나물, 김치, 쌈채소 등)</span></div>
+        </div>
+        <div class="combo">
+          <p class="combo-name">예시 2 · 밥 + 생선 상차림</p>
+          <div class="row"><span class="badge b-carb">탄수화물</span><span>밥</span></div>
+          <div class="row"><span class="badge b-prot">단백질</span><span>생선(구이, 조림 등)</span></div>
+          <div class="row"><span class="badge b-veg">채소</span><span>3가지 색 채소</span></div>
+        </div>
+      </div>
+
+      <div class="meal-panel" id="p-salad">
+        <p class="meal-desc">아침이나 간단한 저녁으로 좋습니다. 채소만 담으면 금방 배가 고파지므로, 탄수화물과 단백질을 꼭 얹어 주세요.</p>
+        <div class="combo">
+          <p class="combo-name">예시 1 · 바나나 달걀 샐러드</p>
+          <div class="row"><span class="badge b-carb">탄수화물</span><span>바나나</span></div>
+          <div class="row"><span class="badge b-prot">단백질</span><span>견과류, 달걀프라이</span></div>
+          <div class="row"><span class="badge b-veg">채소</span><span>3가지 색 채소 (잎채소, 방울토마토, 오이 등)</span></div>
+        </div>
+        <div class="combo">
+          <p class="combo-name">예시 2 · 고구마 치즈 샐러드볼</p>
+          <div class="row"><span class="badge b-carb">탄수화물</span><span>고구마</span></div>
+          <div class="row"><span class="badge b-prot">단백질</span><span>견과류, 치즈</span></div>
+          <div class="row"><span class="badge b-veg">채소</span><span>3가지 색 채소 (당근, 적양배추, 옥수수 등)</span></div>
+        </div>
+      </div>
+
+      <div class="meal-panel" id="p-bread">
+        <p class="meal-desc">빵식도 좋은 한 끼가 될 수 있습니다. 가능하면 통곡물빵을 고르고, 단백질과 채소를 곁들여 주세요.</p>
+        <div class="combo">
+          <p class="combo-name">예시 1 · 통곡물빵 브런치</p>
+          <div class="row"><span class="badge b-carb">탄수화물</span><span>통곡물빵</span></div>
+          <div class="row"><span class="badge b-prot">단백질</span><span>닭가슴살(고기), 달걀프라이</span></div>
+          <div class="row"><span class="badge b-veg">채소</span><span>3가지 색 채소 (샐러드, 토마토, 오이 등)</span></div>
+        </div>
+        <div class="combo">
+          <p class="combo-name">예시 2 · 샌드위치 도시락</p>
+          <div class="row"><span class="badge b-carb">탄수화물</span><span>통곡물빵 샌드위치</span></div>
+          <div class="row"><span class="badge b-prot">단백질</span><span>달걀, 치즈</span></div>
+          <div class="row"><span class="badge b-veg">채소</span><span>3가지 색 채소 (샌드위치 속 채소 + 곁들임 과일·채소)</span></div>
+        </div>
+      </div>
+
+      <div class="meal-panel" id="p-noodle">
+        <p class="meal-desc">면 요리는 탄수화물로 쏠리기 가장 쉬운 형태입니다. 그래서 오히려 단백질과 채소를 '더하는 습관'이 가장 빛을 발하는 곳이기도 합니다.</p>
+        <div class="combo">
+          <p class="combo-name">예시 1 · 해물 채소 파스타</p>
+          <div class="row"><span class="badge b-carb">탄수화물</span><span>파스타</span></div>
+          <div class="row"><span class="badge b-prot">단백질</span><span>새우, 조개</span></div>
+          <div class="row"><span class="badge b-veg">채소</span><span>3가지 색 채소 (파프리카, 시금치, 버섯 등)</span></div>
+        </div>
+        <div class="combo">
+          <p class="combo-name">예시 2 · 라면도 이렇게 하면 다릅니다</p>
+          <div class="row"><span class="badge b-carb">탄수화물</span><span>국수(라면)</span></div>
+          <div class="row"><span class="badge b-prot">단백질</span><span>달걀 (삶은 달걀 또는 풀어 넣기)</span></div>
+          <div class="row"><span class="badge b-veg">채소</span><span>3가지 색 채소 (파, 양파, 애호박, 콩나물 등 듬뿍)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <p>라면 예시가 의외라고 느끼실 수 있습니다. 그러나 "라면은 안 돼"라고 금지하는 것보다, <strong>달걀 하나와 채소 한 줌을 더하는 것</strong>이 훨씬 현실적이고 오래가는 방법입니다. 완벽한 식단이 아니라, 지금 우리 집 식탁에서 한 칸씩 채워 가는 것이 목표입니다.</p>
+  </section>
+
+  <section id="s4">
+    <h2>그래서, 얼마나 먹으면 될까요?</h2>
+    <p>양을 저울로 재실 필요는 없습니다. 반찬의 '가짓수'만 기억하시면 충분합니다.</p>
+
+    <div class="amount">
+      <h3>📏 한 끼 분량, 이것만 기억하세요</h3>
+      <p class="sub">매끼 아래 두 가지 규칙만 지켜도 균형은 저절로 따라옵니다.</p>
+      <div class="amount-card pr">
+        <h4>🐟 단백질 반찬 — 매끼 1~2가지</h4>
+        <p>생선 한 토막, 달걀 한 개, 두부 한 모의 일부, 견과류 한 줌, 고기볶음 한 접시. 이 가운데 한두 가지면 됩니다. 한 가지를 넉넉히 드셔도 좋습니다.</p>
+        <div class="exline">예: 생선 한 토막 + 달걀 하나 / 또는 불고기 한 접시</div>
+      </div>
+      <div class="amount-card vg">
+        <h4>🥦 채소 반찬 — 매끼 2~3가지</h4>
+        <p>브로콜리 몇 송이, 당근·오이 몇 조각, 콩나물이나 나물 무침 한 젓가락씩. 색이 다른 채소로 두세 가지를 놓으면 가장 좋고, 한두 가지를 많이 드셔도 괜찮습니다.</p>
+        <div class="exline">예: 시금치나물 + 김치 + 오이 몇 조각 (녹색·빨강·흰색 완성!)</div>
+      </div>
+    </div>
+
+    <p>바쁜 평일에 이 모든 것을 새로 만들 수는 없습니다. 그래서 아래 세 가지 작은 요령을 함께 전해 드립니다.</p>
+
+    <div class="tips">
+      <details>
+        <summary><span class="num">1</span>'요리'가 아니라 '조합'으로 생각하기<span class="chev">▼</span></summary>
+        <div class="body">균형 잡힌 식사는 요리 실력이 아니라 조합의 문제입니다. 사 온 반찬, 냉동 생선, 씻어 둔 채소도 세 칸에 들어가면 훌륭한 한 끼입니다.
+          <div class="ex">밥(있는 것) + 달걀프라이(1분) + 씻은 상추·방울토마토(0분) = 3균형 완성</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">2</span>단백질·채소 '상비군' 만들어 두기<span class="chev">▼</span></summary>
+        <div class="body">삶은 달걀, 두부, 치즈, 견과류, 씻어 소분한 채소를 냉장고에 늘 두세요. 어떤 끼니든 한 칸이 비면 상비군에서 하나 꺼내 얹기만 하면 됩니다.</div>
+      </details>
+      <details>
+        <summary><span class="num">3</span>아이에게 '세 칸 검사관' 역할 주기<span class="chev">▼</span></summary>
+        <div class="body">식탁에 앉을 때 아이에게 물어보세요. "오늘 우리 식탁, 세 칸 다 있나 찾아볼까?" 아이가 스스로 탄수화물·단백질·채소를 찾아내는 놀이가 되면, 잔소리 없이도 균형의 눈이 자랍니다.
+          <div class="ex">✗ "골고루 먹어!"<br>○ "오늘 채소 칸은 뭐가 채웠게?"</div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section id="s5">
+    <div class="challenge">
+      <h3>🍱 일주일 '세 칸 채우기' 챌린지</h3>
+      <p class="hint">이번 주, 하루 한 끼만 세 칸(탄수화물·단백질·채소)을 채워 보세요. 성공한 날의 요일을 눌러 도장을 찍어 주시기 바랍니다.</p>
+
+      <div class="week" role="group" aria-label="요일별 챌린지 도장">
+        <button class="day" type="button" data-day="월"><span class="d-name">월</span><span class="d-mark">○</span></button>
+        <button class="day" type="button" data-day="화"><span class="d-name">화</span><span class="d-mark">○</span></button>
+        <button class="day" type="button" data-day="수"><span class="d-name">수</span><span class="d-mark">○</span></button>
+        <button class="day" type="button" data-day="목"><span class="d-name">목</span><span class="d-mark">○</span></button>
+        <button class="day" type="button" data-day="금"><span class="d-name">금</span><span class="d-mark">○</span></button>
+        <button class="day" type="button" data-day="토"><span class="d-name">토</span><span class="d-mark">○</span></button>
+        <button class="day" type="button" data-day="일"><span class="d-name">일</span><span class="d-mark">○</span></button>
+      </div>
+      <p class="week-msg" id="weekMsg"></p>
+
+      <div class="goal">
+        <b>이번 주 목표는 3일이면 충분합니다.</b> 일곱 밤 모두 완벽할 필요는 없습니다. 하루 한 끼, 일주일에 세 번. 그 리듬이 몸에 익으면 나머지는 저절로 따라옵니다.
+      </div>
+    </div>
+  </section>
+
+  <div class="closing">
+    <h2 style="border:none;padding:0;margin-bottom:14px">차림의 화려함보다, 세 칸의 균형</h2>
+    <p>오늘 저녁 식탁을 한 번만 둘러봐 주시기 바랍니다.<br>
+    에너지 칸, 성장 칸, 조절 칸 — 세 칸이 채워져 있다면<br>
+    그것이 반찬 몇 가지든, 어떤 형태든 이미 훌륭한 한 끼입니다.<br>
+    비어 있는 칸이 보인다면, 달걀 하나·채소 한 줌부터 얹어 주시면 됩니다.</p>
+    <p class="sign">애쓰시는 학부모님들을 언제나 응원합니다.</p>
+  </div>
+
+  <footer>본 자료는 학부모 영양교육을 위해 제작되었습니다.<br>2026 영양상담 선도학교 전주서일초등학교 영양교육</footer>
+</div>
+
+<script>
+(function(){
+  // ----- 식판 실험실 -----
+  var foods = [
+    ["🍚","밥","carb"],["🍞","통곡물빵","carb"],["🍝","파스타","carb"],["🍠","고구마","carb"],["🍌","바나나","carb"],
+    ["🥩","고기","prot"],["🐟","생선","prot"],["🥚","달걀","prot"],["🧀","치즈","prot"],["🌰","견과류","prot"],["⬜","두부","prot"],
+    ["🥦","브로콜리","veg"],["🥕","당근","veg"],["🥬","잎채소","veg"],["🍅","토마토","veg"],["🥒","오이","veg"],["🍄","버섯","veg"]
+  ];
+  var slotEls = {
+    carb: document.getElementById('slotCarb'),
+    prot: document.getElementById('slotProt'),
+    veg:  document.getElementById('slotVeg')
+  };
+  var pantry = document.getElementById('pantry');
+  var labResult = document.getElementById('labResult');
+  var picked = {carb:[], prot:[], veg:[]};
+
+  function renderSlots(){
+    var keys = ['carb','prot','veg'], i;
+    for(i=0;i<keys.length;i++){
+      var k = keys[i];
+      var el = slotEls[k];
+      var itemsEl = el.querySelector('.slot-items');
+      var emojis = [], j;
+      for(j=0;j<picked[k].length;j++){ emojis.push(picked[k][j][0]); }
+      itemsEl.textContent = emojis.join(' ');
+      if(picked[k].length > 0){
+        if(el.className.indexOf('filled') < 0){ el.className = el.className + ' filled'; }
+      } else {
+        el.className = el.className.replace(' filled','');
+      }
+    }
+  }
+
+  function makeChip(item){
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'food-chip k-' + item[2];
+    btn.textContent = item[0] + ' ' + item[1];
+    btn.addEventListener('click', function(){
+      var arr = picked[item[2]];
+      var idx = -1, j;
+      for(j=0;j<arr.length;j++){ if(arr[j][1] === item[1]){ idx = j; break; } }
+      if(idx >= 0){
+        arr.splice(idx,1);
+        btn.className = btn.className.replace(' picked','');
+      } else {
+        arr.push(item);
+        btn.className = btn.className + ' picked';
+      }
+      renderSlots();
+    });
+    return btn;
+  }
+  var f;
+  for(f=0;f<foods.length;f++){ pantry.appendChild(makeChip(foods[f])); }
+
+  var labGo = document.getElementById('labGo');
+  var labReset = document.getElementById('labReset');
+
+  labGo.addEventListener('click', function(){
+    var hasC = picked.carb.length > 0;
+    var hasP = picked.prot.length > 0;
+    var hasV = picked.veg.length > 0;
+    labResult.className = 'lab-result';
+    if(!hasC && !hasP && !hasV){
+      labResult.innerHTML = '아직 식판이 비어 있어요. 재료 창고에서 음식을 골라 담아 주세요.';
+      return;
+    }
+    if(hasC && hasP && hasV){
+      labResult.className = 'lab-result ok';
+      var extra = '';
+      if(picked.veg.length >= 3){ extra = ' 채소를 세 가지나 담으셨네요. 색까지 다양하다면 더할 나위 없습니다.'; }
+      else if(picked.prot.length >= 2){ extra = ' 단백질을 두 가지 담으신 것도 아주 좋은 선택입니다.'; }
+      labResult.innerHTML = '<b>🎉 3균형 완성! 훌륭한 한 끼입니다</b>에너지·성장·조절, 세 칸이 모두 채워졌습니다.' + extra + ' 오늘 저녁, 이 식판을 실제로 차려 보시면 어떨까요?';
+    } else {
+      var missing = [];
+      if(!hasC){ missing.push('탄수화물(에너지)'); }
+      if(!hasP){ missing.push('단백질(성장)'); }
+      if(!hasV){ missing.push('채소(조절)'); }
+      labResult.className = 'lab-result miss';
+      labResult.innerHTML = '<b>거의 다 왔어요!</b>지금 식판에는 <u>' + missing.join(', ') + '</u> 칸이 비어 있습니다. 이 칸이 비면 어떤 일이 생길지 위의 3균형 원리에서 힌트를 찾아, 한 가지만 더 담아 보세요.';
+    }
+  });
+
+  labReset.addEventListener('click', function(){
+    picked = {carb:[], prot:[], veg:[]};
+    var chips = pantry.querySelectorAll('.food-chip'), i;
+    for(i=0;i<chips.length;i++){ chips[i].className = chips[i].className.replace(' picked',''); }
+    renderSlots();
+    labResult.className = 'lab-result';
+    labResult.innerHTML = '재료를 담고 \'식판 확인하기\'를 누르시면 결과가 나타납니다.';
+  });
+
+  // ----- 식사 종류 탭 -----
+  var tabs = document.querySelectorAll('.tab');
+  var panels = document.querySelectorAll('.meal-panel');
+  function bindTab(tab){
+    tab.addEventListener('click', function(){
+      var i;
+      for(i=0;i<tabs.length;i++){ tabs[i].className = tabs[i].className.replace(' on',''); }
+      for(i=0;i<panels.length;i++){ panels[i].className = panels[i].className.replace(' on',''); }
+      tab.className = tab.className + ' on';
+      var panel = document.getElementById(tab.getAttribute('data-panel'));
+      panel.className = panel.className + ' on';
+    });
+  }
+  var t;
+  for(t=0;t<tabs.length;t++){ bindTab(tabs[t]); }
+
+  // ----- 7일 챌린지 -----
+  var days = document.querySelectorAll('.day');
+  var weekMsg = document.getElementById('weekMsg');
+  function countDays(){
+    var n = 0, i;
+    for(i=0;i<days.length;i++){ if(days[i].className.indexOf('on') >= 0){ n++; } }
+    return n;
+  }
+  function weekCheer(n){
+    if(n === 0){ return ''; }
+    if(n === 1){ return '첫 도장! 시작이 절반입니다. 💪'; }
+    if(n === 2){ return '두 번째 도장. 리듬이 만들어지고 있어요.'; }
+    if(n === 3){ return '🎯 이번 주 목표 달성! 세 번이면 충분합니다.'; }
+    if(n <= 5){ return '목표를 넘어섰어요. 우리 집 식탁이 달라지고 있습니다.'; }
+    if(n === 6){ return '여섯 번이라니, 정말 대단합니다!'; }
+    return '🎉 일주일 완주! 세 칸 채우기가 이제 우리 집 습관이 되었습니다.';
+  }
+  function bindDay(d){
+    d.addEventListener('click', function(){
+      var mark = d.querySelector('.d-mark');
+      if(d.className.indexOf('on') >= 0){
+        d.className = d.className.replace(' on','');
+        mark.textContent = '○';
+      } else {
+        d.className = d.className + ' on';
+        mark.textContent = '✔';
+      }
+      weekMsg.textContent = weekCheer(countDays());
+    });
+  }
+  var k;
+  for(k=0;k<days.length;k++){ bindDay(days[k]); }
+})();
+</script>
+</body>
+</html>

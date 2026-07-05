@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>입 짧은 아이, 끌려다니지 마세요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F8F1;        /* 연한 잎맥색 종이 */
+    --ink:#26332A;          /* 짙은 먹색 */
+    --pine:#1E5631;         /* 소나무 녹색 */
+    --pine-soft:#DCEBDC;    /* 옅은 녹색 면 */
+    --carrot:#D9750F;       /* 당근 주황 */
+    --carrot-soft:#FBEEDC;  /* 옅은 주황 면 */
+    --plum:#7D5A8C;         /* 자두 보라 (이번 화 포인트) */
+    --plum-soft:#F0E9F3;    /* 옅은 자두 면 */
+    --line:#C9D8C6;
+    --serif:'Gowun Batang', serif;
+    --sans:'IBM Plex Sans KR', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    background:var(--paper);color:var(--ink);font-family:var(--serif);
+    line-height:1.85;font-size:17px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px 80px}
+
+  /* ---- 헤더 ---- */
+  header{padding:44px 0 28px;border-bottom:3px double var(--pine)}
+  .eyebrow{
+    font-family:var(--sans);font-size:12.5px;font-weight:700;letter-spacing:.14em;
+    color:var(--pine);text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--carrot);display:inline-block}
+  h1{font-size:clamp(26px,6vw,36px);font-weight:700;line-height:1.42;color:var(--pine);word-break:keep-all}
+  h1 em{font-style:normal;color:var(--carrot)}
+  .subtitle{margin-top:14px;font-size:15.5px;color:#4E5D52;word-break:keep-all}
+  .byline{margin-top:20px;font-family:var(--sans);font-size:13.5px;color:#5C6B60;display:flex;align-items:center;gap:10px}
+  .byline .avatar{
+    width:34px;height:34px;border-radius:50%;background:var(--pine);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+  }
+
+  /* ---- 목차 ---- */
+  nav{
+    position:sticky;top:0;z-index:10;background:var(--paper);
+    padding:12px 0;border-bottom:1px solid var(--line);
+    display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none}
+  nav a{
+    font-family:var(--sans);font-size:12.5px;font-weight:500;white-space:nowrap;
+    color:var(--pine);text-decoration:none;background:var(--pine-soft);
+    padding:7px 13px;border-radius:999px;
+  }
+  nav a:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+
+  /* ---- 본문 ---- */
+  section{padding-top:40px}
+  h2{
+    font-size:21px;color:var(--pine);line-height:1.5;word-break:keep-all;
+    padding-left:14px;border-left:4px solid var(--carrot);margin-bottom:18px;
+  }
+  p{margin-bottom:18px;word-break:keep-all;text-align:justify}
+  strong{color:var(--carrot);font-weight:700}
+  .cool{color:var(--plum);font-weight:700}
+  .lead::first-letter{font-size:2.6em;float:left;line-height:1;padding:6px 10px 0 0;color:var(--pine);font-weight:700}
+  .pull{
+    margin:28px 0;padding:22px 24px;background:var(--pine-soft);border-radius:4px 22px 4px 22px;
+    font-size:18px;line-height:1.7;color:var(--pine);font-weight:700;text-align:center;word-break:keep-all;
+  }
+  .pull.plum{background:var(--plum-soft);color:var(--plum)}
+
+  /* ---- 자가진단 ---- */
+  .quiz-card{
+    margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:24px 20px;font-family:var(--sans);
+  }
+  .quiz-card h3{font-size:16px;color:var(--pine);margin-bottom:6px;word-break:keep-all}
+  .quiz-card .hint{font-size:13.5px;color:#5C6B60;margin-bottom:18px;line-height:1.6;word-break:keep-all}
+  .q-item{
+    display:flex;align-items:flex-start;gap:12px;background:#FAFCF8;border:1px solid var(--line);
+    border-radius:10px;padding:13px 14px;margin-bottom:10px;cursor:pointer;
+    font-size:14.5px;line-height:1.6;word-break:keep-all;
+  }
+  .q-item input{
+    appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--plum);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;
+  }
+  .q-item input:checked{background:var(--plum)}
+  .q-item input:checked::after{content:"✓";color:#fff;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .q-item input:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .quiz-btn{
+    display:block;width:100%;margin-top:16px;padding:13px 0;border:none;border-radius:10px;
+    background:var(--plum);color:#fff;font-family:var(--sans);font-size:15px;font-weight:700;
+    cursor:pointer;-webkit-tap-highlight-color:transparent;
+  }
+  .quiz-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .quiz-result{
+    display:none;margin-top:16px;background:var(--plum-soft);border-left:3px solid var(--plum);
+    padding:15px 16px;border-radius:0 10px 10px 0;font-size:14px;line-height:1.75;
+    color:#3D4A41;word-break:keep-all;
+  }
+  .quiz-result.show{display:block;animation:reveal .3s ease}
+  @keyframes reveal{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .quiz-result b{color:var(--plum)}
+
+  /* ---- 두 갈래 비교 다이어그램 ---- */
+  .diagram{margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px 18px;font-family:var(--sans)}
+  .dgm-title{font-size:15px;font-weight:700;color:var(--pine);margin-bottom:5px;word-break:keep-all}
+  .dgm-sub{font-size:13px;color:#5C6B60;margin-bottom:18px;line-height:1.6;word-break:keep-all}
+  .lanes{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .lane{border-radius:13px;padding:14px 11px}
+  .lane.drag{background:#F5E1DB}
+  .lane.anchor{background:var(--pine-soft)}
+  .lane h4{font-size:13.5px;text-align:center;margin-bottom:3px;word-break:keep-all}
+  .lane .who{font-size:11px;text-align:center;margin-bottom:12px;color:#5C6B60}
+  .lane.drag h4{color:#A63A2E}
+  .lane.anchor h4{color:var(--pine)}
+  .step{
+    background:#fff;border-radius:9px;padding:9px 8px;font-size:12px;line-height:1.4;
+    text-align:center;color:#3D4A41;word-break:keep-all;
+  }
+  .adown{text-align:center;font-size:12px;color:#9DB3A0;line-height:1;padding:5px 0}
+  .verdict{margin-top:7px;font-weight:700;font-size:12.5px;text-align:center;word-break:keep-all}
+  .lane.drag .verdict{color:#A63A2E}
+  .lane.anchor .verdict{color:var(--pine)}
+
+  /* ---- 역할 나누기 ---- */
+  .roles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0;font-family:var(--sans)}
+  .role{border-radius:14px;padding:18px 14px;text-align:center;word-break:keep-all}
+  .role.parent{background:var(--pine-soft)}
+  .role.child{background:var(--carrot-soft)}
+  .role .icon{font-size:26px;margin-bottom:6px}
+  .role h4{font-size:14.5px;margin-bottom:4px}
+  .role.parent h4{color:var(--pine)}
+  .role.child h4{color:var(--carrot)}
+  .role .what{font-size:16px;font-weight:700;margin-bottom:6px}
+  .role.parent .what{color:var(--pine)}
+  .role.child .what{color:var(--carrot)}
+  .role .desc{font-size:12.5px;line-height:1.6;color:#4E5D52}
+
+  /* ---- 말 바꾸기 플립카드 ---- */
+  .flips{display:flex;flex-direction:column;gap:14px;margin:22px 0;font-family:var(--sans)}
+  .flip{perspective:1000px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .flip-inner{
+    position:relative;width:100%;min-height:132px;
+    transition:transform .55s;transform-style:preserve-3d;
+  }
+  .flip.flipped .flip-inner{transform:rotateY(180deg)}
+  .face{
+    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border-radius:14px;padding:16px 16px;display:flex;flex-direction:column;justify-content:center;
+    word-break:keep-all;
+  }
+  .face.front{background:#F5E1DB;border:1px solid #E4C4BB}
+  .face.back{background:var(--pine-soft);border:1px solid #BBD3BB;transform:rotateY(180deg)}
+  .face .tag{font-size:11.5px;font-weight:700;letter-spacing:.06em;margin-bottom:6px}
+  .face.front .tag{color:#A63A2E}
+  .face.back .tag{color:var(--pine)}
+  .face .say{font-size:15.5px;font-weight:700;line-height:1.55}
+  .face.front .say{color:#7A2F24}
+  .face.back .say{color:var(--pine)}
+  .face .why{font-size:12.5px;line-height:1.6;color:#4E5D52;margin-top:8px}
+  .face.back .say,.face.back .why,.face.back .tag{
+    opacity:0;transition:opacity .25s ease .45s;
+  }
+  .flip.flipped .face.back .say,.flip.flipped .face.back .why,.flip.flipped .face.back .tag{opacity:1}
+  .face .cue{margin-top:10px;font-size:11px;color:#9B8A72;text-align:right}
+  .flip:focus-visible{outline:2px solid var(--carrot);outline-offset:2px;border-radius:14px}
+
+  /* ---- TIP 박스 ---- */
+  .tipbox{
+    margin:26px 0;background:#fff;border:1px dashed var(--plum);border-radius:14px;
+    padding:20px 18px;font-family:var(--sans);
+  }
+  .tipbox h3{font-size:15px;color:var(--plum);margin-bottom:12px}
+  .tipbox ul{list-style:none}
+  .tipbox li{
+    font-size:14px;line-height:1.7;color:#3D4A41;word-break:keep-all;
+    padding-left:24px;position:relative;margin-bottom:8px;
+  }
+  .tipbox li::before{content:"🌱";position:absolute;left:0;font-size:13px}
+
+  /* ---- 챌린지 ---- */
+  .challenge{margin:26px 0;background:var(--carrot-soft);border-radius:16px;padding:24px 20px;font-family:var(--sans)}
+  .challenge h3{font-size:16px;color:var(--carrot);margin-bottom:4px}
+  .challenge .hint{font-size:13.5px;color:#7A5A33;margin-bottom:16px;word-break:keep-all}
+  .check{
+    display:flex;align-items:flex-start;gap:12px;background:#fff;border-radius:10px;
+    padding:13px 14px;margin-bottom:10px;cursor:pointer;font-size:14.5px;line-height:1.6;word-break:keep-all;
+  }
+  .check input{
+    appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--carrot);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;
+  }
+  .check input:checked{background:var(--carrot)}
+  .check input:checked::after{content:"✓";color:#fff;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .check input:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .check.done span{text-decoration:line-through;color:#9B8A72}
+  .challenge-msg{font-size:14px;font-weight:700;color:var(--carrot);text-align:center;min-height:1.5em;margin-top:6px}
+
+  /* ---- 맺음 ---- */
+  .closing{margin-top:44px;padding:28px 24px;border-top:3px double var(--pine);text-align:center;word-break:keep-all}
+  .closing p{text-align:center}
+  .closing .sign{font-family:var(--sans);font-size:13.5px;color:#5C6B60;margin-top:14px;margin-bottom:0}
+  .med-note{
+    font-family:var(--sans);font-size:12px;color:#8A7A66;background:#FAF6EE;border-radius:10px;
+    padding:13px 15px;margin-top:22px;line-height:1.6;word-break:keep-all;text-align:left;
+  }
+  footer{font-family:var(--sans);font-size:12px;color:#8A968D;text-align:center;margin-top:30px;line-height:1.7;word-break:keep-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">영양교사 칼럼 · 우리 아이 식생활 이야기 · 여덟 번째</span>
+    <h1>입 짧은 아이,<br><em>끌려다니지</em> 마세요</h1>
+    <p class="subtitle">"밥 안 먹을래." 한마디에 시작되는 식탁 협상. 오늘은 아이를 바꾸는 이야기가 아니라, 부모가 기준을 되찾는 이야기입니다.</p>
+    <div class="byline">
+      <span class="avatar">🥄</span>
+      <span>영양상담 선도학교 전주서일초등학교 영양교사 · 2026년 10월 · 읽는 시간 약 5분</span>
+    </div>
+  </header>
+
+  <nav aria-label="칼럼 목차">
+    <a href="#s1">자가진단</a>
+    <a href="#s2">입 짧음 ≠ 건강 문제</a>
+    <a href="#s3">협상의 악순환</a>
+    <a href="#s4">역할 나누기</a>
+    <a href="#s5">말 바꾸기 카드</a>
+    <a href="#s6">이번 주 챌린지</a>
+  </nav>
+
+  <section id="s0">
+    <p class="lead">"밥 안 먹을래." "그럼 빵 줄까?" "싫어." "그럼 과자라도 먹을래?" 어느 집에서나 한 번쯤 오갔을 대화입니다. 아이가 굶을까 봐 애가 타는 마음, 너무나 잘 압니다. 그런데 이 대화가 매일 반복되고 있다면, 잠시 멈추고 식탁의 풍경을 들여다볼 필요가 있습니다. 어느새 메뉴판을 쥔 사람이 부모가 아니라 아이가 되어 있을지도 모르니까요. 아이의 식습관은 아이의 의지가 아니라, <strong>부모의 원칙과 식사 환경</strong>에서 자랍니다.</p>
+    <div class="pull">식사 전쟁의 출구는 아이를 이기는 것이 아니라,<br>부모가 기준을 세우는 것입니다.</div>
+  </section>
+
+  <section id="s1">
+    <h2>먼저, 우리집 식탁을 점검해 볼까요?</h2>
+    <p>잘잘못을 가리는 시험이 아닙니다. 우리집 식탁에서 지금 어떤 협상이 오가고 있는지, 편안한 마음으로 하나씩 짚어 보시는 시간입니다. 해당되는 항목에 표시하신 뒤, <span class="cool">'결과 보기'</span>를 눌러 주세요.</p>
+
+    <div class="quiz-card">
+      <h3>🍽️ 우리집 식탁, 누가 끌려다니고 있나요?</h3>
+      <p class="hint">최근 한 달을 떠올리며, 해당되는 항목을 모두 골라 주세요.</p>
+
+      <label class="q-item"><input type="checkbox"><span>아이가 "안 먹어"라고 하면 다른 음식을 대신 차려 준 적이 있다.</span></label>
+      <label class="q-item"><input type="checkbox"><span>"이거 다 먹으면 과자 줄게" 같은 거래를 해 본 적이 있다.</span></label>
+      <label class="q-item"><input type="checkbox"><span>어느새 아이가 잘 먹는 몇 가지 음식 위주로 식단을 짜게 된다.</span></label>
+      <label class="q-item"><input type="checkbox"><span>한 끼라도 굶기면 큰일 날 것 같아, 쫓아다니며 먹인 적이 있다.</span></label>
+      <label class="q-item"><input type="checkbox"><span>식사 시간 대화의 절반 이상이 "한 입만 더" 같은 잔소리다.</span></label>
+      <label class="q-item"><input type="checkbox"><span>아이의 그날 반응에 따라 저녁 메뉴가 바뀐다.</span></label>
+
+      <button type="button" class="quiz-btn" id="quizBtn">결과 보기</button>
+      <div class="quiz-result" id="quizResult" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2>'입이 짧다'와 '건강 문제'는 다릅니다</h2>
+    <p>많은 부모님이 아이의 <strong>한 끼 식사량</strong>에 마음을 쓰십니다. 하지만 아이마다 식사량, 성장 속도, 식욕 수준은 본래 다릅니다. 정말 살펴봐야 할 것은 오늘 점심에 몇 숟갈을 먹었느냐가 아니라, 더 긴 호흡의 세 가지입니다. 아이가 <strong>제 속도로 잘 자라고 있는지</strong>, 뛰어놀 <strong>활력이 있는지</strong>, 그리고 <strong>전반적인 건강 상태</strong>가 양호한지입니다.</p>
+    <p>이 세 가지에 문제가 없다면, 입이 짧은 것은 병이 아니라 <span class="cool">그 아이의 고유한 특성</span>에 가깝습니다. 아이가 잘 자라고 있고 활력이 있다면, 오늘의 남긴 밥그릇 앞에서 너무 걱정하지 않으셔도 됩니다. 반대로 성장 곡선이 계속 처지거나 기운이 눈에 띄게 없다면, 그때는 식탁의 문제가 아니라 진료의 영역이니 소아청소년과와 상담해 주세요.</p>
+    <p>그리고 하나 더, 부모님들이 자주 걱정하시는 질문. <strong>"한 끼 굶으면 어떡하죠?"</strong> 건강한 아이라면 한두 끼를 적게 먹는다고 큰 문제가 생기지 않습니다. 오히려 안 먹을 때마다 대체 음식을 내어 주는 것이, 배고픔과 포만감을 스스로 배울 기회를 빼앗아 <strong>식습관 형성을 더 어렵게</strong> 만듭니다.</p>
+  </section>
+
+  <section id="s3">
+    <h2>"그럼 빵 줄까?"가 반복되면 생기는 일</h2>
+    <p>아이가 밥을 거부할 때 대체 음식을 제안하는 것은, 그 순간에는 평화로운 해결책처럼 보입니다. 하지만 이 장면이 반복되면 아이는 세 가지를 학습합니다. <strong>좋아하는 음식만 먹어도 된다</strong>는 것, <strong>새로운 음식은 거부하면 사라진다</strong>는 것, 그리고 <strong>식탁의 선택권이 나에게 있다</strong>는 것입니다. 결국 편식과 식습관 문제가 더 단단해집니다.</p>
+
+    <div class="diagram">
+      <p class="dgm-title">🔀 같은 "안 먹어"에서 갈라지는 두 개의 식탁</p>
+      <p class="dgm-sub">아이의 거부에 어떻게 반응하느냐가 식탁의 방향을 정합니다.</p>
+      <div class="lanes">
+        <div class="lane drag">
+          <h4>끌려다니는 식탁</h4>
+          <p class="who">"그럼 빵 줄까? 과자 줄까?"</p>
+          <div class="step">거부할 때마다<br>대체 음식이 등장</div>
+          <div class="adown">▼</div>
+          <div class="step">좋아하는 음식만 먹고<br>새로운 음식은 거부</div>
+          <div class="adown">▼</div>
+          <div class="step">식사 선택권을<br>아이가 과도하게 쥠</div>
+          <p class="verdict">편식이 더 단단해짐</p>
+        </div>
+        <div class="lane anchor">
+          <h4>기준이 있는 식탁</h4>
+          <p class="who">"오늘 메뉴는 이거야. 양은 네가 정해."</p>
+          <div class="step">부모가 메뉴를 정하고<br>편안하게 차려 줌</div>
+          <div class="adown">▼</div>
+          <div class="step">안 먹으면 치우고<br>다음 식사까지 기다림</div>
+          <div class="adown">▼</div>
+          <div class="step">배고픔과 포만감을<br>스스로 배움</div>
+          <p class="verdict">식습관의 뿌리가 자람</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4">
+    <h2>식탁의 역할을 나누어 주세요</h2>
+    <p>여기서 이 칼럼의 가장 중요한 한 문장을 말씀드리려 합니다. 소아 영양의 오랜 원칙이기도 합니다. 식탁에는 부모의 몫과 아이의 몫이 따로 있습니다.</p>
+
+    <div class="roles">
+      <div class="role parent">
+        <div class="icon">👨‍👩‍👧</div>
+        <h4>부모의 역할</h4>
+        <p class="what">무엇을 먹을지<br>결정하기</p>
+        <p class="desc">메뉴, 식사 시간, 식사 장소는 부모가 정합니다. 아이의 거부에 따라 바뀌지 않습니다.</p>
+      </div>
+      <div class="role child">
+        <div class="icon">🧒</div>
+        <h4>아이의 역할</h4>
+        <p class="what">얼마나 먹을지<br>결정하기</p>
+        <p class="desc">차려진 음식 중에서 무엇을, 얼마나 먹을지는 아이가 정합니다. 억지로 먹일 필요가 없습니다.</p>
+      </div>
+    </div>
+
+    <div class="pull plum">"부모는 무엇을 먹을지 결정하고,<br>아이는 얼마나 먹을지 결정한다."</div>
+
+    <p>이 역할 나누기가 지켜지면 두 가지가 동시에 이루어집니다. 부모는 <strong>억지로 먹이려는 전쟁</strong>에서 벗어나고, 아이는 <strong>자신의 배고픔과 포만감</strong>이라는 평생의 감각을 배웁니다. 억지로 먹일 필요는 없지만, 아이가 메뉴를 좌우하도록 둘 필요도 없습니다. 아이 중심으로 식단을 계속 바꾸는 것은, 안타깝게도 아이에게 도움이 되지 않습니다.</p>
+    <p>그렇다면 부모가 정성껏 지켜야 할 것은 무엇일까요? 바로 <span class="cool">식사 환경</span>입니다. 협박하기, 잔소리하기, 거래하기 대신 — 정해진 시간에, 가족과 함께, 다양한 음식을, 편안한 분위기에서. 이 네 가지가 아이의 평생 식습관을 만드는 진짜 재료입니다.</p>
+  </section>
+
+  <section id="s5">
+    <h2>식탁의 말을 바꿔 볼까요?</h2>
+    <p>원칙을 알아도, 막상 식탁 앞에서는 익숙한 말이 먼저 튀어나옵니다. 자주 나오는 말 네 가지를 준비했습니다. <strong>카드를 눌러 뒤집으면</strong>, 같은 상황에서 기준을 지키는 말이 나타납니다.</p>
+
+    <div class="flips">
+      <div class="flip" role="button" tabindex="0" aria-label="말 바꾸기 카드 1. 눌러서 뒤집기">
+        <div class="flip-inner">
+          <div class="face front">
+            <p class="tag">🤝 거래하는 말</p>
+            <p class="say">"이거 다 먹으면 과자 줄게."</p>
+            <p class="cue">카드를 눌러 뒤집어 보세요 →</p>
+          </div>
+          <div class="face back">
+            <p class="tag">🌿 기준을 지키는 말</p>
+            <p class="say">"지금은 밥 시간이야. 다 같이 맛있게 먹자."</p>
+            <p class="why">음식이 보상이 되면, 밥은 '과자를 얻기 위한 숙제'가 됩니다. 밥은 밥 자체로 일상이 되게 해 주세요.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip" role="button" tabindex="0" aria-label="말 바꾸기 카드 2. 눌러서 뒤집기">
+        <div class="flip-inner">
+          <div class="face front">
+            <p class="tag">🙏 애원하는 말</p>
+            <p class="say">"한 입만! 제발 한 입만 먹어 봐."</p>
+            <p class="cue">카드를 눌러 뒤집어 보세요 →</p>
+          </div>
+          <div class="face back">
+            <p class="tag">🌿 기준을 지키는 말</p>
+            <p class="say">"안 먹어도 괜찮아. 다음 식사는 저녁 여섯 시야."</p>
+            <p class="why">얼마나 먹을지는 아이의 몫입니다. 대신 '다음 식사까지 간식은 없다'는 기준은 부모가 지켜 주세요.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip" role="button" tabindex="0" aria-label="말 바꾸기 카드 3. 눌러서 뒤집기">
+        <div class="flip-inner">
+          <div class="face front">
+            <p class="tag">⚡ 협박하는 말</p>
+            <p class="say">"안 먹으면 아빠한테 혼난다!"</p>
+            <p class="cue">카드를 눌러 뒤집어 보세요 →</p>
+          </div>
+          <div class="face back">
+            <p class="tag">🌿 기준을 지키는 말</p>
+            <p class="say">"식탁에 같이 앉아 있는 것만으로도 좋아."</p>
+            <p class="why">긴장한 식탁에서는 식욕도 움츠러듭니다. 편안한 분위기 자체가 가장 좋은 반찬입니다.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip" role="button" tabindex="0" aria-label="말 바꾸기 카드 4. 눌러서 뒤집기">
+        <div class="flip-inner">
+          <div class="face front">
+            <p class="tag">🔄 끌려가는 말</p>
+            <p class="say">"그럼 뭐 먹고 싶은데? 라면 끓여 줄까?"</p>
+            <p class="cue">카드를 눌러 뒤집어 보세요 →</p>
+          </div>
+          <div class="face back">
+            <p class="tag">🌿 기준을 지키는 말</p>
+            <p class="say">"오늘 메뉴는 이거야. 얼마나 먹을지는 네가 정하면 돼."</p>
+            <p class="why">메뉴는 부모가, 양은 아이가. 역할이 나뉘는 순간 협상은 끝나고 식사가 시작됩니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tipbox">
+      <h3>💡 함께 기억해 주세요 — 새로운 음식 만나게 하는 법</h3>
+      <ul>
+        <li>새로운 음식은 <strong>10~15번 이상 반복해서</strong> 식탁에 올려야 익숙해집니다. 오늘 거부해도 실패가 아닙니다.</li>
+        <li>처음에는 <strong>아주 작은 양</strong>부터, 강요 없이 식탁 한쪽에 두는 것으로 충분합니다.</li>
+        <li>맛뿐 아니라 <strong>모양·색·식감</strong>을 바꿔 가며 다양한 모습으로 만나게 해 주세요.</li>
+        <li>그리고 무엇보다, <strong>즐거운 식사 시간</strong>이 아이의 평생 식습관을 만듭니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="s6">
+    <div class="challenge">
+      <h3>🥄 우리집 '기준 세우기' 챌린지</h3>
+      <p class="hint">이번 주에 하나만 골라 실천해 보세요. 하나면 충분합니다.</p>
+      <label class="check"><input type="checkbox"><span>아이가 안 먹겠다고 해도, 대체 음식 없이 다음 식사까지 기다려 보기</span></label>
+      <label class="check"><input type="checkbox"><span>"한 입만" 대신 "안 먹어도 괜찮아. 다음 식사는 ○시야" 한 번 말해 보기</span></label>
+      <label class="check"><input type="checkbox"><span>새로운 음식을 아주 작은 양으로, 강요 없이 식탁 한쪽에 올려 두기</span></label>
+      <label class="check"><input type="checkbox"><span>일주일에 하루는 온 가족이 같은 시간, 같은 메뉴로 함께 식사하기</span></label>
+      <p class="challenge-msg" id="challengeMsg"></p>
+    </div>
+  </section>
+
+  <div class="closing">
+    <h2 style="border:none;padding:0;margin-bottom:14px">아이를 이기는 식탁이 아니라, 기준이 있는 식탁</h2>
+    <p>입이 짧은 아이는 고쳐야 할 문제가 아니라, 있는 그대로의 존재입니다.<br>
+    부모가 해 줄 일은 더 많이 먹이는 것이 아니라,<br>
+    편안한 식사 환경을 제공하고, 아이가 자신의 배고픔과 포만감을<br>
+    스스로 배우도록 곁에서 기다려 주는 것입니다.<br>
+    아이의 식사량보다 더 중요한 것은, 건강한 식사 경험과 올바른 식습관 형성이니까요.</p>
+    <p class="sign">오늘의 작은 원칙이, 아이의 건강한 내일을 만듭니다. 애쓰시는 학부모님들을 언제나 응원합니다.</p>
+
+    <div class="med-note">
+      이 자료는 학부모 영양교육을 위한 정보 제공용이며, 진단이나 치료를 대신하지 않습니다. 아이의 성장 곡선이 계속 처지거나 활력이 눈에 띄게 떨어지는 경우, 체중 감소가 지속되는 경우에는 소아청소년과 등 전문 의료진과 상담하시기 바랍니다. 본문은 소아과 전문의 정재호 교수의 자료를 참고하여 재구성하였습니다.
+    </div>
+  </div>
+
+  <footer>본 자료는 학부모 영양교육을 위해 제작되었습니다.<br>2026 영양상담 선도학교 전주서일초등학교 영양교육</footer>
+</div>
+
+<script>
+(function(){
+  // ----- 자가진단: '결과 보기' 버튼을 눌러야만 결과 표시 -----
+  var quizBtn = document.getElementById('quizBtn');
+  var quizResult = document.getElementById('quizResult');
+  var qItems = document.querySelectorAll('.q-item input');
+
+  quizBtn.addEventListener('click', function(){
+    var n = 0, i;
+    for(i = 0; i < qItems.length; i++){ if(qItems[i].checked){ n++; } }
+    var html = '';
+    if(n <= 1){
+      html = '<b>✅ 기준이 살아 있는 식탁 (' + n + '개)</b><br>이미 부모의 역할과 아이의 역할이 잘 나뉘어 있는 편입니다. 지금의 원칙을 편안하게, 꾸준히 이어가 주세요. 아래 본문은 그 원칙을 더 단단히 하는 데 도움이 될 것입니다.';
+    } else if(n <= 3){
+      html = '<b>🌤️ 협상이 시작된 식탁 (' + n + '개)</b><br>많은 가정이 이 지점에 있습니다. 아이를 위한 마음이 어느새 협상으로 이어진 것뿐이니, 자책하지 않으셔도 됩니다. 오늘 칼럼에서 "역할 나누기" 원칙 하나만 가져가셔도 충분합니다.';
+    } else {
+      html = '<b>🍽️ 아이가 메뉴판을 쥔 식탁 (' + n + '개)</b><br>지금 식탁의 선택권이 아이 쪽으로 많이 기울어 있습니다. 괜찮습니다. 오늘부터 바꿀 수 있고, 바꾸는 방법도 어렵지 않습니다. 아래에서 협상의 악순환이 어떻게 만들어지는지, 그리고 어디서부터 끊으면 되는지 차근차근 안내해 드립니다.';
+    }
+    quizResult.innerHTML = html;
+    if(quizResult.className.indexOf('show') < 0){
+      quizResult.className = quizResult.className + ' show';
+    }
+  });
+
+  // ----- 말 바꾸기 플립카드 (뒷면 내용은 뒤집힌 후 표시) -----
+  var flips = document.querySelectorAll('.flip');
+  function bindFlip(f){
+    function toggle(){
+      if(f.className.indexOf('flipped') >= 0){
+        f.className = f.className.replace(' flipped', '');
+      } else {
+        f.className = f.className + ' flipped';
+      }
+    }
+    f.addEventListener('click', toggle);
+    f.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+    });
+  }
+  var fi;
+  for(fi = 0; fi < flips.length; fi++){ bindFlip(flips[fi]); }
+
+  // ----- 챌린지 체크 -----
+  var checks = document.querySelectorAll('.check input');
+  var chMsg = document.getElementById('challengeMsg');
+  var cheers = [
+    "",
+    "좋아요! 이번 주는 이 하나면 충분합니다. 💪",
+    "두 가지나! 우리집 식탁에 기준이 세워지고 있어요.",
+    "세 가지 도전, 대단합니다. 식사 전쟁이 조금씩 잦아들 거예요.",
+    "🎉 전부 도전! 끌려다니는 식탁이 아니라, 기준이 있는 식탁이 되었습니다."
+  ];
+  function bindCheck(c){
+    c.addEventListener('change', function(){
+      var row = c.parentNode;
+      if(c.checked){
+        if(row.className.indexOf('done') < 0){ row.className = row.className + ' done'; }
+      } else {
+        row.className = row.className.replace(' done', '');
+      }
+      var n = 0, k;
+      for(k = 0; k < checks.length; k++){ if(checks[k].checked){ n++; } }
+      chMsg.textContent = cheers[n];
+    });
+  }
+  var t;
+  for(t = 0; t < checks.length; t++){ bindCheck(checks[t]); }
+})();
+</script>
+</body>
+</html>

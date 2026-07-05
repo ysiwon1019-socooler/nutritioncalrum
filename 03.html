@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>우리 아이, 못 먹는 걸까요? 안 먹는 걸까요?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F8F1;        /* 연한 잎맥색 종이 */
+    --ink:#26332A;          /* 짙은 먹색 */
+    --pine:#1E5631;         /* 소나무 녹색 */
+    --pine-soft:#DCEBDC;    /* 옅은 녹색 면 */
+    --carrot:#D9750F;       /* 당근 주황 */
+    --carrot-soft:#FBEEDC;  /* 옅은 주황 면 */
+    --line:#C9D8C6;
+    --serif:'Gowun Batang', serif;
+    --sans:'IBM Plex Sans KR', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    line-height:1.85;
+    font-size:17px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px 80px}
+
+  /* ---- 헤더 ---- */
+  header{padding:44px 0 28px;border-bottom:3px double var(--pine)}
+  .eyebrow{
+    font-family:var(--sans);font-size:12.5px;font-weight:700;letter-spacing:.14em;
+    color:var(--pine);text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--carrot);display:inline-block}
+  h1{
+    font-size:clamp(26px,6vw,36px);font-weight:700;line-height:1.4;
+    color:var(--pine);word-break:keep-all;
+  }
+  h1 em{font-style:normal;color:var(--carrot)}
+  .subtitle{margin-top:14px;font-size:15.5px;color:#4E5D52;word-break:keep-all}
+  .byline{
+    margin-top:20px;font-family:var(--sans);font-size:13.5px;color:#5C6B60;
+    display:flex;align-items:center;gap:10px;
+  }
+  .byline .avatar{
+    width:34px;height:34px;border-radius:50%;background:var(--pine);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+  }
+
+  /* ---- 목차(진행 칩) ---- */
+  nav{
+    position:sticky;top:0;z-index:10;background:var(--paper);
+    padding:12px 0;border-bottom:1px solid var(--line);
+    display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none}
+  nav a{
+    font-family:var(--sans);font-size:12.5px;font-weight:500;white-space:nowrap;
+    color:var(--pine);text-decoration:none;background:var(--pine-soft);
+    padding:7px 13px;border-radius:999px;
+  }
+  nav a:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+
+  /* ---- 본문 ---- */
+  section{padding-top:40px}
+  h2{
+    font-size:21px;color:var(--pine);line-height:1.5;word-break:keep-all;
+    padding-left:14px;border-left:4px solid var(--carrot);margin-bottom:18px;
+  }
+  p{margin-bottom:18px;word-break:keep-all;text-align:justify}
+  strong{color:var(--carrot);font-weight:700}
+  .lead::first-letter{
+    font-size:2.6em;float:left;line-height:1;padding:6px 10px 0 0;color:var(--pine);font-weight:700;
+  }
+  .pull{
+    margin:28px 0;padding:22px 24px;background:var(--pine-soft);
+    border-radius:4px 22px 4px 22px;font-size:18.5px;line-height:1.7;
+    color:var(--pine);font-weight:700;text-align:center;word-break:keep-all;
+  }
+
+  /* ---- 유형 진단 (시그니처) ---- */
+  .quiz-card{
+    margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:24px 20px;font-family:var(--sans);
+  }
+  .quiz-card h3{font-size:16px;color:var(--pine);margin-bottom:6px;word-break:keep-all}
+  .quiz-card .hint{font-size:13.5px;color:#5C6B60;margin-bottom:18px;line-height:1.6;word-break:keep-all;text-align:left}
+  .quiz-cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:520px){.quiz-cols{grid-template-columns:1fr}}
+  .quiz-col{border-radius:12px;padding:14px 12px}
+  .quiz-col.a{background:var(--pine-soft)}
+  .quiz-col.b{background:var(--carrot-soft)}
+  .quiz-col h4{font-size:14px;margin-bottom:10px;word-break:keep-all;text-align:center}
+  .quiz-col.a h4{color:var(--pine)}
+  .quiz-col.b h4{color:var(--carrot)}
+  .q-item{
+    display:flex;align-items:flex-start;gap:9px;background:#fff;border-radius:9px;
+    padding:10px 11px;margin-bottom:8px;cursor:pointer;font-size:13.5px;line-height:1.55;word-break:keep-all;
+  }
+  .q-item:last-of-type{margin-bottom:0}
+  .q-item input{
+    appearance:none;flex-shrink:0;width:20px;height:20px;border-radius:6px;
+    margin-top:1px;cursor:pointer;position:relative;border:2px solid var(--line);
+  }
+  .quiz-col.a .q-item input{border-color:var(--pine)}
+  .quiz-col.b .q-item input{border-color:var(--carrot)}
+  .quiz-col.a .q-item input:checked{background:var(--pine)}
+  .quiz-col.b .q-item input:checked{background:var(--carrot)}
+  .q-item input:checked::after{
+    content:"✓";color:#fff;position:absolute;inset:0;display:flex;
+    align-items:center;justify-content:center;font-size:12px;font-weight:700;
+  }
+  .q-item input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .quiz-btn{
+    display:block;margin:18px auto 0;font-family:var(--sans);font-weight:700;font-size:14.5px;
+    color:#fff;background:var(--pine);border:none;border-radius:999px;padding:12px 32px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .quiz-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .quiz-btn:active{transform:scale(.97)}
+  .quiz-result{
+    margin-top:14px;border-radius:12px;padding:16px 16px;font-size:14px;line-height:1.7;
+    background:#FAFCF8;border:1px dashed var(--line);color:#3D4A41;word-break:keep-all;
+    text-align:center;transition:background .25s,border-color .25s;
+  }
+  .quiz-result.type-a{background:var(--pine-soft);border:1px solid var(--pine);color:var(--pine);font-weight:500}
+  .quiz-result.type-b{background:var(--carrot-soft);border:1px solid var(--carrot);color:#8A5013;font-weight:500}
+  .quiz-result.type-mix{background:#F3F1E4;border:1px solid #B9AE72;color:#6E6320;font-weight:500}
+  .quiz-result b{display:block;font-size:15px;margin-bottom:4px}
+
+  /* ---- 두 갈래 안내 ---- */
+  .path{
+    margin:22px 0;border-radius:16px;padding:22px 20px;font-family:var(--sans);
+  }
+  .path.green{background:var(--pine-soft)}
+  .path.orange{background:var(--carrot-soft)}
+  .path h3{font-size:16px;margin-bottom:4px;word-break:keep-all}
+  .path.green h3{color:var(--pine)}
+  .path.orange h3{color:var(--carrot)}
+  .path .sub{font-size:13.5px;margin-bottom:14px;word-break:keep-all}
+  .path.green .sub{color:#3D5A46}
+  .path.orange .sub{color:#7A5A33}
+
+  /* ---- 실천 카드(아코디언) ---- */
+  .tips{display:flex;flex-direction:column;gap:12px;margin:0;font-family:var(--sans)}
+  details{
+    background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  }
+  summary{
+    list-style:none;cursor:pointer;padding:15px 16px;display:flex;align-items:center;gap:12px;
+    font-weight:700;font-size:14.5px;color:var(--ink);word-break:keep-all;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:2px solid var(--carrot);outline-offset:-2px}
+  summary .num{
+    flex-shrink:0;width:28px;height:28px;border-radius:50%;
+    font-size:13px;display:flex;align-items:center;justify-content:center;
+  }
+  .path.green summary .num{background:var(--pine-soft);color:var(--pine)}
+  .path.orange summary .num{background:var(--carrot-soft);color:var(--carrot)}
+  summary .chev{margin-left:auto;color:var(--pine);transition:transform .2s;font-size:12px}
+  details[open] .chev{transform:rotate(180deg)}
+  details .body{padding:0 16px 15px 56px;font-size:14px;line-height:1.75;color:#3D4A41;word-break:keep-all}
+  details .body .ex{
+    margin-top:8px;background:#FAFCF8;border-left:3px solid var(--line);
+    padding:8px 12px;border-radius:0 8px 8px 0;font-size:13.5px;
+  }
+
+  /* ---- 말 바꾸기 카드 (MI) ---- */
+  .talk-card{
+    margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:24px 20px;font-family:var(--sans);
+  }
+  .talk-card h3{font-size:16px;color:var(--pine);margin-bottom:6px;word-break:keep-all}
+  .talk-card .hint{font-size:13.5px;color:#5C6B60;margin-bottom:16px;line-height:1.6;word-break:keep-all}
+  .talk{
+    width:100%;text-align:left;border:none;background:none;padding:0;margin-bottom:10px;
+    cursor:pointer;font-family:var(--sans);display:block;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .talk:focus-visible{outline:2px solid var(--carrot);outline-offset:2px;border-radius:12px}
+  .talk-inner{display:block}
+  .face{
+    border-radius:12px;padding:15px 16px;font-size:14.5px;line-height:1.6;
+    word-break:keep-all;display:flex;gap:11px;align-items:flex-start;
+  }
+  .face.back{display:none}
+  .talk.flipped .face.front{display:none}
+  .talk.flipped .face.back{display:flex;animation:reveal .35s ease}
+  @keyframes reveal{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+  .face .mark{flex-shrink:0;font-weight:700;font-size:15px;margin-top:1px}
+  .face .txt b{display:block;font-size:14.5px}
+  .face .txt .tag{display:block;font-size:12.5px;margin-top:6px;font-weight:400;line-height:1.65}
+  .face .flip-hint{margin-left:auto;flex-shrink:0;font-size:11.5px;color:#9A948A;align-self:center;white-space:nowrap}
+  .face.front{background:#F0EEE8;color:#6B6257}
+  .face.front .mark{color:#B0473A}
+  .face.back{background:var(--pine-soft);color:var(--pine)}
+  .face.back .mark{color:var(--pine)}
+  .face.back .tag{color:#3D5A46}
+
+  /* ---- 챌린지 체크리스트 ---- */
+  .challenge{
+    margin:26px 0;background:var(--carrot-soft);border-radius:16px;padding:24px 20px;font-family:var(--sans);
+  }
+  .challenge h3{font-size:16px;color:var(--carrot);margin-bottom:4px}
+  .challenge .hint{font-size:13.5px;color:#7A5A33;margin-bottom:16px;word-break:keep-all}
+  .check{
+    display:flex;align-items:flex-start;gap:12px;background:#fff;border-radius:10px;
+    padding:13px 14px;margin-bottom:10px;cursor:pointer;font-size:14.5px;line-height:1.6;word-break:keep-all;
+  }
+  .check input{
+    appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--carrot);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;
+  }
+  .check input:checked{background:var(--carrot)}
+  .check input:checked::after{
+    content:"✓";color:#fff;position:absolute;inset:0;display:flex;
+    align-items:center;justify-content:center;font-size:14px;font-weight:700;
+  }
+  .check input:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .check.done span{text-decoration:line-through;color:#9B8A72}
+  .challenge-msg{font-size:14px;font-weight:700;color:var(--carrot);text-align:center;min-height:1.5em;margin-top:6px}
+
+  /* ---- 맺음 ---- */
+  .closing{
+    margin-top:44px;padding:28px 24px;border-top:3px double var(--pine);
+    text-align:center;word-break:keep-all;
+  }
+  .closing p{text-align:center}
+  .closing .sign{font-family:var(--sans);font-size:13.5px;color:#5C6B60;margin-top:14px;margin-bottom:0}
+  footer{
+    font-family:var(--sans);font-size:12px;color:#8A968D;text-align:center;
+    margin-top:36px;line-height:1.7;word-break:keep-all;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">영양교사 칼럼 · 우리 아이 식생활 이야기 · 세 번째</span>
+    <h1>우리 아이,<br><em>못 먹는</em> 걸까요? <em>안 먹는</em> 걸까요?</h1>
+    <p class="subtitle">억지로 먹이는 식사 전쟁은 이제 그만. 아이가 음식을 거부하는 이유를 구분하는 것에서 편식 해결이 시작됩니다.</p>
+    <div class="byline">
+      <span class="avatar">🍚</span>
+      <span>영양상담 선도학교 전주서일초등학교 영양교사 · 2026년 5월 · 읽는 시간 약 4분</span>
+    </div>
+  </header>
+
+  <nav aria-label="칼럼 목차">
+    <a href="#s1">유형 진단하기</a>
+    <a href="#s2">못 먹는 아이</a>
+    <a href="#s3">안 먹는 아이</a>
+    <a href="#s4">말의 힘</a>
+    <a href="#s5">이번 주 챌린지</a>
+  </nav>
+
+  <section id="s0">
+    <p class="lead">"우리 애는 채소를 안 먹어요." 학부모님들과 상담을 하다 보면 가장 자주 듣는 말입니다. 그런데 조금 더 이야기를 나누다 보면 아이들의 사정이 저마다 다르다는 것을 알게 됩니다. 어떤 아이는 냄새만 맡아도 얼굴을 찌푸리며 정말로 힘들어하고, 어떤 아이는 집에서는 곧잘 먹으면서 학교에서는 숟가락을 대지 않습니다. 겉으로는 똑같은 '편식'이지만, 속을 들여다보면 전혀 다른 두 가지 모습입니다.</p>
+    <p>못 먹는 아이에게 필요한 것은 기다림이고, 안 먹는 아이에게 필요한 것은 환경의 변화입니다. 이 둘을 구분하는 순간, 편식 지도는 훨씬 쉬워집니다.</p>
+    <div class="pull">"못 먹는 것"은 기다려 주고,<br>"안 먹는 것"은 환경을 바꿔 주세요.</div>
+  </section>
+
+  <section id="s1">
+    <h2>먼저, 우리 아이의 유형을 살펴볼까요?</h2>
+    <p>아래 항목 중 우리 아이에게 해당하는 것을 직접 눌러 보시기 바랍니다. 정답을 맞히는 시험이 아니라, 아이를 한 번 더 자세히 들여다보는 시간입니다.</p>
+
+    <div class="quiz-card">
+      <h3>🔍 우리 아이 편식 유형 진단</h3>
+      <p class="hint">평소 아이의 모습에 해당하는 항목을 모두 체크한 뒤, '결과 보기' 버튼을 눌러 주세요.</p>
+      <div class="quiz-cols">
+        <div class="quiz-col a">
+          <h4>① 이런 모습이 있나요?</h4>
+          <label class="q-item"><input type="checkbox" data-type="a"><span>특정 맛이나 향에 매우 민감함</span></label>
+          <label class="q-item"><input type="checkbox" data-type="a"><span>식감(질감)을 불편해함</span></label>
+          <label class="q-item"><input type="checkbox" data-type="a"><span>새로운 음식에 대한 두려움이 큼</span></label>
+          <label class="q-item"><input type="checkbox" data-type="a"><span>구역질이나 강한 거부 반응을 보임</span></label>
+        </div>
+        <div class="quiz-col b">
+          <h4>② 이런 모습이 있나요?</h4>
+          <label class="q-item"><input type="checkbox" data-type="b"><span>집에서는 먹는데 학교에서는 안 먹음</span></label>
+          <label class="q-item"><input type="checkbox" data-type="b"><span>좋아하는 반찬만 골라 먹음</span></label>
+          <label class="q-item"><input type="checkbox" data-type="b"><span>"그냥 싫어!"라고 말함</span></label>
+          <label class="q-item"><input type="checkbox" data-type="b"><span>먹어 본 적 있고 맛도 알지만 안 먹음</span></label>
+        </div>
+      </div>
+      <button class="quiz-btn" id="quizBtn" type="button">결과 보기</button>
+      <p class="quiz-result" id="quizResult" aria-live="polite">체크를 마치고 결과 보기를 누르시면 우리 아이의 유형이 여기에 나타납니다.</p>
+    </div>
+
+    <p>한 가지 꼭 기억해 주실 것이 있습니다. 채소를 좋아하고 과자를 싫어하는 아이보다, 과자를 좋아하고 채소를 싫어하는 아이가 훨씬 많습니다. 아이들이 좋아하는 것만 먹으려 하는 것은 <strong>이상한 것이 아니라 자연스러운 성장 과정</strong>입니다. 그래서 부모의 역할은 "좋아하게 만드는 것"이 아니라 <strong>"먹을 기회를 계속 만들어 주는 것"</strong>입니다.</p>
+  </section>
+
+  <section id="s2">
+    <h2>'못 먹는' 아이에게는 — 기다림과 친숙해질 시간</h2>
+    <p>감각이 예민해서 정말로 못 먹는 아이는, 억지로 먹이면 오히려 음식에 대한 거부감만 커집니다. 이 아이들에게 필요한 것은 천천히 친숙해지는 과정입니다. 연구에 따르면 새로운 음식은 <strong>10~15번 이상 접해야</strong> 익숙해질 수 있습니다. 처음에는 보기만 하고, 다음에는 냄새를 맡고, 그다음에야 한 입 먹어 보게 됩니다.</p>
+
+    <div class="path green">
+      <h3>🌱 못 먹는 아이를 위한 두 가지 원칙</h3>
+      <p class="sub">먹이는 것이 아니라, 만나게 해 주는 것이 목표입니다.</p>
+      <div class="tips">
+        <details>
+          <summary><span class="num">1</span>강요보다 노출이 중요합니다<span class="chev">▼</span></summary>
+          <div class="body">채소를 먹지 않더라도 식탁에는 계속 올려 주세요. 보고, 냄새 맡고, 만져 보는 것 모두가 소중한 한 번의 만남입니다. 오늘 먹지 않았다면 실패가 아니라, 열다섯 번 가운데 한 번이 쌓인 것입니다.</div>
+        </details>
+        <details>
+          <summary><span class="num">2</span>시간을 두고 기다려 주세요<span class="chev">▼</span></summary>
+          <div class="body">구역질이나 강한 거부 반응은 아이가 일부러 그러는 것이 아닙니다. 예민한 감각은 자라면서 서서히 무뎌집니다. "오늘은 구경만 해도 괜찮아, 다음에 또 만나자"라는 편안한 한마디가 식탁 위 최고의 반찬입니다.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="s3">
+    <h2>'안 먹는' 아이에게는 — 환경과 습관의 변화</h2>
+    <p>먹을 줄 아는데 안 먹는 아이는 감각의 문제가 아니라 <strong>식습관과 환경의 영향</strong>을 받고 있는 것입니다. 좋은 소식을 하나 드리자면, 못 먹는 걸 먹게 하는 것은 어려워도 <strong>안 먹는 걸 먹게 하는 것은 생각보다 쉽습니다.</strong> 환경을 바꾸면 아이가 달라집니다.</p>
+
+    <div class="path orange">
+      <h3>🥕 안 먹는 아이를 위한 네 가지 방법</h3>
+      <p class="sub">하나씩 눌러서 오늘 저녁부터 시도할 수 있는 것을 골라 보세요.</p>
+      <div class="tips">
+        <details>
+          <summary><span class="num">1</span>한 입의 경험을 칭찬해 주세요<span class="chev">▼</span></summary>
+          <div class="body">아이들은 성공 경험이 쌓일수록 도전하려는 마음이 커집니다. 결과보다 시도 자체를 인정해 주는 것이 핵심입니다.
+            <div class="ex">✗ "왜 이것도 못 먹니?"<br>○ "오늘 한 입 먹어봤네! 대단하다."</div>
+          </div>
+        </details>
+        <details>
+          <summary><span class="num">2</span>선택권을 주고, 공복감을 만들어 주세요<span class="chev">▼</span></summary>
+          <div class="body">"먹어!"라는 지시 대신 "2개 먹을래, 3개 먹을래?"라고 물어보세요. 아이가 스스로 고르면 먹을 확률이 높아집니다. 그리고 식사 외 간식은 단호하게 제한해 주세요. 적당한 배고픔이 가장 좋은 반찬입니다.</div>
+        </details>
+        <details>
+          <summary><span class="num">3</span>좋아하는 음식과 함께 제공하세요<span class="chev">▼</span></summary>
+          <div class="body">익숙하고 좋아하는 음식 속에서 새로운 음식에 도전하는 것이 훨씬 쉽습니다.
+            <div class="ex">브로콜리 + 좋아하는 소스 · 당근 + 볶음밥 · 양파 + 카레</div>
+          </div>
+        </details>
+        <details>
+          <summary><span class="num">4</span>부모의 모습이 최고의 교육입니다<span class="chev">▼</span></summary>
+          <div class="body">부모가 채소를 맛있게 먹는 모습을 보여 주면 아이도 자연스럽게 따라 하게 됩니다.
+            <div class="ex">✗ "먹어!"<br>○ "엄마는 이 오이가 아삭해서 맛있더라."</div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="s4">
+    <h2>말 한마디가 아이의 식탁을 바꿉니다</h2>
+    <p>편식 지도의 절반은 '말'입니다. 지시하고 다그치는 말은 식탁을 전쟁터로 만들지만, 아이의 시도를 알아봐 주는 말은 다음 도전으로 이어집니다. 아래 카드를 눌러서 말이 어떻게 바뀌는지 확인해 보세요.</p>
+
+    <div class="talk-card">
+      <h3>💬 눌러 보세요 — 식탁 위의 말 바꾸기</h3>
+      <p class="hint">평소에 무심코 하는 말을 누르면 카드가 뒤집히면서, 아이의 마음을 여는 말과 그 이유가 나타납니다.</p>
+      <button class="talk" type="button" aria-pressed="false">
+        <span class="talk-inner">
+          <span class="face front">
+            <span class="mark">✗</span>
+            <span class="txt"><b>"왜 이것도 못 먹니?"</b></span>
+            <span class="flip-hint">눌러서 뒤집기</span>
+          </span>
+          <span class="face back">
+            <span class="mark">○</span>
+            <span class="txt"><b>"오늘 한 입 먹어봤네! 대단하다."</b><span class="tag">시도 자체를 인정받은 아이는 다음에 또 도전합니다. 다그치는 말은 '나는 못 먹는 아이'라는 생각만 굳어지게 합니다.</span></span>
+          </span>
+        </span>
+      </button>
+      <button class="talk" type="button" aria-pressed="false">
+        <span class="talk-inner">
+          <span class="face front">
+            <span class="mark">✗</span>
+            <span class="txt"><b>"한 그릇 다 먹어야 일어나!"</b></span>
+            <span class="flip-hint">눌러서 뒤집기</span>
+          </span>
+          <span class="face back">
+            <span class="mark">○</span>
+            <span class="txt"><b>"2개 먹을래, 3개 먹을래?"</b><span class="tag">스스로 선택한 아이는 자기 결정을 지키고 싶어 합니다. 식사가 벌칙이 되면 음식 자체가 싫어집니다.</span></span>
+          </span>
+        </span>
+      </button>
+      <button class="talk" type="button" aria-pressed="false">
+        <span class="talk-inner">
+          <span class="face front">
+            <span class="mark">✗</span>
+            <span class="txt"><b>"이거 몸에 좋은 거야, 먹어!"</b></span>
+            <span class="flip-hint">눌러서 뒤집기</span>
+          </span>
+          <span class="face back">
+            <span class="mark">○</span>
+            <span class="txt"><b>"엄마는 이 오이가 아삭해서 맛있더라."</b><span class="tag">'몸에 좋다'는 설득보다, 맛있게 먹는 부모의 모습이 훨씬 힘이 셉니다.</span></span>
+          </span>
+        </span>
+      </button>
+    </div>
+  </section>
+
+  <section id="s5">
+    <div class="challenge">
+      <h3>🥦 이번 주 우리집 식탁 챌린지</h3>
+      <p class="hint">이번 주에 하나만 골라 실천해 보세요. 하나면 충분합니다.</p>
+      <label class="check"><input type="checkbox"><span>"먹어!" 대신 "2개 먹을래, 3개 먹을래?"라고 물어보기</span></label>
+      <label class="check"><input type="checkbox"><span>아이가 안 먹어도 채소를 식탁에 그대로 올려 두기</span></label>
+      <label class="check"><input type="checkbox"><span>새로운 채소를 좋아하는 음식과 짝지어 내기</span></label>
+      <label class="check"><input type="checkbox"><span>한 입이라도 도전했다면 결과와 상관없이 칭찬하기</span></label>
+      <p class="challenge-msg" id="challengeMsg"></p>
+    </div>
+  </section>
+
+  <div class="closing">
+    <h2 style="border:none;padding:0;margin-bottom:14px">완벽하게 먹는 아이보다, 도전하는 아이</h2>
+    <p>우리 아이의 목표는 "좋아하는 음식만 먹는 아이"가 아니라<br>
+    "다양한 음식을 경험하고 조금씩 도전하는 아이"가 되는 것입니다.<br>
+    못 먹는 음식은 시간을 두고 기다려 주시고,<br>
+    먹을 줄 아는데 안 먹는 음식은 오늘의 작은 실천으로 바꿔 주시기 바랍니다.</p>
+    <p class="sign">애쓰시는 학부모님들을 언제나 응원합니다.</p>
+  </div>
+
+  <footer>본 자료는 학부모 영양교육을 위해 제작되었습니다.<br>2026 영양상담 선도학교 전주서일초등학교 영양교육</footer>
+</div>
+
+<script>
+(function(){
+  // ----- 유형 진단 -----
+  var qInputs = document.querySelectorAll('.q-item input');
+  var result = document.getElementById('quizResult');
+  var quizBtn = document.getElementById('quizBtn');
+
+  function diagnose(){
+    var a = 0, b = 0, i;
+    for(i = 0; i < qInputs.length; i++){
+      if(qInputs[i].checked){
+        if(qInputs[i].getAttribute('data-type') === 'a'){ a++; } else { b++; }
+      }
+    }
+    result.className = 'quiz-result';
+    if(a === 0 && b === 0){
+      result.innerHTML = '해당하는 항목을 먼저 체크한 뒤 결과 보기를 눌러 주세요.';
+      return;
+    }
+    if(a > 0 && b === 0){
+      result.className = 'quiz-result type-a';
+      result.innerHTML = '<b>🌱 감각이 예민한 \'못 먹는\' 유형입니다</b>억지로 먹이기보다 천천히 친숙해지는 시간이 필요합니다. 아래 \'못 먹는 아이\' 편을 참고해 주세요.';
+    } else if(b > 0 && a === 0){
+      result.className = 'quiz-result type-b';
+      result.innerHTML = '<b>🥕 습관과 환경의 영향을 받는 \'안 먹는\' 유형입니다</b>좋은 소식입니다! 환경을 바꾸면 달라질 수 있습니다. 아래 \'안 먹는 아이\' 편의 네 가지 방법을 시도해 보세요.';
+    } else {
+      result.className = 'quiz-result type-mix';
+      result.innerHTML = '<b>🌱🥕 두 가지 모습이 함께 있는 \'혼합형\'입니다</b>음식에 따라 다르게 접근해 주세요. 정말 힘들어하는 음식은 기다려 주시고, 먹을 줄 아는 음식은 환경을 바꿔 주시면 됩니다.';
+    }
+  }
+  if(quizBtn){ quizBtn.addEventListener('click', diagnose); }
+
+  // ----- 말 바꾸기 카드 (뒤집기) -----
+  var talks = document.querySelectorAll('.talk');
+  var t;
+  function bindTalk(btn){
+    btn.addEventListener('click', function(){
+      if(btn.className.indexOf('flipped') >= 0){
+        btn.className = btn.className.replace(' flipped', '');
+        btn.setAttribute('aria-pressed', 'false');
+      } else {
+        btn.className = btn.className + ' flipped';
+        btn.setAttribute('aria-pressed', 'true');
+      }
+    });
+  }
+  for(t = 0; t < talks.length; t++){ bindTalk(talks[t]); }
+
+  // ----- 챌린지 체크 -----
+  var checks = document.querySelectorAll('.check input');
+  var chMsg = document.getElementById('challengeMsg');
+  var cheers = [
+    "",
+    "좋아요! 이번 주 목표는 이 하나면 충분합니다. 💪",
+    "두 가지나! 우리 가족 식탁이 달라지고 있어요.",
+    "세 가지 도전, 대단합니다. 아이가 분명 느끼고 있을 거예요.",
+    "🎉 전부 도전! 완벽하게 먹는 아이보다, 도전하는 아이가 건강하게 자랍니다."
+  ];
+  function bindCheck(c){
+    c.addEventListener('change', function(){
+      var row = c.parentNode;
+      if(c.checked){
+        if(row.className.indexOf('done') < 0){ row.className = row.className + ' done'; }
+      } else {
+        row.className = row.className.replace(' done', '');
+      }
+      var n = 0, j;
+      for(j = 0; j < checks.length; j++){ if(checks[j].checked){ n++; } }
+      chMsg.textContent = cheers[n];
+    });
+  }
+  var k;
+  for(k = 0; k < checks.length; k++){ bindCheck(checks[k]); }
+})();
+</script>
+</body>
+</html>

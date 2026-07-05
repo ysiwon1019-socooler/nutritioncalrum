@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>같은 식탁인데, 왜 이렇게 다를까요? — 기질과 성격을 아는 영양상담</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F8F1;
+    --ink:#26332A;
+    --pine:#1E5631;
+    --pine-soft:#DCEBDC;
+    --carrot:#D9750F;
+    --carrot-soft:#FBEEDC;
+    --sky:#2B5D8A;          /* 3화 보조색: 마음을 들여다보는 파랑 */
+    --sky-soft:#E2ECF5;
+    --line:#C9D8C6;
+    --serif:'Gowun Batang', serif;
+    --sans:'IBM Plex Sans KR', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    line-height:1.85;
+    font-size:17px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px 80px}
+
+  /* ---- 헤더 ---- */
+  header{padding:44px 0 28px;border-bottom:3px double var(--pine)}
+  .eyebrow{
+    font-family:var(--sans);font-size:12.5px;font-weight:700;letter-spacing:.14em;
+    color:var(--pine);text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--carrot);display:inline-block}
+  h1{
+    font-size:clamp(26px,6vw,36px);font-weight:700;line-height:1.4;
+    color:var(--pine);word-break:keep-all;
+  }
+  .subtitle{margin-top:14px;font-size:15.5px;color:#4E5D52;word-break:keep-all}
+  .byline{
+    margin-top:20px;font-family:var(--sans);font-size:13.5px;color:#5C6B60;
+    display:flex;align-items:center;gap:10px;
+  }
+  .byline .avatar{
+    width:34px;height:34px;border-radius:50%;background:var(--pine);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+  }
+
+  /* ---- 목차(진행 칩) ---- */
+  nav{
+    position:sticky;top:0;z-index:10;background:var(--paper);
+    padding:12px 0;border-bottom:1px solid var(--line);
+    display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none}
+  nav a{
+    font-family:var(--sans);font-size:12.5px;font-weight:500;white-space:nowrap;
+    color:var(--pine);text-decoration:none;background:var(--pine-soft);
+    padding:7px 13px;border-radius:999px;
+  }
+  nav a:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+
+  /* ---- 본문 공통 ---- */
+  section{padding-top:40px}
+  h2{
+    font-size:21px;color:var(--pine);line-height:1.5;word-break:keep-all;
+    padding-left:14px;border-left:4px solid var(--carrot);margin-bottom:18px;
+  }
+  p{margin-bottom:18px;word-break:keep-all;text-align:justify}
+  strong{color:var(--carrot);font-weight:700}
+  .lead::first-letter{
+    font-size:2.6em;float:left;line-height:1;padding:6px 10px 0 0;color:var(--pine);font-weight:700;
+  }
+  .pull{
+    margin:28px 0;padding:22px 24px;background:var(--pine-soft);
+    border-radius:4px 22px 4px 22px;font-size:18.5px;line-height:1.7;
+    color:var(--pine);font-weight:700;text-align:center;word-break:keep-all;
+  }
+
+  /* ---- 효과 아코디언 ---- */
+  .tips{display:flex;flex-direction:column;gap:12px;margin:22px 0;font-family:var(--sans)}
+  details{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  summary{
+    list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:12px;
+    font-weight:700;font-size:15px;color:var(--ink);word-break:keep-all;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:2px solid var(--carrot);outline-offset:-2px}
+  summary .num{
+    flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--carrot-soft);
+    color:var(--carrot);font-size:14px;display:flex;align-items:center;justify-content:center;
+  }
+  summary .chev{margin-left:auto;color:var(--pine);transition:transform .2s;font-size:13px}
+  details[open] .chev{transform:rotate(180deg)}
+  details .body{padding:0 18px 16px 60px;font-size:14.5px;line-height:1.75;color:#3D4A41;word-break:keep-all}
+
+  /* ---- 세 가지 돋보기 카드 ---- */
+  .lens{display:flex;flex-direction:column;gap:14px;margin:22px 0;font-family:var(--sans)}
+  .lens-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 20px 16px;border-top:5px solid var(--pine)}
+  .lens-card.mbti{border-top-color:var(--sky)}
+  .lens-card.ennea{border-top-color:var(--carrot)}
+  .lens-card h3{font-size:16px;margin-bottom:2px;color:var(--pine)}
+  .lens-card.mbti h3{color:var(--sky)}
+  .lens-card.ennea h3{color:var(--carrot)}
+  .lens-card .en{font-size:12px;color:#8A968D;margin-bottom:10px}
+  .lens-card ul{list-style:none}
+  .lens-card li{
+    font-size:14px;line-height:1.7;color:#3D4A41;word-break:keep-all;
+    padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .lens-card li::before{content:"·";position:absolute;left:4px;color:var(--carrot);font-weight:700}
+  .lens-card .use{
+    margin-top:12px;font-size:13px;color:#5C6B60;background:var(--paper);
+    border-radius:8px;padding:10px 12px;line-height:1.6;word-break:keep-all;
+  }
+  .lens-note{
+    font-family:var(--sans);font-size:13.5px;text-align:center;color:var(--pine);
+    background:var(--pine-soft);border-radius:999px;padding:10px 18px;margin:6px 0 0;word-break:keep-all;
+  }
+
+  /* ---- 관찰 퀴즈 (시그니처) ---- */
+  .quiz{
+    margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:24px 20px;font-family:var(--sans);
+  }
+  .quiz h3{font-size:16px;color:var(--pine);margin-bottom:6px;word-break:keep-all}
+  .quiz .hint{font-size:13.5px;color:#5C6B60;margin-bottom:16px;line-height:1.6;word-break:keep-all;text-align:left}
+  .q-group{margin-bottom:14px}
+  .q-group .g-title{
+    font-size:13px;font-weight:700;letter-spacing:.06em;margin-bottom:8px;
+    display:inline-block;padding:4px 12px;border-radius:999px;
+  }
+  .q-group.ga .g-title{background:var(--carrot-soft);color:var(--carrot)}
+  .q-group.gb .g-title{background:var(--sky-soft);color:var(--sky)}
+  .check{
+    display:flex;align-items:flex-start;gap:12px;background:var(--paper);border-radius:10px;
+    padding:13px 14px;margin-bottom:10px;cursor:pointer;font-size:14.5px;line-height:1.6;word-break:keep-all;
+  }
+  .check input{
+    appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--pine);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;background:#fff;
+  }
+  .check input:checked{background:var(--pine);border-color:var(--pine)}
+  .check input:checked::after{
+    content:"✓";color:#fff;position:absolute;inset:0;display:flex;
+    align-items:center;justify-content:center;font-size:14px;font-weight:700;
+  }
+  .check input:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .quiz-btn{
+    display:block;width:100%;margin-top:6px;padding:14px;border:none;border-radius:12px;
+    background:var(--pine);color:#fff;font-family:var(--sans);font-size:15px;font-weight:700;
+    cursor:pointer;transition:transform .12s, opacity .2s;
+  }
+  .quiz-btn:active{transform:scale(.98)}
+  .quiz-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .quiz-result{
+    display:none;margin-top:16px;border-radius:12px;padding:18px;
+    font-size:14.5px;line-height:1.75;word-break:keep-all;
+  }
+  .quiz-result.show{display:block;animation:fadeUp .35s ease}
+  .quiz-result h4{font-size:15px;margin-bottom:8px}
+  .quiz-result .mi{
+    margin-top:12px;background:#fff;border-radius:10px;padding:12px 14px;font-size:13.5px;color:#3D4A41;
+  }
+  .quiz-result .mi b{display:block;margin-bottom:4px;font-size:12.5px;letter-spacing:.05em}
+  .quiz-result.ra{background:var(--carrot-soft);color:#6E4A1E}
+  .quiz-result.ra h4,.quiz-result.ra .mi b{color:var(--carrot)}
+  .quiz-result.rb{background:var(--sky-soft);color:#2E4A63}
+  .quiz-result.rb h4,.quiz-result.rb .mi b{color:var(--sky)}
+  .quiz-result.rm{background:var(--pine-soft);color:#2E4636}
+  .quiz-result.rm h4,.quiz-result.rm .mi b{color:var(--pine)}
+  .quiz-foot{font-size:12.5px;color:#8A968D;margin-top:12px;line-height:1.6;word-break:keep-all}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ---- 상담 프로세스 ---- */
+  .steps{margin:22px 0;font-family:var(--sans);position:relative}
+  .step{
+    display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);
+    border-radius:12px;padding:15px 16px;margin-bottom:10px;
+  }
+  .step .s-num{
+    flex-shrink:0;width:34px;height:34px;border-radius:50%;background:var(--pine);color:#fff;
+    font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  }
+  .step .s-body{font-size:14px;line-height:1.65;color:#3D4A41;word-break:keep-all}
+  .step .s-body b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+
+  /* ---- 안심 카드 ---- */
+  .safe{
+    display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:22px 0;font-family:var(--sans);
+  }
+  @media (max-width:480px){.safe{grid-template-columns:1fr}}
+  .safe-card{
+    background:var(--pine-soft);border-radius:12px;padding:16px 14px;
+    font-size:13.5px;line-height:1.65;color:#2E4636;word-break:keep-all;
+  }
+  .safe-card b{display:block;color:var(--pine);font-size:14px;margin-bottom:4px}
+  .safe-card .ic{font-size:20px;display:block;margin-bottom:6px}
+
+  /* ---- 상담 주제 ---- */
+  .topics{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px;font-family:var(--sans)}
+  .topic{
+    font-size:13px;color:var(--pine);background:#fff;border:1px solid var(--line);
+    border-radius:999px;padding:8px 14px;word-break:keep-all;
+  }
+
+  /* ---- 챌린지 ---- */
+  .challenge{
+    margin:26px 0;background:var(--carrot-soft);border-radius:16px;padding:24px 20px;font-family:var(--sans);
+  }
+  .challenge h3{font-size:16px;color:var(--carrot);margin-bottom:4px}
+  .challenge .hint{font-size:13.5px;color:#7A5A33;margin-bottom:16px;word-break:keep-all}
+  .challenge .check{background:#fff}
+  .challenge .check input{border-color:var(--carrot);background:#fff}
+  .challenge .check input:checked{background:var(--carrot);border-color:var(--carrot)}
+  .challenge .check.done span{text-decoration:line-through;color:#9B8A72}
+  .challenge-msg{font-size:14px;font-weight:700;color:var(--carrot);text-align:center;min-height:1.5em;margin-top:6px}
+
+  /* ---- 맺음 ---- */
+  .closing{
+    margin-top:44px;padding:28px 24px;border-top:3px double var(--pine);
+    text-align:center;word-break:keep-all;
+  }
+  .closing p{text-align:center}
+  .closing .sign{font-family:var(--sans);font-size:13.5px;color:#5C6B60;margin-top:14px;margin-bottom:0}
+  footer{
+    font-family:var(--sans);font-size:12px;color:#8A968D;text-align:center;
+    margin-top:36px;line-height:1.7;word-break:keep-all;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">영양교사 칼럼 · 우리 아이 식생활 이야기 · 네 번째</span>
+    <h1>같은 식탁인데,<br>왜 이렇게 다를까요?</h1>
+    <p class="subtitle">기질과 성격유형을 기반으로 한 학교 영양상담 — 학생의 '나'를 이해해야, 건강한 식습관이 완성됩니다.</p>
+    <div class="byline">
+      <span class="avatar">🍚</span>
+      <span>영양상담 선도학교 전주서일초등학교 영양교사 · 2026년 6월 · 읽는 시간 약 5분</span>
+    </div>
+  </header>
+
+  <nav aria-label="칼럼 목차">
+    <a href="#s1">아이마다 다른 식탁</a>
+    <a href="#s2">상담이 하는 일</a>
+    <a href="#s3">세 가지 돋보기</a>
+    <a href="#s4">우리 아이 관찰하기</a>
+    <a href="#s5">상담은 이렇게</a>
+    <a href="#s6">이번 주 챌린지</a>
+  </nav>
+
+  <section id="s0">
+    <p class="lead">같은 반찬을 두고도 첫째는 젓가락부터 뻗고, 둘째는 냄새부터 맡습니다. 같은 식단, 같은 환경에서 자라도 아이마다 식탁 위 모습은 참 다릅니다. "왜 우리 애만 이럴까" 하고 속상하셨던 적이 있으시다면, 오늘 이야기가 작은 위로가 되었으면 합니다. 아이의 그 모습은 버릇이 없어서도, 부모님이 무언가를 잘못해서도 아닙니다. 아이가 타고난 <strong>기질</strong>과 자라며 만들어 온 <strong>성격</strong>이 식탁 위에서 자기만의 방식으로 말을 걸고 있는 것입니다.</p>
+    <div class="pull">편식은 고집이 아니라,<br>아이의 기질이 건네는 '언어'일 수 있습니다.</div>
+    <p>우리 학교는 영양상담 선도학교로서, 아이의 기질과 성격유형을 먼저 이해한 뒤 그 아이에게 꼭 맞는 식생활 코칭을 하는 <strong>맞춤형 영양상담</strong>을 운영하고 있습니다. 오늘은 이 상담이 무엇을 하는지, 그리고 가정에서 부모님이 함께해 주실 수 있는 것은 무엇인지 나누고자 합니다.</p>
+  </section>
+
+  <section id="s1">
+    <h2>아이의 '나'를 이해하면 무엇이 달라질까요</h2>
+    <p>같은 처방도 아이에 따라 약이 되기도, 스트레스가 되기도 합니다. 새로움을 좋아하는 아이에게는 "오늘은 어떤 맛일까?"라는 호기심이 문을 열고, 조심스러운 아이에게는 "구경만 해도 괜찮아"라는 안심이 문을 엽니다. 기질과 성격을 고려한 맞춤 접근은 국내 여러 연구에서 체중 감소, 식이조절 능력 향상, 스트레스 감소, 자기효능감과 긍정적 생활습관 변화에 효과가 있는 것으로 보고되었습니다.</p>
+  </section>
+
+  <section id="s2">
+    <h2>학교 영양상담이 하는 다섯 가지 일</h2>
+    <div class="tips">
+      <details>
+        <summary><span class="num">1</span>학생 맞춤형 접근<span class="chev">▼</span></summary>
+        <div class="body">학생의 특성을 바탕으로 그 아이에게 꼭 맞는 식습관 개선 전략을 제시합니다. '모두에게 같은 처방'이 아니라 '우리 아이를 위한 처방'입니다.</div>
+      </details>
+      <details>
+        <summary><span class="num">2</span>실천력 향상<span class="chev">▼</span></summary>
+        <div class="body">시켜서 하는 변화는 오래가지 않습니다. 학생 스스로 이해하고 선택할 수 있도록 도와, 일상에서의 실천력을 높입니다.</div>
+      </details>
+      <details>
+        <summary><span class="num">3</span>지속 가능성 증가<span class="chev">▼</span></summary>
+        <div class="body">학생이 납득하고 공감하는 변화이기에, 건강한 습관이 반짝 이벤트로 끝나지 않고 꾸준히 유지됩니다.</div>
+      </details>
+      <details>
+        <summary><span class="num">4</span>심리적 안정과 자신감<span class="chev">▼</span></summary>
+        <div class="body">이해와 공감을 기반으로 한 상담은 자존감과 스트레스 관리 능력을 함께 키워, 아이의 건강한 성장을 돕습니다.</div>
+      </details>
+      <details>
+        <summary><span class="num">5</span>학부모와의 신뢰 구축<span class="chev">▼</span></summary>
+        <div class="body">과학적 근거에 기반한 상담으로 학부모님과의 소통과 신뢰를 높이고, 가정과 학교가 함께 변화를 만들어 갑니다.</div>
+      </details>
+    </div>
+  </section>
+
+  <section id="s3">
+    <h2>아이를 들여다보는 세 가지 돋보기</h2>
+    <p>영양상담에서는 다양한 심리검사 도구를 활용하여 학생을 입체적으로 파악하고, 과학적 근거에 기반한 맞춤형 상담을 제공합니다. 각 도구는 아이의 서로 다른 면을 비춰 줍니다.</p>
+    <div class="lens">
+      <div class="lens-card">
+        <h3>🌱 TCI — 기질과 성격의 강점 파악</h3>
+        <p class="en">Temperament and Character Inventory</p>
+        <ul>
+          <li><b>기질(선천적 성향)</b> — 자극추구, 위험회피, 사회적 민감성, 인내력, 인정추구, 보상민감성</li>
+          <li><b>성격(후천적 특성)</b> — 자율성, 연대감, 자기초월</li>
+        </ul>
+        <p class="use">타고난 성향과 자라며 형성된 성격을 종합적으로 이해하여, 아이에게 맞는 변화의 '속도와 방식'을 찾습니다.</p>
+      </div>
+      <div class="lens-card mbti">
+        <h3>💬 MBTI — 선호 경향에 따른 행동 패턴</h3>
+        <p class="en">Myers-Briggs Type Indicator</p>
+        <ul>
+          <li>에너지 방향 · 정보 인식 방식</li>
+          <li>의사결정 방식 · 생활 양식</li>
+        </ul>
+        <p class="use">4가지 선호 지표를 바탕으로 학생의 강점, 선호하는 환경, 스트레스 요인을 파악합니다.</p>
+      </div>
+      <div class="lens-card ennea">
+        <h3>🧭 에니어그램 — 내면 동기와 행동 패턴 통찰</h3>
+        <p class="en">Enneagram</p>
+        <ul>
+          <li>9가지 성격유형 · 기본 욕구와 두려움</li>
+          <li>스트레스/성장 방향 · 타인과의 관계 방식</li>
+        </ul>
+        <p class="use">'왜 그렇게 행동하는가'라는 동기 기반 접근으로, 변화의 지속성을 강화합니다.</p>
+      </div>
+    </div>
+    <p class="lens-note">세 가지 도구의 통합적 분석으로 아이를 더 깊이 이해하고, 실천 가능한 맞춤 영양전략을 설계합니다.</p>
+  </section>
+
+  <section id="s4">
+    <h2>우리 아이 식탁 기질, 먼저 관찰해 볼까요</h2>
+    <p>정확한 검사는 학교 상담에서 진행되지만, 부모님의 관찰만큼 좋은 출발점은 없습니다. 최근 한 달간 아이의 식탁 모습을 떠올리며, 해당하는 항목에 표시해 보세요.</p>
+
+    <div class="quiz">
+      <h3>🔍 식탁 위 우리 아이 관찰 체크</h3>
+      <p class="hint">해당하는 항목을 모두 고른 뒤, 아래 <b>결과 보기</b> 버튼을 눌러 주세요. 좋고 나쁨을 가리는 검사가 아니라, 아이의 성향을 이해하기 위한 관찰입니다.</p>
+
+      <div class="q-group ga">
+        <span class="g-title">🧡 A 묶음</span>
+        <label class="check"><input type="checkbox" data-g="a"><span>새로운 음식이 나오면 일단 궁금해하고 먼저 손을 뻗는다</span></label>
+        <label class="check"><input type="checkbox" data-g="a"><span>식사 속도가 빠르고, 좋아하는 음식은 순식간에 먹는다</span></label>
+        <label class="check"><input type="checkbox" data-g="a"><span>맵거나 짜거나 단, 자극적인 맛에 쉽게 끌린다</span></label>
+        <label class="check"><input type="checkbox" data-g="a"><span>식탁 분위기나 기분에 따라 먹는 양이 크게 달라진다</span></label>
+      </div>
+
+      <div class="q-group gb">
+        <span class="g-title">💙 B 묶음</span>
+        <label class="check"><input type="checkbox" data-g="b"><span>낯선 음식은 냄새를 맡거나 한참 살펴본 뒤에야 입에 댄다</span></label>
+        <label class="check"><input type="checkbox" data-g="b"><span>식감(물컹함, 미끌거림 등)이나 냄새에 유난히 민감하다</span></label>
+        <label class="check"><input type="checkbox" data-g="b"><span>늘 먹던 반찬, 익숙한 메뉴를 반복해서 찾는다</span></label>
+        <label class="check"><input type="checkbox" data-g="b"><span>천천히 먹는 편이고, 재촉하면 오히려 더 안 먹는다</span></label>
+      </div>
+
+      <button type="button" class="quiz-btn" id="quizBtn">결과 보기</button>
+
+      <div class="quiz-result ra" id="resultA">
+        <h4>🧡 새로움을 향해 달려가는 '탐험가' 성향이 보입니다</h4>
+        호기심과 에너지가 큰 강점입니다. 다만 자극적인 맛이나 빠른 식사로 흐르기 쉬우니, 호기심을 건강한 방향으로 돌려 주는 것이 열쇠입니다. 금지보다 '새로운 건강 미션'이 잘 통합니다.
+        <div class="mi"><b>이렇게 물어봐 주세요 (열린 질문)</b>"이 채소, 어떤 맛일 것 같아? 네 예상이 맞는지 한번 확인해 볼래?" — 아이의 호기심이 곧 동기가 됩니다.</div>
+      </div>
+
+      <div class="quiz-result rb" id="resultB">
+        <h4>💙 천천히, 신중하게 다가가는 '신중가' 성향이 보입니다</h4>
+        신중함과 섬세한 감각이 큰 강점입니다. 낯선 음식 앞에서 시간이 필요한 것은 자연스러운 모습이니, 강요 없이 보고·만지고·냄새 맡는 단계부터 천천히 허락해 주세요. 예고와 안심이 잘 통합니다.
+        <div class="mi"><b>이렇게 말해 주세요 (안심의 한마디)</b>"오늘은 구경만 해도 괜찮아. 네가 준비되면 그때 먹어 보자." — 안전하다고 느낄 때 아이의 마음이 열립니다.</div>
+      </div>
+
+      <div class="quiz-result rm" id="resultM">
+        <h4>💚 두 성향을 고루 지닌, 균형 잡힌 모습입니다</h4>
+        상황에 따라 호기심과 신중함을 오가는 유연한 아이일 수 있습니다. 그날그날 아이의 컨디션과 신호를 살피며, 궁금해할 때는 함께 도전을, 머뭇거릴 때는 기다림을 건네 주세요.
+        <div class="mi"><b>이렇게 물어봐 주세요 (마음 확인 질문)</b>"오늘은 새로운 것 먹어 보고 싶은 날이야, 익숙한 게 좋은 날이야?" — 아이 스스로 선택하게 하면 실천력이 자랍니다.</div>
+      </div>
+
+      <div class="quiz-result rm" id="resultNone">
+        <h4>🌿 아직 표시된 항목이 없습니다</h4>
+        괜찮습니다. 오늘 저녁 식탁에서 아이의 모습을 한 번만 가만히 관찰해 보시고, 다시 체크해 보세요. 관찰 그 자체가 이미 훌륭한 상담의 시작입니다.
+      </div>
+
+      <p class="quiz-foot">※ 이 체크는 이해를 돕기 위한 간단한 관찰 활동이며, 심리검사가 아닙니다. 정확한 기질·성격유형 파악은 학교 영양상담에서 TCI, MBTI, 에니어그램 검사를 통해 진행됩니다.</p>
+    </div>
+  </section>
+
+  <section id="s5">
+    <h2>상담은 이렇게 진행됩니다</h2>
+    <div class="steps">
+      <div class="step"><span class="s-num">1</span><div class="s-body"><b>사전 준비 및 검사</b>검사 안내와 학부모님 동의 후, 기질·성격유형 검사를 실시합니다. (TCI, MBTI, 에니어그램)</div></div>
+      <div class="step"><span class="s-num">2</span><div class="s-body"><b>결과 분석</b>검사 결과를 통합 분석하여 학생의 특성과 식습관, 행동 패턴을 파악합니다.</div></div>
+      <div class="step"><span class="s-num">3</span><div class="s-body"><b>맞춤 전략 수립</b>학생 특성에 맞는 식습관 목표와 맞춤 전략을 세웁니다.</div></div>
+      <div class="step"><span class="s-num">4</span><div class="s-body"><b>상담 및 실천 계획</b>학생·학부모와 상담하며 실천 가능한 계획을 함께 설정합니다. (학교·가정 연계)</div></div>
+      <div class="step"><span class="s-num">5</span><div class="s-body"><b>모니터링 및 피드백</b>실천 상황을 점검하고 피드백을 제공하며, 지속적으로 수정·보완합니다.</div></div>
+    </div>
+
+    <p>이 과정에서 상담자는 아이를 다그치거나 가르치기보다, 아이 스스로 "해 보고 싶다"는 마음을 꺼내도록 돕는 대화를 나눕니다. 아이가 납득하고 스스로 선택한 변화만이 오래가기 때문입니다.</p>
+
+    <h2 style="margin-top:34px">이런 고민이 있다면 함께 나눠요</h2>
+    <div class="topics">
+      <span class="topic">🍎 편식 및 불규칙한 식습관 개선</span>
+      <span class="topic">🍪 과자·군것질 습관 조절</span>
+      <span class="topic">⏱️ 식사 속도 및 식사 집중도 향상</span>
+      <span class="topic">🫀 스트레스성 식행동 관리</span>
+      <span class="topic">🛌 수면·활동·식사의 균형 관리</span>
+      <span class="topic">📈 체중관리 및 성장 발달 지원</span>
+    </div>
+
+    <h2 style="margin-top:34px">검사와 상담, 안심하고 맡겨 주세요</h2>
+    <div class="safe">
+      <div class="safe-card"><span class="ic">🔒</span><b>개인정보 보호</b>검사 결과는 철저히 비공개로 관리됩니다.</div>
+      <div class="safe-card"><span class="ic">🌱</span><b>학생 중심 상담</b>학생의 특성과 발달단계를 고려해 맞춤으로 진행합니다.</div>
+      <div class="safe-card"><span class="ic">🤝</span><b>학부모 동의 기반</b>검사 및 상담은 학부모 동의 후 진행됩니다.</div>
+      <div class="safe-card"><span class="ic">🎓</span><b>전문성 기반 운영</b>영양·교육·심리학 등 전문 지식을 바탕으로 신뢰할 수 있는 상담을 제공합니다.</div>
+    </div>
+  </section>
+
+  <section id="s6">
+    <div class="challenge">
+      <h3>🔎 이번 주 우리 아이 관찰 챌린지</h3>
+      <p class="hint">고치려 하기 전에, 먼저 알아봐 주세요. 이번 주에는 하나만 골라 실천해 보세요.</p>
+      <label class="check"><input type="checkbox"><span>새 음식 앞에서 아이의 '첫 반응'을 강요 없이 그저 지켜보기</span></label>
+      <label class="check"><input type="checkbox"><span>아이가 좋아하는 음식들의 공통점(맛·식감·온도) 찾아보기</span></label>
+      <label class="check"><input type="checkbox"><span>"왜 안 먹어?" 대신 "그 음식의 어떤 점이 별로야?"라고 물어보기</span></label>
+      <label class="check"><input type="checkbox"><span>아이가 가장 편안하게 먹는 조건(속도·자리·분위기) 하나 발견하기</span></label>
+      <p class="challenge-msg" id="challengeMsg"></p>
+    </div>
+  </section>
+
+  <div class="closing">
+    <h2 style="border:none;padding:0;margin-bottom:14px">이해가 먼저, 변화는 그다음입니다</h2>
+    <p>아이의 인생은 우리집 식탁에서부터 시작됩니다.<br>
+    그리고 그 식탁 위 변화는, 아이를 고치려는 마음이 아니라 아이를 알아보려는 마음에서 시작됩니다.<br>
+    아이를 이해하는 상담이, 건강한 식습관과 행복한 학교생활의 시작입니다.</p>
+    <p class="sign">영양교사는 학생과 학부모님이 함께 믿고 의지할 수 있는 건강 파트너입니다.<br>상담을 원하시면 언제든 학교로 문의해 주세요.</p>
+  </div>
+
+  <footer>본 자료는 학부모 영양교육을 위해 제작되었습니다.<br>2026 영양상담 선도학교 전주서일초등학교 영양교육</footer>
+</div>
+
+<script>
+  // ----- 관찰 퀴즈: '결과 보기' 버튼을 눌러야만 결과 표시 -----
+  const quizBtn = document.getElementById('quizBtn');
+  const rA = document.getElementById('resultA');
+  const rB = document.getElementById('resultB');
+  const rM = document.getElementById('resultM');
+  const rN = document.getElementById('resultNone');
+
+  quizBtn.addEventListener('click', () => {
+    const a = document.querySelectorAll('input[data-g="a"]:checked').length;
+    const b = document.querySelectorAll('input[data-g="b"]:checked').length;
+
+    [rA, rB, rM, rN].forEach(el => el.classList.remove('show'));
+
+    let target;
+    if(a === 0 && b === 0)      target = rN;
+    else if(a > b)              target = rA;
+    else if(b > a)              target = rB;
+    else                        target = rM;
+
+    target.classList.add('show');
+    target.scrollIntoView({behavior:'smooth', block:'nearest'});
+    quizBtn.textContent = '결과 다시 보기';
+  });
+
+  // ----- 챌린지 체크 -----
+  const checks = document.querySelectorAll('.challenge .check input');
+  const chMsg = document.getElementById('challengeMsg');
+  const cheers = [
+    "",
+    "좋아요! 관찰이 곧 이해의 시작입니다. 👀",
+    "두 가지나! 아이가 '알아봐 주는 눈길'을 분명 느끼고 있을 거예요.",
+    "세 가지 도전, 대단합니다. 우리집 식탁의 대화가 달라지고 있어요.",
+    "🎉 전부 도전! 아이를 이해하는 식탁, 그 자체가 최고의 영양교육입니다."
+  ];
+  checks.forEach(c => c.addEventListener('change', () => {
+    c.closest('.check').classList.toggle('done', c.checked);
+    const n = [...checks].filter(x => x.checked).length;
+    chMsg.textContent = cheers[n];
+  }));
+</script>
+</body>
+</html>
