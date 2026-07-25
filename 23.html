@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스마트폰을 보며 먹는 아이 — 먹방과 사라진 포만 신호</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F8F1;        /* 연한 잎맥색 종이 */
+    --ink:#26332A;          /* 짙은 먹색 */
+    --pine:#1E5631;         /* 소나무 녹색 */
+    --pine-soft:#DCEBDC;    /* 옅은 녹색 면 */
+    --carrot:#D9750F;       /* 당근 주황 */
+    --carrot-soft:#FBEEDC;  /* 옅은 주황 면 */
+    --scr:#3F6EA8;          /* 화면 블루 (이번 화 포인트) */
+    --scr-soft:#E4EDF7;     /* 옅은 블루 면 */
+    --line:#C9D8C6;
+    --serif:'Gowun Batang', serif;
+    --sans:'IBM Plex Sans KR', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    background:var(--paper);color:var(--ink);font-family:var(--serif);
+    line-height:1.85;font-size:17px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px 80px}
+
+  /* ---- 헤더 ---- */
+  header{padding:44px 0 28px;border-bottom:3px double var(--pine)}
+  .eyebrow{
+    font-family:var(--sans);font-size:12.5px;font-weight:700;letter-spacing:.14em;
+    color:var(--pine);text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--carrot);display:inline-block}
+  h1{font-size:clamp(26px,6vw,36px);font-weight:700;line-height:1.42;color:var(--pine);word-break:keep-all}
+  h1 em{font-style:normal;color:var(--scr)}
+  .subtitle{margin-top:14px;font-size:15.5px;color:#4E5D52;word-break:keep-all}
+  .byline{margin-top:20px;font-family:var(--sans);font-size:13.5px;color:#5C6B60;display:flex;align-items:center;gap:10px}
+  .byline .avatar{
+    width:34px;height:34px;border-radius:50%;background:var(--scr);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+  }
+
+  /* ---- 목차 ---- */
+  nav{
+    position:sticky;top:0;z-index:10;background:var(--paper);
+    padding:12px 0;border-bottom:1px solid var(--line);
+    display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none}
+  nav a{
+    font-family:var(--sans);font-size:12.5px;font-weight:500;white-space:nowrap;
+    color:var(--pine);text-decoration:none;background:var(--pine-soft);
+    padding:7px 13px;border-radius:999px;
+  }
+  nav a:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+
+  /* ---- 본문 ---- */
+  section{padding-top:40px}
+  h2{
+    font-size:21px;color:var(--pine);line-height:1.5;word-break:keep-all;
+    padding-left:14px;border-left:4px solid var(--carrot);margin-bottom:18px;
+  }
+  p{margin-bottom:18px;word-break:keep-all;text-align:justify}
+  strong{color:var(--carrot);font-weight:700}
+  .cool{color:var(--scr);font-weight:700}
+  .lead::first-letter{font-size:2.6em;float:left;line-height:1;padding:6px 10px 0 0;color:var(--pine);font-weight:700}
+  .pull{
+    margin:28px 0;padding:22px 24px;background:var(--scr-soft);border-radius:4px 22px 4px 22px;
+    font-size:18px;line-height:1.7;color:var(--scr);font-weight:700;text-align:center;word-break:keep-all;
+  }
+
+  /* ---- 자가 관찰 (버튼 공개) ---- */
+  .diag{
+    margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:24px 20px;font-family:var(--sans);
+  }
+  .diag h3{font-size:16px;color:var(--pine);margin-bottom:6px;word-break:keep-all}
+  .diag .hint{font-size:13.5px;color:#5C6B60;margin-bottom:18px;line-height:1.6;word-break:keep-all}
+  .diag .row{
+    display:flex;align-items:flex-start;gap:12px;background:#FAFCF8;border:1px solid var(--line);
+    border-radius:11px;padding:13px 14px;margin-bottom:10px;cursor:pointer;
+    font-size:14px;line-height:1.6;word-break:keep-all;
+  }
+  .diag .row input{
+    appearance:none;-webkit-appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--scr);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;
+  }
+  .diag .row input:checked{background:var(--scr)}
+  .diag .row input:checked::after{content:"\2713";color:#fff;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .diag .row input:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .reveal-btn{
+    width:100%;margin-top:8px;font-family:var(--sans);font-weight:700;font-size:15px;
+    background:var(--scr);color:#fff;border:none;border-radius:11px;padding:14px 0;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .reveal-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .diag-result{
+    display:none;margin-top:16px;font-size:14px;line-height:1.75;color:#3D4A41;
+    background:var(--scr-soft);border-left:3px solid var(--scr);
+    padding:14px 15px;border-radius:0 12px 12px 0;word-break:keep-all;
+  }
+  .diag-result.show{display:block;animation:reveal .3s ease}
+  .diag-result b{color:var(--scr)}
+  @keyframes reveal{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  /* ---- 개념 아이콘 카드 ---- */
+  .cards{display:grid;grid-template-columns:1fr;gap:12px;margin:24px 0;font-family:var(--sans)}
+  .icard{
+    background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px;
+    display:flex;gap:14px;align-items:flex-start;
+  }
+  .icard .ic{
+    flex-shrink:0;width:44px;height:44px;border-radius:12px;background:var(--scr-soft);
+    display:flex;align-items:center;justify-content:center;font-size:22px;
+  }
+  .icard h4{font-size:15px;color:var(--pine);margin-bottom:4px;word-break:keep-all}
+  .icard p{font-size:13.5px;line-height:1.7;color:#3D4A41;margin:0;word-break:keep-all;text-align:left}
+
+  /* ---- 시그니처: 화면 있는 식탁 · 없는 식탁 비교 ---- */
+  .sim{
+    margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:22px 18px;font-family:var(--sans);
+  }
+  .sim-title{font-size:16px;font-weight:700;color:var(--pine);margin-bottom:4px;text-align:center;word-break:keep-all}
+  .sim-sub{font-size:13px;color:#5C6B60;margin-bottom:16px;text-align:center;word-break:keep-all;line-height:1.6}
+  .sim-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+  .stab{
+    font-family:var(--sans);font-weight:700;font-size:13.5px;
+    background:#FAFCF8;color:#5C6B60;border:1.5px solid var(--line);
+    border-radius:10px;padding:11px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;
+    transition:background .15s,color .15s,border-color .15s;
+  }
+  .stab:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .stab.on{background:var(--scr);color:#fff;border-color:var(--scr)}
+  .stab.on.calm{background:var(--pine);border-color:var(--pine)}
+  .srow{
+    display:flex;gap:12px;align-items:flex-start;
+    border-bottom:1px dashed var(--line);padding:11px 2px;
+  }
+  .srow:last-of-type{border-bottom:none}
+  .slabel{
+    flex-shrink:0;width:88px;font-size:12.5px;font-weight:700;color:var(--pine);
+    line-height:1.6;word-break:keep-all;
+  }
+  .sval{font-size:13.5px;line-height:1.7;color:#3D4A41;word-break:keep-all}
+  .sim-note{
+    margin-top:14px;font-size:13px;line-height:1.7;color:#3D4A41;
+    background:var(--scr-soft);border-radius:11px;padding:12px 14px;word-break:keep-all;text-align:center;
+  }
+  .sim-note.calm{background:var(--pine-soft)}
+
+  /* ---- 먹방 카드 ---- */
+  .veg-wrap{margin:24px 0;font-family:var(--sans)}
+  .veg-lead{font-size:13.5px;color:#5C6B60;margin-bottom:16px;line-height:1.6;word-break:keep-all}
+  .veg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .veg{
+    background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px 14px;
+    display:flex;flex-direction:column;text-align:center;
+  }
+  .veg .emoji{font-size:34px;line-height:1;margin-bottom:8px}
+  .veg .vname{font-size:15px;font-weight:700;color:var(--pine);margin-bottom:3px}
+  .veg .vtag{font-size:11.5px;color:#8A968D;margin-bottom:12px;word-break:keep-all}
+  .veg .why-btn{
+    margin-top:auto;font-family:var(--sans);font-weight:700;font-size:13px;
+    background:var(--scr-soft);color:var(--scr);border:1.5px solid var(--scr);
+    border-radius:9px;padding:9px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;
+    transition:background .15s,color .15s;
+  }
+  .veg .why-btn:hover{background:var(--scr);color:#fff}
+  .veg .why-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .veg .vexp{
+    display:none;margin-top:12px;font-size:12.5px;line-height:1.7;color:#3D4A41;
+    background:#FAFCF8;border-radius:10px;padding:11px 12px;text-align:left;word-break:keep-all;
+  }
+  .veg.open .vexp{display:block;animation:reveal .3s ease}
+  .veg.open .why-btn{background:var(--scr);color:#fff}
+  .veg .vexp .gene-tag{
+    display:inline-block;font-size:11px;font-weight:700;color:var(--scr);
+    background:var(--scr-soft);border-radius:6px;padding:2px 7px;margin-bottom:6px;
+  }
+  .veg .vexp b{color:var(--carrot)}
+
+  /* ---- 아코디언 ---- */
+  .tips{display:flex;flex-direction:column;gap:12px;margin:22px 0;font-family:var(--sans)}
+  details{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  summary{
+    list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:12px;
+    font-weight:700;font-size:15px;color:var(--ink);word-break:keep-all;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:2px solid var(--carrot);outline-offset:-2px}
+  summary .num{
+    flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--scr-soft);
+    color:var(--scr);font-size:14px;display:flex;align-items:center;justify-content:center;
+  }
+  summary .chev{margin-left:auto;color:var(--pine);transition:transform .2s;font-size:13px}
+  details[open] .chev{transform:rotate(180deg)}
+  details .body{padding:0 18px 16px 60px;font-size:14.5px;line-height:1.75;color:#3D4A41;word-break:keep-all}
+  details .body .ex{
+    margin-top:8px;background:#FAFCF8;border-left:3px solid var(--line);
+    padding:8px 12px;border-radius:0 8px 8px 0;font-size:13.5px;
+  }
+
+  /* ---- 함께 보는 대화 상자 ---- */
+  .tipbox{
+    margin:24px 0;background:var(--pine-soft);border-radius:16px;padding:22px 20px;font-family:var(--sans);
+  }
+  .tipbox h3{font-size:15.5px;color:var(--pine);margin-bottom:12px;word-break:keep-all}
+  .tipbox ul{list-style:none}
+  .tipbox li{
+    font-size:14px;line-height:1.75;color:#2F4034;margin-bottom:9px;padding-left:18px;
+    position:relative;word-break:keep-all;
+  }
+  .tipbox li::before{content:"·";position:absolute;left:6px;color:var(--pine);font-weight:700}
+  .tipbox li:last-child{margin-bottom:0}
+
+  /* ---- 챌린지 ---- */
+  .challenge{margin:26px 0;background:var(--carrot-soft);border-radius:16px;padding:24px 20px;font-family:var(--sans)}
+  .challenge h3{font-size:16px;color:var(--carrot);margin-bottom:4px}
+  .challenge .hint{font-size:13.5px;color:#7A5A33;margin-bottom:16px;word-break:keep-all}
+  .check{
+    display:flex;align-items:flex-start;gap:12px;background:#fff;border-radius:10px;
+    padding:13px 14px;margin-bottom:10px;cursor:pointer;font-size:14.5px;line-height:1.6;word-break:keep-all;
+  }
+  .check input{
+    appearance:none;-webkit-appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--carrot);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;
+  }
+  .check input:checked{background:var(--carrot)}
+  .check input:checked::after{content:"\2713";color:#fff;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .check input:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .check.done span{text-decoration:line-through;color:#9B8A72}
+  .challenge-msg{font-size:14px;font-weight:700;color:var(--carrot);text-align:center;min-height:1.5em;margin-top:6px}
+
+  /* ---- 맺음 ---- */
+  .closing{margin-top:44px;padding:28px 24px;border-top:3px double var(--pine);text-align:center;word-break:keep-all}
+  .closing p{text-align:center}
+  .closing .sign{font-family:var(--sans);font-size:13.5px;color:#5C6B60;margin-top:14px;margin-bottom:0}
+  .med-note{
+    font-family:var(--sans);font-size:12px;color:#8A7A66;background:#FAF6EE;border-radius:10px;
+    padding:13px 15px;margin-top:22px;line-height:1.6;word-break:keep-all;text-align:left;
+  }
+  footer{font-family:var(--sans);font-size:12px;color:#8A968D;text-align:center;margin-top:30px;line-height:1.7;word-break:keep-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">영양교사 칼럼 · 우리 아이 식생활 이야기 · 스물세 번째</span>
+    <h1>스마트폰을 보며 먹는 아이<br><em>먹방</em>과 사라진 포만 신호</h1>
+    <p class="subtitle">화면을 켜 두면 밥은 잘 넘어가는데, 아이는 무엇을 얼마나 먹었는지 기억하지 못합니다. 아이의 의지 문제가 아니라, 몸의 작은 신호가 큰 자극에 묻힌 것입니다.</p>
+    <div class="byline">
+      <span class="avatar">📱</span>
+      <span>영양상담 선도학교 전주서일초등학교 영양교사 · 읽는 시간 약 5분</span>
+    </div>
+  </header>
+
+  <nav aria-label="칼럼 목차">
+    <a href="#s1">우리 집 식탁</a>
+    <a href="#s2">사라진 포만 신호</a>
+    <a href="#s3">화면 있는 식탁</a>
+    <a href="#s4">먹방의 힘</a>
+    <a href="#s5">집에서 해보기</a>
+    <a href="#s6">이번 주 챌린지</a>
+  </nav>
+
+  <section id="s0">
+    <p class="lead">"영상 틀어 주면 그래도 한 그릇은 비우거든요." 상담에서 가장 자주 듣는 말씀 중 하나입니다. 실제로 화면을 켜면 아이의 입은 열립니다. 밥을 안 먹어 애태우던 부모님께 그것은 겨우 찾아낸 방법이었을 것입니다. 그래서 오늘 이야기는 "화면을 없애세요"로 시작하지 않습니다. 다만 화면이 켜져 있는 동안 아이의 몸 안에서 어떤 신호가 조용히 사라지는지, 그리고 먹방이라는 콘텐츠가 아이의 식욕에 무엇을 남기는지 함께 들여다보려 합니다.</p>
+    <div class="pull">아이는 배가 불러서 멈추는 게 아니라,<br>영상이 끝나서 멈추고 있는지도 모릅니다.</div>
+  </section>
+
+  <section id="s1">
+    <h2>먼저, 우리 집 식탁을 가만히 떠올려 볼까요?</h2>
+    <p>진단이 아니라 관찰입니다. 아래에서 우리 집에 해당하는 모습에 편하게 눌러 보시고, 버튼을 누르면 함께 해석해 드립니다.</p>
+
+    <div class="diag">
+      <h3>📱 우리 집 식탁 관찰 체크</h3>
+      <p class="hint">해당하는 항목을 눌러 주세요. 다 고르신 뒤 '결과 보기'를 누르면 해석이 나타납니다.</p>
+
+      <label class="row"><input type="checkbox"><span>영상이나 게임 화면이 없으면 식사를 시작하기 어려워한다</span></label>
+      <label class="row"><input type="checkbox"><span>식사가 끝난 뒤 "오늘 뭐 먹었어?"라고 물으면 잘 기억하지 못한다</span></label>
+      <label class="row"><input type="checkbox"><span>화면을 볼 때는 먹는 속도가 유난히 빠르거나, 반대로 한없이 느리다</span></label>
+      <label class="row"><input type="checkbox"><span>먹방이나 음식 영상을 본 뒤 갑자기 야식·배달 음식을 먹고 싶어 한다</span></label>
+      <label class="row"><input type="checkbox"><span>밥을 먹은 지 얼마 되지 않아 "배고파, 뭐 없어?"를 자주 말한다</span></label>
+
+      <button type="button" class="reveal-btn" id="diagBtn">결과 보기</button>
+      <p class="diag-result" id="diagResult" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2>포만 신호는 원래 목소리가 아주 작습니다</h2>
+    <p>아이가 "그만 먹을래"라고 말하기까지, 몸 안에서는 꽤 정교한 일이 벌어집니다. 위가 늘어나면 신경이 뇌에 알리고, 장에서는 포만 호르몬이 천천히 올라옵니다. 문제는 이 신호가 <strong>느리고 조용하다</strong>는 점입니다. 대개 식사를 시작하고 15~20분쯤 지나야 뇌에 충분히 도착합니다. 그 사이에 화면이라는 크고 빠른 자극이 들어오면, 작은 신호는 아주 쉽게 묻혀 버립니다.</p>
+
+    <div class="cards">
+      <div class="icard">
+        <span class="ic">🔉</span>
+        <div>
+          <h4>느리고 작은 신호 · 포만감</h4>
+          <p>위가 채워졌다는 알림과 장에서 나오는 포만 호르몬은 서서히 올라옵니다. 화면 속 자극이 강할수록 이 조용한 신호는 뒤로 밀려나, 아이는 배부름을 제때 알아차리지 못합니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">🧠</span>
+        <div>
+          <h4>지워지는 것 · 식사의 기억</h4>
+          <p>주의가 화면에 가 있으면 무엇을 얼마나 먹었는지가 기억으로 잘 남지 않습니다. 성인 연구들을 모아 분석한 결과, 딴 데 정신이 팔린 채 먹으면 그 자리에서도 더 먹었지만, <b>몇 시간 뒤 간식에서 훨씬 더 크게</b> 늘었습니다. 반대로 먹은 것을 또렷이 떠올리게 하면 이후 간식이 줄었습니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">👀</span>
+        <div>
+          <h4>눈으로 먼저 먹습니다 · 시각적 허기</h4>
+          <p>음식 장면을 보는 것만으로 침이 고이고 식욕 신호가 켜집니다. 배가 고파서 생긴 식욕이 아니라, <b>보아서 생긴 식욕</b>입니다. 화면 속 음식은 아이의 몸에 "지금 먹을 때"라는 잘못된 알림을 보냅니다.</p>
+        </div>
+      </div>
+    </div>
+    <p>그러니 화면 앞에서 아이가 밥 한 그릇을 뚝딱 비우는 것은 식욕이 좋아진 것이 아닙니다. <span class="cool">멈추라는 신호를 못 들은 것</span>에 가깝습니다.</p>
+  </section>
+
+  <section id="s3">
+    <h2>같은 저녁, 화면만 달랐다면 무엇이 달라질까요?</h2>
+    <p>똑같은 메뉴, 똑같은 시간의 저녁 식사를 두 장면으로 나란히 놓아 보았습니다. 버튼을 눌러 두 식탁을 번갈아 살펴보세요.</p>
+
+    <div class="sim">
+      <p class="sim-title">🍚 같은 저녁, 두 개의 식탁</p>
+      <p class="sim-sub">아래 버튼을 눌러 장면을 바꿔 보세요.</p>
+      <div class="sim-tabs">
+        <button type="button" class="stab on" id="tabOn">📱 화면 켜진 식탁</button>
+        <button type="button" class="stab calm" id="tabOff">🌿 화면 없는 식탁</button>
+      </div>
+      <div class="sim-body">
+        <div class="srow">
+          <span class="slabel">식사 속도</span>
+          <span class="sval" data-on="씹는 둥 마는 둥, 손만 기계처럼 움직입니다." data-off="한 입씩 씹는 속도가 자연스럽게 느려집니다.">씹는 둥 마는 둥, 손만 기계처럼 움직입니다.</span>
+        </div>
+        <div class="srow">
+          <span class="slabel">배부름 신호</span>
+          <span class="sval" data-on="위가 보내는 작은 알림이 화면 자극에 묻혀 잘 들리지 않습니다." data-off="'이제 그만'이라는 신호가 제때 도착합니다.">위가 보내는 작은 알림이 화면 자극에 묻혀 잘 들리지 않습니다.</span>
+        </div>
+        <div class="srow">
+          <span class="slabel">먹는 양</span>
+          <span class="sval" data-on="어떤 날은 과하게, 어떤 날은 손도 안 대고 남깁니다. 들쭉날쭉해집니다." data-off="그날의 배고픔에 맞춰 아이가 스스로 양을 조절합니다.">어떤 날은 과하게, 어떤 날은 손도 안 대고 남깁니다. 들쭉날쭉해집니다.</span>
+        </div>
+        <div class="srow">
+          <span class="slabel">새로운 음식</span>
+          <span class="sval" data-on="맛을 느낄 겨를이 없어, 익숙한 것에만 손이 갑니다." data-off="맛과 식감을 느끼며 낯선 반찬에도 한 번쯤 손이 갑니다.">맛을 느낄 겨를이 없어, 익숙한 것에만 손이 갑니다.</span>
+        </div>
+        <div class="srow">
+          <span class="slabel">식사의 기억</span>
+          <span class="sval" data-on="&quot;오늘 뭐 먹었지?&quot; 잘 떠오르지 않습니다." data-off="무엇을 먹었는지 또렷이 남습니다." >&quot;오늘 뭐 먹었지?&quot; 잘 떠오르지 않습니다.</span>
+        </div>
+        <div class="srow">
+          <span class="slabel">30분 뒤</span>
+          <span class="sval" data-on="얼마 지나지 않아 &quot;배고파, 뭐 없어?&quot;를 찾습니다." data-off="다음 끼니까지 편안하게 이어집니다.">얼마 지나지 않아 &quot;배고파, 뭐 없어?&quot;를 찾습니다.</span>
+        </div>
+        <div class="srow">
+          <span class="slabel">아이가 배우는 것</span>
+          <span class="sval" data-on="'밥은 화면이 있어야 넘어가는 것'" data-off="'배고픔과 배부름은 내 몸이 알려 주는 것'">'밥은 화면이 있어야 넘어가는 것'</span>
+        </div>
+      </div>
+      <p class="sim-note" id="simNote">지금 보고 계신 장면입니다. 아이의 의지가 약해서가 아니라, 환경이 만든 결과입니다.</p>
+    </div>
+
+    <p>두 식탁의 차이는 <strong>먹은 양</strong>이 아니라 <strong>몸의 감각을 쓸 기회</strong>에 있습니다. 배고픔과 배부름을 알아차리는 힘은 타고나는 것이 아니라, 조용한 식사 시간마다 조금씩 자라는 능력이기 때문입니다.</p>
+  </section>
+
+  <section id="s4">
+    <h2>먹방은 왜 그렇게 힘이 셀까요?</h2>
+    <p>요즘 아이들이 보는 화면에는 음식이 아주 자주 등장합니다. 그중에서도 먹방은 아이의 식욕을 직접 건드리는 콘텐츠입니다. 각 카드를 눌러 그 안에 숨은 원리를 확인해 보세요.</p>
+
+    <div class="veg-wrap">
+      <p class="veg-lead">카드의 버튼을 누르면 그 장면 뒤에 숨은 이유가 나타납니다.</p>
+      <div class="veg-grid">
+
+        <div class="veg">
+          <div class="emoji">🍜</div>
+          <div class="vname">대리 만족의 함정</div>
+          <div class="vtag">보기만 했는데 배가 고파져요</div>
+          <button type="button" class="why-btn">왜 그럴까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">쾌락적 허기</span>
+            먹는 장면을 보면 뇌의 보상 회로가 함께 반응해 침이 고이고 "나도 먹고 싶다"가 올라옵니다. 몸이 필요해서 생긴 배고픔이 아니라 <b>보아서 생긴 식욕</b>입니다. 대리 만족이라 하지만, 실제로는 진짜 식욕이 켜지는 쪽에 가깝습니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🍕</div>
+          <div class="vname">커지는 '한 끼' 기준</div>
+          <div class="vtag">저 정도는 먹어야 보통인 줄</div>
+          <button type="button" class="why-btn">왜 그럴까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">기준량의 이동</span>
+            먹방에는 보통 아주 많은 양의 고열량 음식이 등장합니다. 이 장면을 반복해 보면 아이 머릿속의 '보통 한 끼'가 <b>조금씩 커집니다</b>. 많이 먹는 것이 즐겁고 대단한 일로 학습되면, 자기 몸에 맞는 양을 가늠하기 어려워집니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🎧</div>
+          <div class="vname">소리가 켜는 식욕</div>
+          <div class="vtag">바삭, 후루룩 소리에 침이 고여요</div>
+          <button type="button" class="why-btn">왜 그럴까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">감각 자극</span>
+            먹방은 씹는 소리와 클로즈업 장면을 일부러 크게 살립니다. 눈과 귀를 동시에 자극해 <b>식욕을 최대로 끌어올리도록 설계된 콘텐츠</b>입니다. 아이가 유난히 약한 것이 아니라, 그렇게 만들어진 자극에 몸이 정직하게 반응하는 것입니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">📊</div>
+          <div class="vname">국내 조사에서는</div>
+          <div class="vtag">시청 시간과 식습관의 관계</div>
+          <button type="button" class="why-btn">왜 그럴까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">국내 연구</span>
+            초등 고학년과 청소년을 조사한 국내 연구에서, 먹방 시청 시간이 길수록 아침·저녁 결식이 늘고 <b>외식과 야식</b>이 잦았습니다. 단 음식, 패스트푸드, 라면, 단 음료 섭취는 늘고 식생활 평가 점수는 낮아지는 경향을 보였습니다.
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <p style="margin-top:20px">여기서 오해하지 않으셨으면 하는 점이 있습니다. 이 연구들은 <span class="cool">관련이 있다</span>는 것을 보여 줄 뿐, 먹방 하나가 아이의 식습관을 결정한다는 뜻은 아닙니다. 다만 아이가 하루에 만나는 음식 자극이 예전과는 비교할 수 없이 많아졌다는 사실만은 분명합니다.</p>
+  </section>
+
+  <section id="s5">
+    <h2>화면을 뺏는 대신, 감각을 돌려주는 법</h2>
+    <p>모두 하실 필요는 없습니다. 아래에서 <strong>우리집에서 오늘 시작하기 쉬운 것 하나</strong>를 골라 보세요.</p>
+    <div class="tips">
+      <details>
+        <summary><span class="num">1</span>아이가 아니라 '식탁'의 약속으로 정해 주세요<span class="chev">▼</span></summary>
+        <div class="body">"너 또 폰 봐?"는 아이를 문제로 만듭니다. 대신 "우리집 식탁에는 화면이 안 올라와"라고 정해 보세요. 부모님도 함께 지키는 약속일 때, 아이는 훨씬 덜 억울해합니다.
+          <div class="ex">식탁 한쪽에 '기기 자리'를 만들어, 식사 동안 온 가족의 스마트폰을 함께 올려 두세요.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">2</span>한 끼부터, 아주 작게 시작해 주세요<span class="chev">▼</span></summary>
+        <div class="body">세 끼 모두 바꾸려 하면 대개 며칠 만에 지칩니다. 온 가족이 모이는 저녁 한 끼, 혹은 주말 한 끼만 화면 없는 시간으로 정해 보세요. 성공 경험이 다음 한 끼를 부릅니다.</div>
+      </details>
+      <details>
+        <summary><span class="num">3</span>식사 10분 전에 화면을 꺼 주세요<span class="chev">▼</span></summary>
+        <div class="body">영상을 보다가 곧바로 밥상에 앉으면 아쉬움이 그대로 식탁에 옵니다. "이거 끝나면 밥 먹자"처럼 마무리할 시간을 미리 알려 주면 실랑이가 크게 줄어듭니다.
+          <div class="ex">"10분 뒤에 저녁이야. 지금 보는 것까지만 보고 끄자."</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">4</span>화면이 빠진 자리를 '대화'로 채워 주세요<span class="chev">▼</span></summary>
+        <div class="body">화면만 없애면 식탁이 조용해지고, 아이는 금방 지루해합니다. 정보를 묻는 질문보다 감각을 묻는 질문이 좋습니다.
+          <div class="ex">"오늘 반찬 중에 제일 맛있는 게 뭐야?" · "이건 무슨 맛이 나?" · "지금 배는 얼마나 찼어?"</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">5</span>먹방은 금지보다 '함께 보고 이야기하기'가 셉니다<span class="chev">▼</span></summary>
+        <div class="body">무조건 막으면 아이는 몰래 봅니다. 가끔은 옆에 앉아 함께 보며 한마디를 건네 보세요. 콘텐츠를 읽는 힘이 자라면, 아이는 스스로 거리를 둘 줄 알게 됩니다.
+          <div class="ex">"저분은 저게 오늘 하루 몇 끼일까?" · "우리가 매일 저렇게 먹으면 몸이 어떨까?" · "보고 나니까 뭐가 먹고 싶어졌어?"</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">6</span>식사 뒤에 '기억 한 줄'을 남겨 주세요<span class="chev">▼</span></summary>
+        <div class="body">먹은 것을 또렷이 기억할수록 이후의 군것질이 줄어든다는 연구 결과가 있습니다. 거창할 필요 없이 한 문장이면 충분합니다.
+          <div class="ex">"오늘 저녁에 뭐 먹었지?" 하고 함께 짚어 보기 · 잠들기 전 "오늘 제일 맛있었던 것" 한 가지 말하기</div>
+        </div>
+      </details>
+    </div>
+
+    <div class="tipbox">
+      <h3>💡 이런 경우라면, 순서를 바꿔 주세요</h3>
+      <ul>
+        <li>영상을 껐더니 아이가 <strong>아예 안 먹는다면</strong>, 먹이는 것이 목표가 아니라 편안한 식사 분위기가 먼저입니다. 한 끼쯤 적게 먹어도 괜찮습니다.</li>
+        <li>메뉴와 시간은 부모님이 정하고, <strong>얼마나 먹을지는 아이가</strong> 정하도록 남겨 주세요. 이 역할이 나뉘면 협상이 줄어듭니다.</li>
+        <li>화면을 없앤 첫 며칠은 오히려 더 소란스러울 수 있습니다. 실패가 아니라 <strong>적응 기간</strong>입니다.</li>
+        <li>바쁜 아침이나 외식처럼 어려운 상황도 있습니다. 예외를 두는 것은 원칙이 무너진 것이 아니라, 오래 가기 위한 현실적인 선택입니다.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="s6">
+    <div class="challenge">
+      <h3>📵 이번 주 '화면 없는 한 끼' 챌린지</h3>
+      <p class="hint">이번 주에 하나만 골라 실천해 보세요. 하나면 충분합니다.</p>
+      <label class="check"><input type="checkbox"><span>일주일에 한 끼, 온 가족이 화면 없이 함께 식사하기</span></label>
+      <label class="check"><input type="checkbox"><span>식사 10분 전에 "곧 밥이야" 하고 미리 알려 주기</span></label>
+      <label class="check"><input type="checkbox"><span>식사 중에 "지금 배는 얼마나 찼어?" 하고 한 번 물어보기</span></label>
+      <label class="check"><input type="checkbox"><span>먹방을 아이와 함께 보며 한 가지 질문 나누기</span></label>
+      <p class="challenge-msg" id="challengeMsg"></p>
+    </div>
+  </section>
+
+  <div class="closing">
+    <h2 style="border:none;padding:0;margin-bottom:14px">화면을 끄는 일은,<br>아이에게 자기 몸을 돌려주는 일입니다</h2>
+    <p>밥을 먹이려고 영상을 틀어 오신 마음을 잘 알고 있습니다.<br>
+    그것은 게으름이 아니라, 애쓴 흔적입니다.<br>
+    다만 아이가 배고픔과 배부름을 스스로 알아차리는 힘은<br>
+    조용한 식탁에서만 자랍니다.<br>
+    오늘 한 끼, 화면 대신 목소리를 올려 주세요.</p>
+    <p class="sign">오늘도 아이의 식탁을 살피는 학부모님을 응원합니다.</p>
+
+    <div class="med-note">
+      이 자료는 학부모 영양교육을 위한 정보 제공용이며, 진단이나 치료를 대신하지 않습니다. 여기 소개한 연구들은 대체로 관련성을 보여 주는 것으로, 원인과 결과를 단정하지 않습니다. 아이가 화면 없이는 전혀 식사하지 못하거나, 식사량·체중이 갑자기 크게 변하거나, 먹고 나서 후회·죄책감을 반복해 보이는 경우에는 소아청소년과 등 전문 의료진과 상담하시기 바랍니다. · 참고: 주의 분산과 식사 기억에 관한 체계적 문헌고찰(American Journal of Clinical Nutrition), 국내 아동·청소년 먹방 시청과 식생활 조사(Nutrition Research and Practice)
+    </div>
+  </div>
+
+  <footer>본 자료는 학부모 영양교육을 위해 제작되었습니다.<br>영양상담 선도학교 전주서일초등학교 영양교육</footer>
+</div>
+
+<script>
+(function(){
+  // ----- 자가 관찰: 결과 보기 (버튼 공개) -----
+  var diagBtn = document.getElementById('diagBtn');
+  var diagResult = document.getElementById('diagResult');
+  var diagChecks = document.querySelectorAll('.diag .row input');
+
+  diagBtn.addEventListener('click', function(){
+    var n = 0, i;
+    for(i = 0; i < diagChecks.length; i++){ if(diagChecks[i].checked){ n++; } }
+    var msg;
+    if(n === 0){
+      msg = '<b>해당하는 항목이 없으시군요.</b> 아이가 식사에 집중할 수 있는 환경이 이미 잘 지켜지고 있습니다. 지금의 식탁을 편안하게 이어가 주세요. 아래 내용은 그 환경을 더 단단히 하는 데 도움이 되실 거예요.';
+    } else if(n <= 2){
+      msg = '<b>몇 가지가 해당되시네요.</b> 많은 가정이 이 지점에 있습니다. 화면이 식사의 일부가 되기 시작한 단계로, 아래 방법 중 하나만 더해 보셔도 아이가 자기 배부름을 알아차리는 순간이 늘어납니다.';
+    } else {
+      msg = '<b>여러 항목이 해당되시는군요.</b> 아이의 의지가 약한 것이 아니라, 작은 포만 신호가 큰 자극에 계속 묻히고 있을 가능성이 큽니다. 자책하지 않으셔도 됩니다. 아래 두 식탁의 비교와 실천 방법이 특히 도움이 되실 거예요.';
+    }
+    diagResult.innerHTML = msg;
+    if(diagResult.className.indexOf('show') < 0){ diagResult.className = diagResult.className + ' show'; }
+  });
+
+  // ----- 시그니처: 두 식탁 비교 -----
+  var tabOn = document.getElementById('tabOn');
+  var tabOff = document.getElementById('tabOff');
+  var svals = document.querySelectorAll('.sval');
+  var simNote = document.getElementById('simNote');
+
+  function setMode(mode){
+    var i, key = (mode === 'off') ? 'data-off' : 'data-on';
+    for(i = 0; i < svals.length; i++){
+      svals[i].innerHTML = svals[i].getAttribute(key);
+    }
+    if(mode === 'off'){
+      tabOn.className = 'stab';
+      tabOff.className = 'stab calm on';
+      simNote.className = 'sim-note calm';
+      simNote.innerHTML = '특별한 기술이 필요한 식탁이 아닙니다. 화면 하나를 내려놓았을 뿐인데, 아이의 몸이 다시 신호를 듣기 시작합니다.';
+    } else {
+      tabOn.className = 'stab on';
+      tabOff.className = 'stab calm';
+      simNote.className = 'sim-note';
+      simNote.innerHTML = '지금 보고 계신 장면입니다. 아이의 의지가 약해서가 아니라, 환경이 만든 결과입니다.';
+    }
+  }
+  tabOn.addEventListener('click', function(){ setMode('on'); });
+  tabOff.addEventListener('click', function(){ setMode('off'); });
+
+  // ----- 먹방 카드 공개 -----
+  var vegs = document.querySelectorAll('.veg');
+  function bindVeg(v){
+    var btn = v.querySelector('.why-btn');
+    btn.addEventListener('click', function(){
+      var isOpen = v.className.indexOf('open') >= 0;
+      if(isOpen){
+        v.className = v.className.replace(' open', '');
+        btn.textContent = '왜 그럴까요?';
+      } else {
+        v.className = v.className + ' open';
+        btn.textContent = '닫기';
+      }
+    });
+  }
+  var vi;
+  for(vi = 0; vi < vegs.length; vi++){ bindVeg(vegs[vi]); }
+
+  // ----- 챌린지 체크 -----
+  var checks = document.querySelectorAll('.check input');
+  var chMsg = document.getElementById('challengeMsg');
+  var cheers = [
+    "",
+    "좋아요! 이번 주는 이 하나면 충분합니다. 💪",
+    "두 가지나! 식탁의 공기가 조금씩 달라지고 있어요.",
+    "세 가지 도전, 대단합니다. 아이가 자기 배부름을 느끼는 순간이 늘어날 거예요.",
+    "🎉 전부 도전! 아이에게 자기 몸의 감각을 멋지게 돌려주셨습니다."
+  ];
+  function bindCheck(c){
+    c.addEventListener('change', function(){
+      var row = c.parentNode;
+      if(c.checked){
+        if(row.className.indexOf('done') < 0){ row.className = row.className + ' done'; }
+      } else {
+        row.className = row.className.replace(' done', '');
+      }
+      var n = 0, k;
+      for(k = 0; k < checks.length; k++){ if(checks[k].checked){ n++; } }
+      chMsg.textContent = cheers[n];
+    });
+  }
+  var t;
+  for(t = 0; t < checks.length; t++){ bindCheck(checks[t]); }
+})();
+</script>
+</body>
+</html>

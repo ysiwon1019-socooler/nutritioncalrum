@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>키는 정말 먹는 것으로 클까요?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F8F1;        /* 연한 잎맥색 종이 */
+    --ink:#26332A;          /* 짙은 먹색 */
+    --pine:#1E5631;         /* 소나무 녹색 */
+    --pine-soft:#DCEBDC;    /* 옅은 녹색 면 */
+    --carrot:#D9750F;       /* 당근 주황 */
+    --carrot-soft:#FBEEDC;  /* 옅은 주황 면 */
+    --sat:#3A6EA5;          /* 성장 하늘빛 (이번 화 포인트) */
+    --sat-soft:#E3EEF8;     /* 옅은 하늘 면 */
+    --line:#C9D8C6;
+    --serif:'Gowun Batang', serif;
+    --sans:'IBM Plex Sans KR', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    background:var(--paper);color:var(--ink);font-family:var(--serif);
+    line-height:1.85;font-size:17px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px 80px}
+
+  /* ---- 헤더 ---- */
+  header{padding:44px 0 28px;border-bottom:3px double var(--pine)}
+  .eyebrow{
+    font-family:var(--sans);font-size:12.5px;font-weight:700;letter-spacing:.14em;
+    color:var(--pine);text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--carrot);display:inline-block}
+  h1{font-size:clamp(26px,6vw,36px);font-weight:700;line-height:1.42;color:var(--pine);word-break:keep-all}
+  h1 em{font-style:normal;color:var(--sat)}
+  .subtitle{margin-top:14px;font-size:15.5px;color:#4E5D52;word-break:keep-all}
+  .byline{margin-top:20px;font-family:var(--sans);font-size:13.5px;color:#5C6B60;display:flex;align-items:center;gap:10px}
+  .byline .avatar{
+    width:34px;height:34px;border-radius:50%;background:var(--sat);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+  }
+
+  /* ---- 목차 ---- */
+  nav{
+    position:sticky;top:0;z-index:10;background:var(--paper);
+    padding:12px 0;border-bottom:1px solid var(--line);
+    display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none}
+  nav a{
+    font-family:var(--sans);font-size:12.5px;font-weight:500;white-space:nowrap;
+    color:var(--pine);text-decoration:none;background:var(--pine-soft);
+    padding:7px 13px;border-radius:999px;
+  }
+  nav a:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+
+  /* ---- 본문 ---- */
+  section{padding-top:40px}
+  h2{
+    font-size:21px;color:var(--pine);line-height:1.5;word-break:keep-all;
+    padding-left:14px;border-left:4px solid var(--carrot);margin-bottom:18px;
+  }
+  p{margin-bottom:18px;word-break:keep-all;text-align:justify}
+  strong{color:var(--carrot);font-weight:700}
+  .cool{color:var(--sat);font-weight:700}
+  .lead::first-letter{font-size:2.6em;float:left;line-height:1;padding:6px 10px 0 0;color:var(--pine);font-weight:700}
+  .pull{
+    margin:28px 0;padding:22px 24px;background:var(--sat-soft);border-radius:4px 22px 4px 22px;
+    font-size:18px;line-height:1.7;color:var(--sat);font-weight:700;text-align:center;word-break:keep-all;
+  }
+
+  /* ---- 자가 관찰 (버튼 공개) ---- */
+  .diag{
+    margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:24px 20px;font-family:var(--sans);
+  }
+  .diag h3{font-size:16px;color:var(--pine);margin-bottom:6px;word-break:keep-all}
+  .diag .hint{font-size:13.5px;color:#5C6B60;margin-bottom:18px;line-height:1.6;word-break:keep-all}
+  .diag .row{
+    display:flex;align-items:flex-start;gap:12px;background:#FAFCF8;border:1px solid var(--line);
+    border-radius:11px;padding:13px 14px;margin-bottom:10px;cursor:pointer;
+    font-size:14px;line-height:1.6;word-break:keep-all;
+  }
+  .diag .row input{
+    appearance:none;-webkit-appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--sat);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;
+  }
+  .diag .row input:checked{background:var(--sat)}
+  .diag .row input:checked::after{content:"\2713";color:#fff;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .diag .row input:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .reveal-btn{
+    width:100%;margin-top:8px;font-family:var(--sans);font-weight:700;font-size:15px;
+    background:var(--sat);color:#fff;border:none;border-radius:11px;padding:14px 0;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .reveal-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .reveal-btn:disabled{opacity:.55;cursor:default}
+  .diag-result{
+    display:none;margin-top:16px;font-size:14px;line-height:1.75;color:#3D4A41;
+    background:var(--sat-soft);border-left:3px solid var(--sat);
+    padding:14px 15px;border-radius:0 12px 12px 0;word-break:keep-all;
+  }
+  .diag-result.show{display:block;animation:reveal .3s ease}
+  .diag-result b{color:var(--sat)}
+  @keyframes reveal{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  /* ---- 개념 아이콘 카드 ---- */
+  .cards{display:grid;grid-template-columns:1fr;gap:12px;margin:24px 0;font-family:var(--sans)}
+  .icard{
+    background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px;
+    display:flex;gap:14px;align-items:flex-start;
+  }
+  .icard .ic{
+    flex-shrink:0;width:44px;height:44px;border-radius:12px;background:var(--sat-soft);
+    display:flex;align-items:center;justify-content:center;font-size:22px;
+  }
+  .icard h4{font-size:15px;color:var(--pine);margin-bottom:4px;word-break:keep-all}
+  .icard p{font-size:13.5px;line-height:1.7;color:#3D4A41;margin:0;word-break:keep-all;text-align:left}
+
+  /* ---- 시그니처: 오해 카드 ---- */
+  .veg-wrap{margin:24px 0;font-family:var(--sans)}
+  .veg-lead{font-size:13.5px;color:#5C6B60;margin-bottom:16px;line-height:1.6;word-break:keep-all}
+  .veg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .veg{
+    background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px 14px;
+    display:flex;flex-direction:column;text-align:center;
+  }
+  .veg .emoji{font-size:34px;line-height:1;margin-bottom:8px}
+  .veg .vname{font-size:15px;font-weight:700;color:var(--pine);margin-bottom:3px}
+  .veg .vtag{font-size:11.5px;color:#8A968D;margin-bottom:12px;word-break:keep-all}
+  .veg .why-btn{
+    margin-top:auto;font-family:var(--sans);font-weight:700;font-size:13px;
+    background:var(--sat-soft);color:var(--sat);border:1.5px solid var(--sat);
+    border-radius:9px;padding:9px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;
+    transition:background .15s,color .15s;
+  }
+  .veg .why-btn:hover{background:var(--sat);color:#fff}
+  .veg .why-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .veg .vexp{
+    display:none;margin-top:12px;font-size:12.5px;line-height:1.7;color:#3D4A41;
+    background:#FAFCF8;border-radius:10px;padding:11px 12px;text-align:left;word-break:keep-all;
+  }
+  .veg.open .vexp{display:block;animation:reveal .3s ease}
+  .veg.open .why-btn{background:var(--sat);color:#fff}
+  .veg .vexp .gene-tag{
+    display:inline-block;font-size:11px;font-weight:700;color:var(--sat);
+    background:var(--sat-soft);border-radius:6px;padding:2px 7px;margin-bottom:6px;
+  }
+  .veg .vexp b{color:var(--carrot)}
+
+  /* ---- 영양소 표 ---- */
+  .nutri{margin:24px 0;font-family:var(--sans);background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  .nutri .nrow{display:flex;gap:14px;align-items:flex-start;padding:15px 18px;border-bottom:1px solid var(--line)}
+  .nutri .nrow:last-child{border-bottom:none}
+  .nutri .nic{
+    flex-shrink:0;width:38px;height:38px;border-radius:10px;background:var(--pine-soft);
+    display:flex;align-items:center;justify-content:center;font-size:19px;
+  }
+  .nutri .nname{font-size:14.5px;font-weight:700;color:var(--pine);margin-bottom:3px;word-break:keep-all}
+  .nutri .ndesc{font-size:13px;line-height:1.65;color:#3D4A41;word-break:keep-all}
+  .nutri .nfood{font-size:12.5px;color:var(--carrot);font-weight:700;margin-top:4px;word-break:keep-all}
+
+  /* ---- 아코디언 ---- */
+  .tips{display:flex;flex-direction:column;gap:12px;margin:22px 0;font-family:var(--sans)}
+  details{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  summary{
+    list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:12px;
+    font-weight:700;font-size:15px;color:var(--ink);word-break:keep-all;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:2px solid var(--carrot);outline-offset:-2px}
+  summary .num{
+    flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--sat-soft);
+    color:var(--sat);font-size:14px;display:flex;align-items:center;justify-content:center;
+  }
+  summary .chev{margin-left:auto;color:var(--pine);transition:transform .2s;font-size:13px}
+  details[open] .chev{transform:rotate(180deg)}
+  details .body{padding:0 18px 16px 60px;font-size:14.5px;line-height:1.75;color:#3D4A41;word-break:keep-all}
+  details .body .ex{
+    margin-top:8px;background:#FAFCF8;border-left:3px solid var(--line);
+    padding:8px 12px;border-radius:0 8px 8px 0;font-size:13.5px;
+  }
+
+  /* ---- 챌린지 ---- */
+  .challenge{margin:26px 0;background:var(--carrot-soft);border-radius:16px;padding:24px 20px;font-family:var(--sans)}
+  .challenge h3{font-size:16px;color:var(--carrot);margin-bottom:4px}
+  .challenge .hint{font-size:13.5px;color:#7A5A33;margin-bottom:16px;word-break:keep-all}
+  .check{
+    display:flex;align-items:flex-start;gap:12px;background:#fff;border-radius:10px;
+    padding:13px 14px;margin-bottom:10px;cursor:pointer;font-size:14.5px;line-height:1.6;word-break:keep-all;
+  }
+  .check input{
+    appearance:none;-webkit-appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--carrot);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;
+  }
+  .check input:checked{background:var(--carrot)}
+  .check input:checked::after{content:"\2713";color:#fff;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .check input:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .check.done span{text-decoration:line-through;color:#9B8A72}
+  .challenge-msg{font-size:14px;font-weight:700;color:var(--carrot);text-align:center;min-height:1.5em;margin-top:6px}
+
+  /* ---- 맺음 ---- */
+  .closing{margin-top:44px;padding:28px 24px;border-top:3px double var(--pine);text-align:center;word-break:keep-all}
+  .closing p{text-align:center}
+  .closing .sign{font-family:var(--sans);font-size:13.5px;color:#5C6B60;margin-top:14px;margin-bottom:0}
+  .med-note{
+    font-family:var(--sans);font-size:12px;color:#8A7A66;background:#FAF6EE;border-radius:10px;
+    padding:13px 15px;margin-top:22px;line-height:1.6;word-break:keep-all;text-align:left;
+  }
+  footer{font-family:var(--sans);font-size:12px;color:#8A968D;text-align:center;margin-top:30px;line-height:1.7;word-break:keep-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">영양교사 칼럼 · 우리 아이 식생활 이야기 · 열여덟 번째</span>
+    <h1>키는 정말<br><em>먹는 것</em>으로 클까요?</h1>
+    <p class="subtitle">우유를 더 먹이면, 고기를 더 챙기면 키가 클까요. 부모님 마음이 가장 조급해지는 질문입니다. 오늘은 키가 자라는 원리를 차분히 들여다보며, 우리 집에서 진짜로 할 수 있는 일을 함께 찾아보려 합니다.</p>
+    <div class="byline">
+      <span class="avatar">📏</span>
+      <span>영양상담 선도학교 전주서일초등학교 영양교사 · 읽는 시간 약 6분</span>
+    </div>
+  </header>
+
+  <nav aria-label="칼럼 목차">
+    <a href="#s1">우리 집 관찰</a>
+    <a href="#s2">키가 자라는 원리</a>
+    <a href="#s3">흔한 오해들</a>
+    <a href="#s4">'많이'보다 '골고루'</a>
+    <a href="#s5">성장의 네 기둥</a>
+    <a href="#s6">집에서 해보기</a>
+    <a href="#s7">이번 주 챌린지</a>
+  </nav>
+
+  <section id="s0">
+    <p class="lead">상담실에서 가장 자주 듣는 질문입니다. "선생님, 뭘 먹여야 키가 클까요?" 그 물음 안에는 아이가 조금이라도 더 잘 자라기를 바라는 간절한 마음이 담겨 있습니다. 답을 먼저 말씀드리면, 먹는 것은 분명히 중요합니다. 다만 <span class="cool">'많이 먹으면 큰다'는 아니라는 것</span>, 그리고 먹는 것 혼자서는 다 해내지 못한다는 것. 오늘은 그 사이의 이야기를 나눠 보겠습니다.</p>
+    <div class="pull">키는 '더하는 일'이 아니라<br>'모자라지 않게 하는 일'에 가깝습니다.</div>
+  </section>
+
+  <section id="s1">
+    <h2>먼저, 우리 집을 가만히 떠올려 볼까요?</h2>
+    <p>진단이 아니라 관찰입니다. 아래에서 우리 집에 해당하는 모습에 편하게 눌러 보시고, 버튼을 누르면 함께 해석해 드립니다.</p>
+
+    <div class="diag">
+      <h3>📏 우리 집 성장 환경 관찰 체크</h3>
+      <p class="hint">해당하는 항목을 눌러 주세요. 다 고르신 뒤 '결과 보기'를 누르면 해석이 나타납니다.</p>
+
+      <label class="row"><input type="checkbox"><span>아이가 밤 11시 넘어 자거나, 잠자리에 든 뒤에도 한참 뒤척인다</span></label>
+      <label class="row"><input type="checkbox"><span>아침을 자주 거르거나, 우유 한 잔 정도로 대신한다</span></label>
+      <label class="row"><input type="checkbox"><span>고기·달걀·두부·생선 같은 단백질 반찬을 하루 한 번 이하로 먹는다</span></label>
+      <label class="row"><input type="checkbox"><span>몸을 크게 움직여 노는 시간이 하루 30분이 채 안 된다</span></label>
+      <label class="row"><input type="checkbox"><span>키 이야기가 나오면 아이가 위축되거나, 식탁에서 잔소리가 오간다</span></label>
+      <label class="row"><input type="checkbox"><span>키에 좋다는 보조제나 특정 식품을 챙겨 먹이고 있다</span></label>
+
+      <button type="button" class="reveal-btn" id="diagBtn">결과 보기</button>
+      <p class="diag-result" id="diagResult" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2>키는 어떻게 자랄까요?</h2>
+    <p>키가 자란다는 것은 뼈의 양 끝에 있는 <strong>성장판</strong>이라는 얇은 연골층에서 새로운 뼈가 계속 만들어진다는 뜻입니다. 이 공사에는 설계도와 재료, 그리고 작업 지시가 모두 필요합니다.</p>
+
+    <div class="cards">
+      <div class="icard">
+        <span class="ic">🧬</span>
+        <div>
+          <h4>설계도 · 유전</h4>
+          <p>최종 키의 상당 부분은 부모님께 물려받은 유전으로 결정됩니다. 연구에 따라 차이가 있지만 대체로 <b>70~80% 안팎</b>이 유전의 몫으로 이야기됩니다. 다만 키에 관여하는 유전자는 수백 개 이상이어서, 부모보다 큰 아이도 얼마든지 나옵니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">🧱</span>
+        <div>
+          <h4>재료 · 영양</h4>
+          <p>설계도가 있어도 재료가 모자라면 공사가 멈춥니다. 단백질·칼슘·비타민 D·아연 같은 재료가 부족하면 유전이 그려 둔 키에 닿지 못합니다. 반대로 재료를 필요 이상 쌓아 둔다고 건물이 더 높아지지는 않습니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">🌙</span>
+        <div>
+          <h4>작업 지시 · 성장호르몬</h4>
+          <p>성장호르몬은 깊은 잠에 들었을 때 가장 많이 분비되고, 몸속에서 IGF-1이라는 전달자를 통해 성장판에 "자라라"는 지시를 보냅니다. 잘 먹어도 잘 자지 않으면 지시가 제대로 전달되지 않습니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">⏳</span>
+        <div>
+          <h4>공사 기간 · 사춘기</h4>
+          <p>성장판은 사춘기가 끝나면 닫힙니다. 그래서 <b>얼마나 빨리 크는가</b>보다 <b>얼마나 오래 클 수 있는가</b>가 최종 키를 좌우합니다. 공사 기간을 넉넉히 지키는 일이 그래서 중요합니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull">키는 유전이 그린 설계도 위에<br>생활이 채워 넣는 결과입니다.</div>
+  </section>
+
+  <section id="s3">
+    <h2>널리 퍼진 이야기, 정말 그럴까요?</h2>
+    <p>키에 관한 이야기는 유난히 많습니다. 카드의 버튼을 누르면 지금까지 알려진 내용을 함께 정리해 드립니다.</p>
+
+    <div class="veg-wrap">
+      <p class="veg-lead">각 카드의 버튼을 누르면 설명이 나타납니다.</p>
+      <div class="veg-grid">
+
+        <div class="veg">
+          <div class="emoji">🥛</div>
+          <div class="vname">우유를 많이<br>마실수록 큰다</div>
+          <div class="vtag">많이 마시면 더 클까요?</div>
+          <button type="button" class="why-btn">정말 그럴까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">부족을 채울 때만</span>
+            우유는 칼슘과 양질의 단백질을 한 번에 주는 훌륭한 식품이 맞습니다. 다만 효과는 <b>모자라던 것을 채울 때</b> 나타납니다. 이미 충분한 아이가 더 많이 마신다고 키가 더 크지는 않고, 우유로 배가 차 밥과 반찬을 덜 먹으면 오히려 손해입니다. 하루 <b>1~2잔</b>이면 충분합니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🍚</div>
+          <div class="vname">많이 먹을수록<br>키가 큰다</div>
+          <div class="vtag">잘 먹으면 무조건 좋을까요?</div>
+          <button type="button" class="why-btn">정말 그럴까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">공사 기간이 짧아져요</span>
+            지나치게 많이 먹어 체지방이 늘면 사춘기가 <b>일찍 시작</b>되는 경향이 있습니다. 체지방에서 나오는 렙틴과 에스트로겐이 뼈 성숙을 앞당기기 때문입니다. 어릴 땐 또래보다 커 보이지만 성장판이 일찍 닫혀, 최종 키는 오히려 손해를 보기 쉽습니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">💊</div>
+          <div class="vname">성장 보조제를<br>먹이면 큰다</div>
+          <div class="vtag">챙겨 주면 도움이 될까요?</div>
+          <button type="button" class="why-btn">정말 그럴까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">식사가 먼저입니다</span>
+            보조제는 <b>부족한 영양소를 메우는 역할</b>까지입니다. 실제로 부족한 아이에게는 도움이 되지만, 충분히 먹고 있는 아이에게 더한다고 키가 더 자라지는 않습니다. 성분과 함량을 확인하시고, 필요 여부는 의료진과 상의하시는 편이 안전합니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🌙</div>
+          <div class="vname">잠은 나중에<br>몰아 자면 된다</div>
+          <div class="vtag">늦게 자도 괜찮을까요?</div>
+          <button type="button" class="why-btn">정말 그럴까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">깊은 잠이 열쇠</span>
+            성장호르몬은 잠든 뒤 찾아오는 <b>깊은 잠 구간</b>에서 크게 솟구칩니다. 취침이 늦어지거나 자다 깨는 일이 잦으면 이 구간이 줄어듭니다. 잠은 총량뿐 아니라 <b>질과 규칙성</b>이 함께 중요합니다. 초등학생은 하루 9~11시간이 권장됩니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🏃</div>
+          <div class="vname">운동은 공부<br>시간만 뺏는다</div>
+          <div class="vtag">키와 상관이 있을까요?</div>
+          <button type="button" class="why-btn">정말 그럴까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">뼈에 주는 자극</span>
+            뛰고 점프하는 <b>체중이 실리는 움직임</b>은 뼈에 자극을 주고, 활동은 성장호르몬 분비와 밤잠의 질을 함께 올립니다. 특별한 운동이 아니어도 됩니다. 줄넘기, 달리기, 놀이터에서 실컷 뛰노는 시간이면 충분합니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🍳</div>
+          <div class="vname">아침은 걸러도<br>괜찮다</div>
+          <div class="vtag">한 끼쯤은 상관없을까요?</div>
+          <button type="button" class="why-btn">정말 그럴까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">긴 공복이 문제</span>
+            자는 동안 이미 10시간 넘게 굶은 몸입니다. 여기에 아침까지 거르면 공복이 더 길어지고, 하루 전체의 단백질·칼슘 섭취량을 채우기가 어려워집니다. 거창하지 않아도 됩니다. <b>우유 한 잔에 달걀이나 빵 한 조각</b>이면 시작으로 충분합니다.
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <p style="margin-top:20px">여섯 가지를 살펴보면 공통점이 보입니다. 키를 늘리는 <span class="cool">특별한 한 가지 음식은 없다는 것</span>, 그리고 부족을 메우는 일과 공사 기간을 지키는 일이 훨씬 중요하다는 것입니다.</p>
+  </section>
+
+  <section id="s4">
+    <h2>'많이'가 아니라 '골고루'인 이유</h2>
+    <p>성장판에서 새 뼈가 만들어지려면 여러 재료가 <strong>동시에</strong> 필요합니다. 요리에 비유하면, 밀가루만 열 배로 넣는다고 빵이 열 배 부풀지 않는 것과 같습니다. 가장 모자란 재료 하나가 전체 공사의 속도를 정합니다.</p>
+
+    <div class="nutri">
+      <div class="nrow">
+        <span class="nic">🍗</span>
+        <div>
+          <div class="nname">단백질 · 뼈와 근육의 뼈대</div>
+          <div class="ndesc">성장판 연골의 기본 재료이자, 성장호르몬의 전달자인 IGF-1을 만드는 바탕입니다. 성장기에 가장 놓치기 쉬운 영양소이기도 합니다.</div>
+          <div class="nfood">고기 · 생선 · 달걀 · 두부 · 콩 · 우유</div>
+        </div>
+      </div>
+      <div class="nrow">
+        <span class="nic">🦴</span>
+        <div>
+          <div class="nname">칼슘 · 뼈를 단단하게</div>
+          <div class="ndesc">새로 만들어진 연골이 단단한 뼈로 굳는 데 쓰입니다. 성장기에 쌓아 둔 뼈의 양은 평생의 뼈 건강을 좌우합니다.</div>
+          <div class="nfood">우유 · 요구르트 · 치즈 · 멸치 · 두부 · 진한 녹색 채소</div>
+        </div>
+      </div>
+      <div class="nrow">
+        <span class="nic">☀️</span>
+        <div>
+          <div class="nname">비타민 D · 칼슘의 통행증</div>
+          <div class="ndesc">칼슘을 아무리 먹어도 비타민 D가 부족하면 흡수가 잘 되지 않습니다. 우리나라 아이들에게 특히 부족하기 쉬운 영양소입니다.</div>
+          <div class="nfood">햇볕 아래 바깥 놀이 · 등푸른 생선 · 달걀노른자 · 강화 우유</div>
+        </div>
+      </div>
+      <div class="nrow">
+        <span class="nic">🌰</span>
+        <div>
+          <div class="nname">아연 · 성장의 스위치</div>
+          <div class="ndesc">세포 분열과 식욕에 관여합니다. 부족하면 잘 먹지 않게 되고, 그래서 성장도 함께 느려지는 악순환이 생깁니다.</div>
+          <div class="nfood">굴 · 소고기 · 견과류 · 통곡물 · 달걀</div>
+        </div>
+      </div>
+      <div class="nrow">
+        <span class="nic">🥬</span>
+        <div>
+          <div class="nname">철분 · 산소를 나르는 힘</div>
+          <div class="ndesc">부족하면 쉽게 지치고 활동량이 줄어듭니다. 특히 편식이 있거나 성장이 빠른 시기에 부족해지기 쉽습니다.</div>
+          <div class="nfood">붉은 고기 · 시금치 · 콩류 · 달걀 (비타민 C와 함께 먹으면 흡수가 좋아집니다)</div>
+        </div>
+      </div>
+    </div>
+
+    <p>목록이 길어 보이지만, 사실 <strong>학교 급식 식판 한 판</strong>이 이 재료들을 거의 다 담고 있습니다. 밥과 국, 고기나 생선 반찬 하나, 채소 반찬 둘, 그리고 우유. 특별한 식단을 새로 짜실 필요가 없다는 뜻입니다.</p>
+    <div class="pull">가장 확실한 성장 식단은<br>이미 아이 앞의 식판 위에 있습니다.</div>
+  </section>
+
+  <section id="s5">
+    <h2>성장을 떠받치는 네 기둥</h2>
+    <p>영양은 네 기둥 중 하나입니다. 나머지 셋이 함께 서 있어야 아이가 가진 설계도만큼 자랄 수 있습니다.</p>
+
+    <div class="cards">
+      <div class="icard">
+        <span class="ic">🍽️</span>
+        <div>
+          <h4>첫째 · 잘 먹기</h4>
+          <p>많이가 아니라 골고루입니다. 세 끼를 거르지 않고, 끼니마다 단백질 반찬을 한 가지 이상 두는 것으로 충분합니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">😴</span>
+        <div>
+          <h4>둘째 · 잘 자기</h4>
+          <p>깊은 잠에서 성장호르몬이 솟습니다. 자는 시각을 일정하게 지키고, 잠들기 한 시간 전에는 화면을 끄는 것이 가장 효과적입니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">⚽</span>
+        <div>
+          <h4>셋째 · 잘 움직이기</h4>
+          <p>하루 한 시간, 숨이 조금 차게 노는 시간입니다. 뼈에 자극을 주고 밤잠의 질까지 함께 좋아집니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">💛</span>
+        <div>
+          <h4>넷째 · 편안한 마음</h4>
+          <p>자주 놓치는 기둥입니다. 지속적인 스트레스는 성장호르몬 분비를 방해합니다. 키 이야기로 아이를 자주 압박하는 일이, 뜻하지 않게 성장을 방해할 수도 있습니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <p>그리고 한 가지 더 기억해 주세요. 지금의 키 숫자보다 중요한 것은 <span class="cool">자라는 속도</span>입니다. 또래보다 작아도 자기 성장 곡선을 따라 꾸준히 크고 있다면 대개 괜찮습니다. 반대로 원래 잘 크던 아이의 성장이 눈에 띄게 느려졌다면, 그때가 살펴볼 때입니다.</p>
+  </section>
+
+  <section id="s6">
+    <h2>오늘부터, 우리 집에서 해볼 수 있는 것</h2>
+    <p>모두 하실 필요는 없습니다. 아래에서 <strong>우리집에서 오늘 시작하기 쉬운 것 하나</strong>를 골라 보세요.</p>
+    <div class="tips">
+      <details>
+        <summary><span class="num">1</span>끼니마다 단백질 반찬 하나를 자리 잡아 주세요<span class="chev">▼</span></summary>
+        <div class="body">양을 늘리기보다 '빠지지 않게' 하는 것이 목표입니다. 아침에 달걀 하나, 점심은 급식, 저녁에 고기나 생선 또는 두부. 이 정도면 성장기 단백질은 대체로 채워집니다.
+          <div class="ex">달걀프라이 · 두부부침 · 멸치볶음 · 요구르트 한 개도 훌륭한 한 몫입니다.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">2</span>잠드는 시각부터 지켜 주세요<span class="chev">▼</span></summary>
+        <div class="body">가장 큰 효과를 내는 한 가지를 꼽으라면 저는 잠을 고르겠습니다. 몇 시에 재울지보다 <b>매일 같은 시각</b>에 재우는 것이 중요합니다. 잠들기 한 시간 전 화면 끄기부터 시작해 보세요.
+          <div class="ex">"9시엔 불 끄고 눕기"처럼 아이와 함께 정한 약속이 잔소리보다 오래갑니다.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">3</span>아침을 '가볍게라도' 살려 주세요<span class="chev">▼</span></summary>
+        <div class="body">차려야 한다는 부담을 내려놓으셔도 됩니다. 우유 한 잔에 삶은 달걀 하나, 또는 바나나 하나와 요구르트. 5분이면 충분합니다. 아침을 먹은 아이가 급식도 더 잘 먹습니다.</div>
+      </details>
+      <details>
+        <summary><span class="num">4</span>햇볕 아래 노는 시간을 만들어 주세요<span class="chev">▼</span></summary>
+        <div class="body">비타민 D는 햇볕을 쬘 때 피부에서 만들어집니다. 등하굣길을 걷거나 방과 후 놀이터에서 20~30분 노는 것만으로도 도움이 됩니다. 운동과 햇볕, 두 가지를 한 번에 챙기는 방법입니다.</div>
+      </details>
+      <details>
+        <summary><span class="num">5</span>키 이야기를 잠시 줄여 주세요<span class="chev">▼</span></summary>
+        <div class="body">"너 그렇게 안 먹으면 키 안 커"라는 말은 대개 효과가 없고, 식탁을 긴장시킵니다. 아이가 자기 몸을 부끄럽게 여기게 되면 먹는 일 자체가 힘들어집니다.
+          <div class="ex">"키 크려면 먹어" 대신 "이거 먹으면 몸이 힘이 나겠다"로 바꿔 말해 보세요.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">6</span>일 년에 두어 번, 키와 몸무게를 기록해 두세요<span class="chev">▼</span></summary>
+        <div class="body">한 번의 숫자보다 <b>변화의 방향</b>이 훨씬 많은 것을 알려 줍니다. 문틀에 표시하거나 수첩에 적어 두시면 됩니다. 성장 속도가 눈에 띄게 느려졌다면 상담을 권해 드리는 신호가 됩니다.</div>
+      </details>
+      <details>
+        <summary><span class="num">7</span>보조제보다 식탁을 먼저 점검해 주세요<span class="chev">▼</span></summary>
+        <div class="body">보조제를 고민하시기 전에 일주일 식사를 한 번 떠올려 보세요. 단백질 반찬이 매 끼 있었는지, 우유나 유제품을 하루 한두 번 먹었는지. 여기에 구멍이 있다면 그 자리를 메우는 것이 먼저입니다.</div>
+      </details>
+    </div>
+  </section>
+
+  <section id="s7">
+    <div class="challenge">
+      <h3>📏 이번 주 '설계도대로 자라기' 챌린지</h3>
+      <p class="hint">이번 주에 하나만 골라 실천해 보세요. 하나면 충분합니다.</p>
+      <label class="check"><input type="checkbox"><span>일주일 동안 잠드는 시각을 같은 시각으로 지켜 보기</span></label>
+      <label class="check"><input type="checkbox"><span>아침에 우유 한 잔이나 달걀 하나, 가볍게라도 챙겨 주기</span></label>
+      <label class="check"><input type="checkbox"><span>저녁 식탁에 단백질 반찬 한 가지 꼭 올리기</span></label>
+      <label class="check"><input type="checkbox"><span>주말에 바깥에서 30분 이상 함께 몸을 움직이기</span></label>
+      <label class="check"><input type="checkbox"><span>이번 주엔 키 이야기 대신 "맛있게 먹었어?"라고 물어보기</span></label>
+      <p class="challenge-msg" id="challengeMsg"></p>
+    </div>
+  </section>
+
+  <div class="closing">
+    <h2 style="border:none;padding:0;margin-bottom:14px">조급함을 잠시 내려놓으셔도 됩니다</h2>
+    <p>키는 특별한 무언가를 더해서 늘리는 것이 아니라,<br>
+    아이가 타고난 설계도만큼 자랄 수 있도록<br>
+    모자람을 채우고 방해를 덜어 주는 일에 가깝습니다.<br>
+    잘 먹고, 잘 자고, 실컷 뛰놀고, 마음이 편안한 하루.<br>
+    이 평범한 하루가 가장 확실한 성장의 조건입니다.</p>
+    <p class="sign">오늘도 아이의 식탁을 살피는 학부모님을 응원합니다.</p>
+
+    <div class="med-note">
+      이 자료는 학부모 영양교육을 위한 정보 제공용이며, 진단이나 치료를 대신하지 않습니다. 성장 속도와 사춘기 시기는 개인차가 매우 크며, 여기 담긴 내용은 일반적인 원리입니다. 또래에 비해 성장이 뚜렷하게 느리거나 갑자기 빨라진 경우, 사춘기 징후가 이르게 나타난 경우, 또는 성장 보조제 복용을 고민하시는 경우에는 소아청소년과·소아내분비 등 전문 의료진과 상담하시기 바랍니다.
+    </div>
+  </div>
+
+  <footer>본 자료는 학부모 영양교육을 위해 제작되었습니다.<br>영양상담 선도학교 전주서일초등학교 영양교육</footer>
+</div>
+
+<script>
+(function(){
+  // ----- 자가 관찰: 결과 보기 (버튼 공개) -----
+  var diagBtn = document.getElementById('diagBtn');
+  var diagResult = document.getElementById('diagResult');
+  var diagChecks = document.querySelectorAll('.diag .row input');
+
+  diagBtn.addEventListener('click', function(){
+    var n = 0, i;
+    for(i = 0; i < diagChecks.length; i++){ if(diagChecks[i].checked){ n++; } }
+    var msg;
+    if(n === 0){
+      msg = '<b>해당하는 항목이 없으시군요.</b> 아이가 가진 설계도만큼 자랄 수 있는 환경이 이미 잘 갖춰져 있습니다. 지금처럼 잘 먹고 잘 자는 하루를 편안하게 이어가 주세요. 그것으로 충분합니다.';
+    } else if(n <= 2){
+      msg = '<b>몇 가지가 해당되시네요.</b> 큰 문제가 있는 상황은 아닙니다. 다만 한두 곳에 작은 틈이 있어 보입니다. 아래 내용 중 <b>딱 하나만</b> 골라 이번 주에 시작해 보셔도 충분히 달라집니다.';
+    } else {
+      msg = '<b>여러 항목이 해당되시는군요.</b> 부모님이 무언가를 잘못하고 계신 것이 아니라, 요즘 아이들의 일상에서 흔히 생기는 모습입니다. 특히 <b>잠</b>과 <b>단백질</b> 두 가지부터 살펴보시면 가장 빠르게 좋아집니다. 아래 실천 팁이 도움이 되실 거예요.';
+    }
+    diagResult.innerHTML = msg;
+    if(diagResult.className.indexOf('show') < 0){ diagResult.className = diagResult.className + ' show'; }
+  });
+
+  // ----- 시그니처: 오해 카드 공개 -----
+  var vegs = document.querySelectorAll('.veg');
+  function bindVeg(v){
+    var btn = v.querySelector('.why-btn');
+    btn.addEventListener('click', function(){
+      var isOpen = v.className.indexOf('open') >= 0;
+      if(isOpen){
+        v.className = v.className.replace(' open', '');
+        btn.textContent = '정말 그럴까요?';
+      } else {
+        v.className = v.className + ' open';
+        btn.textContent = '닫기';
+      }
+    });
+  }
+  var vi;
+  for(vi = 0; vi < vegs.length; vi++){ bindVeg(vegs[vi]); }
+
+  // ----- 챌린지 체크 -----
+  var checks = document.querySelectorAll('.check input');
+  var chMsg = document.getElementById('challengeMsg');
+  var cheers = [
+    "",
+    "좋아요! 이번 주는 이 하나면 충분합니다. 💪",
+    "두 가지나! 아이의 하루가 조금씩 단단해지고 있어요.",
+    "세 가지 도전, 대단합니다. 성장의 기둥이 함께 세워지고 있어요.",
+    "네 가지라니요! 아이가 가진 설계도를 든든히 받쳐 주고 계십니다.",
+    "🎉 전부 도전! 조급함 대신 꾸준함을 택하신 멋진 한 주입니다."
+  ];
+  function bindCheck(c){
+    c.addEventListener('change', function(){
+      var row = c.parentNode;
+      if(c.checked){
+        if(row.className.indexOf('done') < 0){ row.className = row.className + ' done'; }
+      } else {
+        row.className = row.className.replace(' done', '');
+      }
+      var n = 0, k;
+      for(k = 0; k < checks.length; k++){ if(checks[k].checked){ n++; } }
+      chMsg.textContent = cheers[n];
+    });
+  }
+  var t;
+  for(t = 0; t < checks.length; t++){ bindCheck(checks[t]); }
+})();
+</script>
+</body>
+</html>
