@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>밥상머리에서 배우는 삶의 태도</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F8F1;        /* 연한 잎맥색 종이 */
+    --ink:#26332A;          /* 짙은 먹색 */
+    --pine:#1E5631;         /* 소나무 녹색 */
+    --pine-soft:#DCEBDC;    /* 옅은 녹색 면 */
+    --carrot:#D9750F;       /* 당근 주황 */
+    --carrot-soft:#FBEEDC;  /* 옅은 주황 면 */
+    --tbl:#5F4B8B;          /* 저녁 식탁 등불빛 (이번 화 포인트) */
+    --tbl-soft:#EDE8F5;     /* 옅은 등불빛 면 */
+    --line:#C9D8C6;
+    --serif:'Gowun Batang', serif;
+    --sans:'IBM Plex Sans KR', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    background:var(--paper);color:var(--ink);font-family:var(--serif);
+    line-height:1.85;font-size:17px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px 80px}
+
+  /* ---- 헤더 ---- */
+  header{padding:44px 0 28px;border-bottom:3px double var(--pine)}
+  .eyebrow{
+    font-family:var(--sans);font-size:12.5px;font-weight:700;letter-spacing:.14em;
+    color:var(--pine);text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--carrot);display:inline-block}
+  h1{font-size:clamp(26px,6vw,36px);font-weight:700;line-height:1.42;color:var(--pine);word-break:keep-all}
+  h1 em{font-style:normal;color:var(--tbl)}
+  .subtitle{margin-top:14px;font-size:15.5px;color:#4E5D52;word-break:keep-all}
+  .byline{margin-top:20px;font-family:var(--sans);font-size:13.5px;color:#5C6B60;display:flex;align-items:center;gap:10px}
+  .byline .avatar{
+    width:34px;height:34px;border-radius:50%;background:var(--tbl);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+  }
+
+  /* ---- 목차 ---- */
+  nav{
+    position:sticky;top:0;z-index:10;background:var(--paper);
+    padding:12px 0;border-bottom:1px solid var(--line);
+    display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none}
+  nav a{
+    font-family:var(--sans);font-size:12.5px;font-weight:500;white-space:nowrap;
+    color:var(--pine);text-decoration:none;background:var(--pine-soft);
+    padding:7px 13px;border-radius:999px;
+  }
+  nav a:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+
+  /* ---- 본문 ---- */
+  section{padding-top:40px}
+  h2{
+    font-size:21px;color:var(--pine);line-height:1.5;word-break:keep-all;
+    padding-left:14px;border-left:4px solid var(--carrot);margin-bottom:18px;
+  }
+  p{margin-bottom:18px;word-break:keep-all;text-align:justify}
+  strong{color:var(--carrot);font-weight:700}
+  .cool{color:var(--tbl);font-weight:700}
+  .lead::first-letter{font-size:2.6em;float:left;line-height:1;padding:6px 10px 0 0;color:var(--pine);font-weight:700}
+  .pull{
+    margin:28px 0;padding:22px 24px;background:var(--tbl-soft);border-radius:4px 22px 4px 22px;
+    font-size:18px;line-height:1.7;color:var(--tbl);font-weight:700;text-align:center;word-break:keep-all;
+  }
+
+  /* ---- 자가 관찰 (버튼 공개) ---- */
+  .diag{
+    margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:24px 20px;font-family:var(--sans);
+  }
+  .diag h3{font-size:16px;color:var(--pine);margin-bottom:6px;word-break:keep-all}
+  .diag .hint{font-size:13.5px;color:#5C6B60;margin-bottom:18px;line-height:1.6;word-break:keep-all}
+  .diag .row{
+    display:flex;align-items:flex-start;gap:12px;background:#FAFCF8;border:1px solid var(--line);
+    border-radius:11px;padding:13px 14px;margin-bottom:10px;cursor:pointer;
+    font-size:14px;line-height:1.6;word-break:keep-all;
+  }
+  .diag .row input{
+    appearance:none;-webkit-appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--tbl);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;
+  }
+  .diag .row input:checked{background:var(--tbl)}
+  .diag .row input:checked::after{content:"\2713";color:#fff;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .diag .row input:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .reveal-btn{
+    width:100%;margin-top:8px;font-family:var(--sans);font-weight:700;font-size:15px;
+    background:var(--tbl);color:#fff;border:none;border-radius:11px;padding:14px 0;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .reveal-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .reveal-btn:disabled{opacity:.55;cursor:default}
+  .diag-result{
+    display:none;margin-top:16px;font-size:14px;line-height:1.75;color:#3D4A41;
+    background:var(--tbl-soft);border-left:3px solid var(--tbl);
+    padding:14px 15px;border-radius:0 12px 12px 0;word-break:keep-all;
+  }
+  .diag-result.show{display:block;animation:reveal .3s ease}
+  .diag-result b{color:var(--tbl)}
+  @keyframes reveal{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  /* ---- 개념 아이콘 카드 ---- */
+  .cards{display:grid;grid-template-columns:1fr;gap:12px;margin:24px 0;font-family:var(--sans)}
+  .icard{
+    background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px;
+    display:flex;gap:14px;align-items:flex-start;
+  }
+  .icard .ic{
+    flex-shrink:0;width:44px;height:44px;border-radius:12px;background:var(--tbl-soft);
+    display:flex;align-items:center;justify-content:center;font-size:22px;
+  }
+  .icard h4{font-size:15px;color:var(--pine);margin-bottom:4px;word-break:keep-all}
+  .icard p{font-size:13.5px;line-height:1.7;color:#3D4A41;margin:0;word-break:keep-all;text-align:left}
+
+  /* ---- 시그니처: 유대인 식탁의 장면 카드 ---- */
+  .veg-wrap{margin:24px 0;font-family:var(--sans)}
+  .veg-lead{font-size:13.5px;color:#5C6B60;margin-bottom:16px;line-height:1.6;word-break:keep-all}
+  .veg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .veg{
+    background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px 14px;
+    display:flex;flex-direction:column;text-align:center;
+  }
+  .veg .emoji{font-size:34px;line-height:1;margin-bottom:8px}
+  .veg .vname{font-size:15px;font-weight:700;color:var(--pine);margin-bottom:3px}
+  .veg .vtag{font-size:11.5px;color:#8A968D;margin-bottom:12px;word-break:keep-all}
+  .veg .why-btn{
+    margin-top:auto;font-family:var(--sans);font-weight:700;font-size:13px;
+    background:var(--tbl-soft);color:var(--tbl);border:1.5px solid var(--tbl);
+    border-radius:9px;padding:9px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;
+    transition:background .15s,color .15s;
+  }
+  .veg .why-btn:hover{background:var(--tbl);color:#fff}
+  .veg .why-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .veg .vexp{
+    display:none;margin-top:12px;font-size:12.5px;line-height:1.7;color:#3D4A41;
+    background:#FAFCF8;border-radius:10px;padding:11px 12px;text-align:left;word-break:keep-all;
+  }
+  .veg.open .vexp{display:block;animation:reveal .3s ease}
+  .veg.open .why-btn{background:var(--tbl);color:#fff}
+  .veg .vexp .gene-tag{
+    display:inline-block;font-size:11px;font-weight:700;color:var(--tbl);
+    background:var(--tbl-soft);border-radius:6px;padding:2px 7px;margin-bottom:6px;
+  }
+  .veg .vexp b{color:var(--carrot)}
+
+  /* ---- 태도 4가지 ---- */
+  .att{display:grid;grid-template-columns:1fr;gap:10px;margin:22px 0;font-family:var(--sans)}
+  .att .arow{
+    background:#fff;border:1px solid var(--line);border-left:4px solid var(--tbl);
+    border-radius:0 12px 12px 0;padding:14px 16px;
+  }
+  .att .arow h4{font-size:14.5px;color:var(--tbl);margin-bottom:4px;word-break:keep-all}
+  .att .arow p{font-size:13.5px;line-height:1.7;color:#3D4A41;margin:0;text-align:left;word-break:keep-all}
+
+  /* ---- 아코디언 ---- */
+  .tips{display:flex;flex-direction:column;gap:12px;margin:22px 0;font-family:var(--sans)}
+  details{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  summary{
+    list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:12px;
+    font-weight:700;font-size:15px;color:var(--ink);word-break:keep-all;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:2px solid var(--carrot);outline-offset:-2px}
+  summary .num{
+    flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--tbl-soft);
+    color:var(--tbl);font-size:14px;display:flex;align-items:center;justify-content:center;
+  }
+  summary .chev{margin-left:auto;color:var(--pine);transition:transform .2s;font-size:13px}
+  details[open] .chev{transform:rotate(180deg)}
+  details .body{padding:0 18px 16px 60px;font-size:14.5px;line-height:1.75;color:#3D4A41;word-break:keep-all}
+  details .body .ex{
+    margin-top:8px;background:#FAFCF8;border-left:3px solid var(--line);
+    padding:8px 12px;border-radius:0 8px 8px 0;font-size:13.5px;
+  }
+
+  /* ---- 챌린지 ---- */
+  .challenge{margin:26px 0;background:var(--carrot-soft);border-radius:16px;padding:24px 20px;font-family:var(--sans)}
+  .challenge h3{font-size:16px;color:var(--carrot);margin-bottom:4px}
+  .challenge .hint{font-size:13.5px;color:#7A5A33;margin-bottom:16px;word-break:keep-all}
+  .check{
+    display:flex;align-items:flex-start;gap:12px;background:#fff;border-radius:10px;
+    padding:13px 14px;margin-bottom:10px;cursor:pointer;font-size:14.5px;line-height:1.6;word-break:keep-all;
+  }
+  .check input{
+    appearance:none;-webkit-appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--carrot);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;
+  }
+  .check input:checked{background:var(--carrot)}
+  .check input:checked::after{content:"\2713";color:#fff;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .check input:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .check.done span{text-decoration:line-through;color:#9B8A72}
+  .challenge-msg{font-size:14px;font-weight:700;color:var(--carrot);text-align:center;min-height:1.5em;margin-top:6px}
+
+  /* ---- 맺음 ---- */
+  .closing{margin-top:44px;padding:28px 24px;border-top:3px double var(--pine);text-align:center;word-break:keep-all}
+  .closing p{text-align:center}
+  .closing .sign{font-family:var(--sans);font-size:13.5px;color:#5C6B60;margin-top:14px;margin-bottom:0}
+  .med-note{
+    font-family:var(--sans);font-size:12px;color:#8A7A66;background:#FAF6EE;border-radius:10px;
+    padding:13px 15px;margin-top:22px;line-height:1.6;word-break:keep-all;text-align:left;
+  }
+  footer{font-family:var(--sans);font-size:12px;color:#8A968D;text-align:center;margin-top:30px;line-height:1.7;word-break:keep-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">영양교사 칼럼 · 우리 아이 식생활 이야기 · 스물아홉 번째</span>
+    <h1>밥상머리에서 배우는<br><em>삶의 태도</em></h1>
+    <p class="subtitle">유대인 가정의 식탁 이야기. 무엇을 먹였는가보다, 그 자리에서 무엇을 나누었는가가 아이의 태도를 만듭니다.</p>
+    <div class="byline">
+      <span class="avatar">🕯️</span>
+      <span>영양상담 선도학교 전주서일초등학교 영양교사 · 읽는 시간 약 6분</span>
+    </div>
+  </header>
+
+  <nav aria-label="칼럼 목차">
+    <a href="#s1">우리 집 식탁</a>
+    <a href="#s2">식탁의 힘</a>
+    <a href="#s3">유대인의 식탁, 네 장면</a>
+    <a href="#s4">자라는 태도</a>
+    <a href="#s5">집에서 해보기</a>
+    <a href="#s6">이번 주 챌린지</a>
+  </nav>
+
+  <section id="s0">
+    <p class="lead">"밥 먹을 때는 조용히 먹어라." 많은 분들이 그렇게 자라셨을 것입니다. 그런데 세계에서 가장 오래 이어진 자녀교육 전통 중 하나는, 정반대의 자리에서 시작됩니다. 유대인 가정의 식탁은 조용하지 않습니다. 아이가 묻고, 어른이 답하고, 다시 아이가 되묻습니다. 오늘은 그 식탁이 아이에게 무엇을 남기는지, 그리고 우리 집 저녁 식탁에 무엇을 옮겨올 수 있을지 함께 살펴보려 합니다.</p>
+    <div class="pull">식탁은 음식을 넘기는 자리가 아니라,<br>삶의 태도를 넘겨주는 자리입니다.</div>
+  </section>
+
+  <section id="s1">
+    <h2>먼저, 우리 집 저녁 식탁을 떠올려 볼까요?</h2>
+    <p>평가가 아니라 관찰입니다. 맞고 틀린 답은 없습니다. 아래에서 요즘 우리 집 모습과 비슷한 항목을 편하게 눌러 보시고, 버튼을 누르면 함께 읽어 드리겠습니다.</p>
+
+    <div class="diag">
+      <h3>🍽️ 우리 집 식탁 관찰 체크</h3>
+      <p class="hint">해당하는 항목을 눌러 주세요. 다 고르신 뒤 '결과 보기'를 누르면 해석이 나타납니다.</p>
+
+      <label class="row"><input type="checkbox"><span>온 가족이 함께 저녁을 먹는 날이 일주일에 두 번이 채 되지 않는다</span></label>
+      <label class="row"><input type="checkbox"><span>식사 중에 TV나 휴대전화가 켜져 있는 경우가 많다</span></label>
+      <label class="row"><input type="checkbox"><span>식탁에서 나누는 말이 주로 "빨리 먹어", "골고루 먹어"에 가깝다</span></label>
+      <label class="row"><input type="checkbox"><span>아이에게 "오늘 학교 어땠어?"라고 물으면 "그냥"이라는 답이 돌아온다</span></label>
+      <label class="row"><input type="checkbox"><span>공부나 생활에 대한 잔소리가 주로 식사 시간에 나온다</span></label>
+
+      <button type="button" class="reveal-btn" id="diagBtn">결과 보기</button>
+      <p class="diag-result" id="diagResult" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2>함께 먹는 저녁 한 끼가, 생각보다 많은 것을 바꿉니다</h2>
+    <p>'가족이 함께 밥 먹기'는 오래된 덕담처럼 들리지만, 사실 아동·청소년 연구에서 가장 일관된 결과가 나오는 주제 중 하나입니다. 함께 먹는 횟수가 늘어날수록 아이의 언어, 정서, 생활습관이 함께 좋아진다는 보고가 여러 나라에서 반복해 확인되었습니다.</p>
+
+    <div class="cards">
+      <div class="icard">
+        <span class="ic">🗣️</span>
+        <div>
+          <h4>말과 생각이 자랍니다</h4>
+          <p>하버드대 연구진은 식탁 대화에서 아이들이 책을 읽어 줄 때보다 오히려 더 다양하고 어려운 낱말을 만난다는 점을 확인했습니다. 어린아이에게 식탁 대화는 책 읽어 주기만큼, 때로는 그보다 더 큰 어휘의 밑거름이 됩니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">🛡️</span>
+        <div>
+          <h4>마음이 든든해집니다</h4>
+          <p>컬럼비아대 연구팀 조사에서, 가족 식사가 잦은 청소년은 그렇지 않은 청소년보다 스트레스 수준이 낮고 부모와의 관계가 좋았으며 흡연·음주·약물 사용 위험이 뚜렷하게 낮았습니다. 여러 연구를 모아 본 분석에서도 우울감과 무리한 다이어트 행동이 더 적었습니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">🥗</span>
+        <div>
+          <h4>입맛도 함께 넓어집니다</h4>
+          <p>가족과 함께 먹는 아이는 채소·과일 섭취가 많고 먹는 음식의 종류가 다양했습니다. 다만 국내 조사에서 가족과 함께 아침을 먹는 초등학생의 비율은 80%대에서 70%대로 낮아지는 흐름을 보이고 있습니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <p>여기서 중요한 것은 <span class="cool">'매일'이 아니라 '반복'</span>입니다. 맞벌이 가정이 대부분인 요즘, 매 끼니를 함께하기는 어렵습니다. 유대인의 식탁이 주는 힌트도 사실 매일이 아니라, <strong>일주일에 한 번은 반드시</strong>라는 약속에 가깝습니다.</p>
+  </section>
+
+  <section id="s3">
+    <h2>유대인의 식탁, 네 가지 장면</h2>
+    <p>유대인 가정의 식탁에는 오래 이어져 온 몇 가지 장면이 있습니다. 종교적 배경을 걷어내고 보면, 그 안에는 어느 집에서나 옮겨올 수 있는 원리가 남습니다. 카드를 눌러 하나씩 확인해 보세요.</p>
+
+    <div class="veg-wrap">
+      <p class="veg-lead">카드의 버튼을 누르면 그 장면에 담긴 뜻이 나타납니다.</p>
+      <div class="veg-grid">
+
+        <div class="veg">
+          <div class="emoji">🕯️</div>
+          <div class="vname">모이는 날</div>
+          <div class="vtag">일주일에 한 번은 반드시</div>
+          <button type="button" class="why-btn">무엇을 배울까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">안식일 저녁 식탁</span>
+            해가 지면 온 가족이 식탁에 모입니다. 약속도 일도 이 시간 뒤로 미룹니다. 촛불을 켜고 서로의 한 주를 묻고 천천히 먹습니다. 핵심은 음식이 아니라 <b>예외 없이 반복된다</b>는 사실입니다. 아이는 "무슨 일이 있어도 우리 가족은 이 자리에 모인다"는 감각을 몸으로 익힙니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">❓</div>
+          <div class="vname">묻는 식탁</div>
+          <div class="vtag">정답보다 질문이 먼저</div>
+          <button type="button" class="why-btn">무엇을 배울까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">하브루타</span>
+            짝을 지어 묻고 따지며 배우는 방식이 식탁에서도 이어집니다. 노벨 물리학상을 받은 이지도어 라비는, 어머니가 늘 "무엇을 배웠니" 대신 <b>"오늘 좋은 질문을 했니"</b>라고 물었고 그 차이가 자신을 과학자로 만들었다고 회고했습니다. 답을 확인받는 식탁과 질문이 환영받는 식탁은, 아이의 태도를 다르게 키웁니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🙏</div>
+          <div class="vname">감사하는 식탁</div>
+          <div class="vtag">당연한 밥은 없습니다</div>
+          <button type="button" class="why-btn">무엇을 배울까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">축복과 감사</span>
+            먹기 전 짧은 감사의 말을 나누고, 부모가 아이의 머리에 손을 얹어 축복하는 관습이 있습니다. 신앙을 떠나 남는 것은 <b>'당연히 주어진 밥은 없다'</b>는 감각입니다. 밥 한 그릇 뒤의 사람과 수고를 떠올려 본 아이는, 음식에도 사람에게도 함부로 하지 않습니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🤲</div>
+          <div class="vname">이야기하는 식탁</div>
+          <div class="vtag">우리 집은 어떤 집인가</div>
+          <button type="button" class="why-btn">무엇을 배울까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">이야기와 나눔</span>
+            식탁에서는 조상의 이야기, 가족이 겪어 온 일, 그리고 어려운 이웃을 돕는 이야기가 자연스럽게 오갑니다. 아이는 자기 가족이 어떤 이야기 위에 서 있는지 알게 되고, 스스로가 <b>더 큰 이야기의 한 부분</b>이라고 느낍니다. 자기 이야기를 가진 아이는 밖에서 쉽게 흔들리지 않습니다.
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <p>네 장면을 관통하는 것은 하나입니다. 식탁이 <span class="cool">평가받는 자리가 아니라 환영받는 자리</span>라는 점입니다. 이 조건이 갖춰질 때, 아이는 비로소 식탁에서 입을 엽니다.</p>
+  </section>
+
+  <section id="s4">
+    <h2>그래서 아이는 무엇을 배우게 될까요?</h2>
+    <p>밥상머리에서 전해지는 것은 지식이 아니라 태도입니다. 누구도 "이제부터 태도를 가르치겠다"고 선언하지 않지만, 매주 반복되는 장면 속에서 아이는 조용히 배웁니다.</p>
+
+    <div class="att">
+      <div class="arow">
+        <h4>경청 · 끝까지 듣는 힘</h4>
+        <p>내 말이 끊기지 않는 경험을 반복한 아이는, 다른 사람의 말도 끝까지 듣습니다. 듣는 태도는 설명이 아니라 경험으로 배웁니다.</p>
+      </div>
+      <div class="arow">
+        <h4>질문 · 모르는 것을 드러내는 용기</h4>
+        <p>"그것도 몰라?"라는 말이 없는 식탁에서 아이는 마음 놓고 묻습니다. 모른다고 말할 수 있는 아이가 결국 끝까지 배웁니다.</p>
+      </div>
+      <div class="arow">
+        <h4>감사 · 사람을 보는 눈</h4>
+        <p>밥 뒤에 농부와 조리사와 부모가 있다는 것을 아는 아이는, 눈앞의 접시 너머 사람을 봅니다. 감사는 예절이 아니라 시야입니다.</p>
+      </div>
+      <div class="arow">
+        <h4>절제와 나눔 · 함께 먹는 감각</h4>
+        <p>좋아하는 반찬을 혼자 다 가져가지 않고, 늦게 오는 가족의 몫을 남겨 두는 일. 공동체 감각은 이렇게 작은 접시 위에서 시작됩니다.</p>
+      </div>
+    </div>
+
+    <div class="pull">아이는 부모의 말이 아니라,<br>매주 반복되는 장면을 배웁니다.</div>
+  </section>
+
+  <section id="s5">
+    <h2>우리 집 식탁으로 옮겨오기</h2>
+    <p>전부 하실 필요는 전혀 없습니다. 아래에서 <strong>우리 집에서 이번 주에 시작할 수 있는 것 하나</strong>만 골라 보세요. 하나로 충분합니다.</p>
+    <div class="tips">
+      <details>
+        <summary><span class="num">1</span>일주일에 한 번, '우리 집 모이는 날'을 정해요<span class="chev">▼</span></summary>
+        <div class="body">매일은 어렵습니다. 대신 요일 하나를 정해 그날 저녁만큼은 가족이 함께 앉습니다. 학원 시간표를 조정하기 어렵다면 금요일 저녁이나 주말 아침도 좋습니다. 중요한 것은 횟수가 아니라 <b>예외 없이 지켜지는 약속</b>입니다.
+          <div class="ex">"우리 집은 금요일 저녁은 무조건 같이 먹는 날이야"라고 아이에게 이름을 붙여 알려 주세요.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">2</span>식탁의 첫 질문을 바꿔 보세요<span class="chev">▼</span></summary>
+        <div class="body">"오늘 학교 어땠어?"에는 "그냥"이라는 답이 돌아옵니다. 대답의 길을 열어 주는 질문으로 바꿔 보세요. 아이가 말하기 시작하면, 그때부터 식탁은 저절로 굴러갑니다.
+          <div class="ex">"오늘 제일 궁금했던 게 뭐야?" · "오늘 급식에서 제일 맛있었던 건?" · "오늘 웃었던 일 하나만 말해 줄래?"</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">3</span>화면을 잠시 꺼 두세요<span class="chev">▼</span></summary>
+        <div class="body">TV와 휴대전화가 켜져 있으면 대화도 사라지고, 아이의 포만 신호도 흐려집니다. 온 가족이 함께 끄는 것이 중요합니다. 부모만 보고 있으면 규칙이 아니라 잔소리가 됩니다.
+          <div class="ex">식탁 옆에 '휴대전화 두는 자리'를 하나 만들어 두면 실랑이가 훨씬 줄어듭니다.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">4</span>식사 시간에는 훈계를 잠시 내려놓아요<span class="chev">▼</span></summary>
+        <div class="body">성적, 숙제, 형제간 다툼 이야기는 식탁 밖으로 옮겨 주세요. 식탁이 지적받는 자리가 되면 아이는 빨리 먹고 일어서는 법을 먼저 배웁니다. 하고 싶은 말이 있다면 식사 후 따로 시간을 내는 편이 훨씬 잘 전달됩니다.
+          <div class="ex">우리 집 식탁 규칙 하나: "밥 먹는 동안은 혼내지 않기." 아이와 함께 정하면 더 잘 지켜집니다.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">5</span>감사 한 줄로 식사를 열어요<span class="chev">▼</span></summary>
+        <div class="body">거창한 형식은 필요 없습니다. 오늘 고마웠던 일 한 가지씩만 말하고 수저를 듭니다. 몇 초면 충분하지만, 식탁의 공기가 눈에 띄게 달라집니다.
+          <div class="ex">"오늘은 우산 빌려준 짝꿍이 고마웠어" 정도면 훌륭합니다.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">6</span>음식 이야기로 세상을 넓혀 주세요<span class="chev">▼</span></summary>
+        <div class="body">오늘 식탁에 오른 재료가 어디서 왔는지, 제철이 언제인지, 학교 급식은 누가 어떻게 준비하는지 이야기해 보세요. 밥상머리 교육과 식생활 교육이 만나는 지점이며, 편식 지도보다 훨씬 오래 남습니다.
+          <div class="ex">"오늘 급식에 나온 나물, 지금이 제철이래" 한마디가 아이의 젓가락을 움직이기도 합니다.</div>
+        </div>
+      </details>
+    </div>
+    <p>이미 몇 가지를 하고 계신 분도 많으실 것입니다. 새로 시작하시는 것보다, <span class="cool">이미 하고 계신 것을 알아차리고 이어가시는 것</span>이 훨씬 큰 힘이 됩니다.</p>
+  </section>
+
+  <section id="s6">
+    <div class="challenge">
+      <h3>🕯️ 이번 주 '우리 집 밥상머리' 챌린지</h3>
+      <p class="hint">이번 주에 하나만 골라 실천해 보세요. 하나면 충분합니다.</p>
+      <label class="check"><input type="checkbox"><span>온 가족이 함께 먹을 저녁 한 끼, 요일을 정해 보기</span></label>
+      <label class="check"><input type="checkbox"><span>식탁에서 "오늘 제일 궁금했던 게 뭐야?" 하고 한 번 물어보기</span></label>
+      <label class="check"><input type="checkbox"><span>식사하는 동안 TV와 휴대전화 잠시 꺼 두기</span></label>
+      <label class="check"><input type="checkbox"><span>아이 말을 끊지 않고 끝까지 들어 주기</span></label>
+      <p class="challenge-msg" id="challengeMsg"></p>
+    </div>
+  </section>
+
+  <div class="closing">
+    <h2 style="border:none;padding:0;margin-bottom:14px">가장 좋은 교실은 여전히 식탁입니다</h2>
+    <p>아이에게 삶의 태도를 가르치는 특별한 방법은 없습니다.<br>
+    같은 자리에 반복해서 함께 앉고, 끝까지 들어 주고, 질문을 반겨 주는 것.<br>
+    유대인의 오랜 식탁이 알려 주는 것은 결국 그 단순한 반복입니다.<br>
+    오늘 저녁, 한 끼면 시작할 수 있습니다.</p>
+    <p class="sign">오늘도 아이의 식탁을 지키시는 학부모님을 응원합니다.</p>
+
+    <div class="med-note">
+      이 자료는 학부모 영양교육을 위한 정보 제공용이며, 특정 종교나 문화를 권하는 자료가 아닙니다. 소개해 드린 관습은 이해를 돕기 위한 사례이며, 가정의 형태와 상황에 맞게 자유롭게 고쳐 적용하시면 됩니다. 가족 식사 횟수는 가정마다 사정이 다를 수 있고, 그 자체가 좋은 양육의 기준이 되지는 않습니다. 아이의 식사량이나 성장, 정서 상태가 걱정되신다면 학교 영양교사나 소아청소년과 등 전문가와 상담하시기 바랍니다.
+    </div>
+  </div>
+
+  <footer>본 자료는 학부모 영양교육을 위해 제작되었습니다.<br>영양상담 선도학교 전주서일초등학교 영양교육</footer>
+</div>
+
+<script>
+(function(){
+  // ----- 자가 관찰: 결과 보기 (버튼 공개) -----
+  var diagBtn = document.getElementById('diagBtn');
+  var diagResult = document.getElementById('diagResult');
+  var diagChecks = document.querySelectorAll('.diag .row input');
+
+  diagBtn.addEventListener('click', function(){
+    var n = 0, i;
+    for(i = 0; i < diagChecks.length; i++){ if(diagChecks[i].checked){ n++; } }
+    var msg;
+    if(n === 0){
+      msg = '<b>해당하는 항목이 없으시군요.</b> 이미 식탁이 아이에게 편안한 자리로 자리 잡은 가정입니다. 특별히 더하실 것보다, 지금의 그 시간을 그대로 지켜 주시는 것이 가장 큰 교육입니다.';
+    } else if(n <= 2){
+      msg = '<b>몇 가지가 해당되시네요.</b> 바쁜 일상에서 아주 자연스러운 모습입니다. 아래 소개해 드리는 방법 중 하나만 더해 보셔도, 식탁의 공기가 눈에 띄게 달라지는 것을 느끼실 수 있습니다.';
+    } else {
+      msg = '<b>여러 항목이 해당되시는군요.</b> 부모님의 노력이 부족해서가 아니라, 요즘 가정의 일정이 그만큼 빠듯하기 때문입니다. 매일이 아니어도 괜찮습니다. <b>일주일에 한 끼</b>부터 시작해 보시면 충분합니다.';
+    }
+    diagResult.innerHTML = msg;
+    if(diagResult.className.indexOf('show') < 0){ diagResult.className = diagResult.className + ' show'; }
+  });
+
+  // ----- 시그니처: 식탁 장면 카드 공개 -----
+  var vegs = document.querySelectorAll('.veg');
+  function bindVeg(v){
+    var btn = v.querySelector('.why-btn');
+    btn.addEventListener('click', function(){
+      var isOpen = v.className.indexOf('open') >= 0;
+      if(isOpen){
+        v.className = v.className.replace(' open', '');
+        btn.textContent = '무엇을 배울까요?';
+      } else {
+        v.className = v.className + ' open';
+        btn.textContent = '닫기';
+      }
+    });
+  }
+  var vi;
+  for(vi = 0; vi < vegs.length; vi++){ bindVeg(vegs[vi]); }
+
+  // ----- 챌린지 체크 -----
+  var checks = document.querySelectorAll('.check input');
+  var chMsg = document.getElementById('challengeMsg');
+  var cheers = [
+    "",
+    "좋아요! 이번 주는 이 하나면 충분합니다. 🕯️",
+    "두 가지나! 식탁의 공기가 조금씩 달라질 거예요.",
+    "세 가지 도전, 대단합니다. 아이가 먼저 말을 걸어올지도 몰라요.",
+    "🎉 전부 도전! 오늘 저녁, 가장 좋은 교실이 열립니다."
+  ];
+  function bindCheck(c){
+    c.addEventListener('change', function(){
+      var row = c.parentNode;
+      if(c.checked){
+        if(row.className.indexOf('done') < 0){ row.className = row.className + ' done'; }
+      } else {
+        row.className = row.className.replace(' done', '');
+      }
+      var n = 0, k;
+      for(k = 0; k < checks.length; k++){ if(checks[k].checked){ n++; } }
+      chMsg.textContent = cheers[n];
+    });
+  }
+  var t;
+  for(t = 0; t < checks.length; t++){ bindCheck(checks[t]); }
+})();
+</script>
+</body>
+</html>
