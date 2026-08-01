@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마라탕과 탕후루, 왜 아이들은 이렇게 좋아할까요?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F8F1;        /* 연한 잎맥색 종이 */
+    --ink:#26332A;          /* 짙은 먹색 */
+    --pine:#1E5631;         /* 소나무 녹색 */
+    --pine-soft:#DCEBDC;    /* 옅은 녹색 면 */
+    --carrot:#D9750F;       /* 당근 주황 */
+    --carrot-soft:#FBEEDC;  /* 옅은 주황 면 */
+    --mala:#B5304A;         /* 마라의 붉은빛, 탕후루의 딸기빛 (이번 화 포인트) */
+    --mala-soft:#FAE7EB;    /* 옅은 붉은 면 */
+    --line:#C9D8C6;
+    --serif:'Gowun Batang', serif;
+    --sans:'IBM Plex Sans KR', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    background:var(--paper);color:var(--ink);font-family:var(--serif);
+    line-height:1.85;font-size:17px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px 80px}
+
+  /* ---- 헤더 ---- */
+  header{padding:44px 0 28px;border-bottom:3px double var(--pine)}
+  .eyebrow{
+    font-family:var(--sans);font-size:12.5px;font-weight:700;letter-spacing:.14em;
+    color:var(--pine);text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--carrot);display:inline-block}
+  h1{font-size:clamp(26px,6vw,36px);font-weight:700;line-height:1.42;color:var(--pine);word-break:keep-all}
+  h1 em{font-style:normal;color:var(--mala)}
+  .subtitle{margin-top:14px;font-size:15.5px;color:#4E5D52;word-break:keep-all}
+  .byline{margin-top:20px;font-family:var(--sans);font-size:13.5px;color:#5C6B60;display:flex;align-items:center;gap:10px}
+  .byline .avatar{
+    width:34px;height:34px;border-radius:50%;background:var(--mala);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+  }
+
+  /* ---- 목차 ---- */
+  nav{
+    position:sticky;top:0;z-index:10;background:var(--paper);
+    padding:12px 0;border-bottom:1px solid var(--line);
+    display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none}
+  nav a{
+    font-family:var(--sans);font-size:12.5px;font-weight:500;white-space:nowrap;
+    color:var(--pine);text-decoration:none;background:var(--pine-soft);
+    padding:7px 13px;border-radius:999px;
+  }
+  nav a:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+
+  /* ---- 본문 ---- */
+  section{padding-top:40px}
+  h2{
+    font-size:21px;color:var(--pine);line-height:1.5;word-break:keep-all;
+    padding-left:14px;border-left:4px solid var(--carrot);margin-bottom:18px;
+  }
+  p{margin-bottom:18px;word-break:keep-all;text-align:justify}
+  strong{color:var(--carrot);font-weight:700}
+  .cool{color:var(--mala);font-weight:700}
+  .lead::first-letter{font-size:2.6em;float:left;line-height:1;padding:6px 10px 0 0;color:var(--pine);font-weight:700}
+  .pull{
+    margin:28px 0;padding:22px 24px;background:var(--mala-soft);border-radius:4px 22px 4px 22px;
+    font-size:18px;line-height:1.7;color:var(--mala);font-weight:700;text-align:center;word-break:keep-all;
+  }
+
+  /* ---- 자가 관찰 (버튼 공개) ---- */
+  .diag{
+    margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:24px 20px;font-family:var(--sans);
+  }
+  .diag h3{font-size:16px;color:var(--pine);margin-bottom:6px;word-break:keep-all}
+  .diag .hint{font-size:13.5px;color:#5C6B60;margin-bottom:18px;line-height:1.6;word-break:keep-all}
+  .diag .row{
+    display:flex;align-items:flex-start;gap:12px;background:#FAFCF8;border:1px solid var(--line);
+    border-radius:11px;padding:13px 14px;margin-bottom:10px;cursor:pointer;
+    font-size:14px;line-height:1.6;word-break:keep-all;
+  }
+  .diag .row input{
+    appearance:none;-webkit-appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--mala);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;
+  }
+  .diag .row input:checked{background:var(--mala)}
+  .diag .row input:checked::after{content:"\2713";color:#fff;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .diag .row input:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .reveal-btn{
+    width:100%;margin-top:8px;font-family:var(--sans);font-weight:700;font-size:15px;
+    background:var(--mala);color:#fff;border:none;border-radius:11px;padding:14px 0;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .reveal-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .diag-result{
+    display:none;margin-top:16px;font-size:14px;line-height:1.75;color:#3D4A41;
+    background:var(--mala-soft);border-left:3px solid var(--mala);
+    padding:14px 15px;border-radius:0 12px 12px 0;word-break:keep-all;
+  }
+  .diag-result.show{display:block;animation:reveal .3s ease}
+  .diag-result b{color:var(--mala)}
+  @keyframes reveal{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  /* ---- 개념 아이콘 카드 ---- */
+  .cards{display:grid;grid-template-columns:1fr;gap:12px;margin:24px 0;font-family:var(--sans)}
+  .icard{
+    background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px;
+    display:flex;gap:14px;align-items:flex-start;
+  }
+  .icard .ic{
+    flex-shrink:0;width:44px;height:44px;border-radius:12px;background:var(--mala-soft);
+    display:flex;align-items:center;justify-content:center;font-size:22px;
+  }
+  .icard h4{font-size:15px;color:var(--pine);margin-bottom:4px;word-break:keep-all}
+  .icard p{font-size:13.5px;line-height:1.7;color:#3D4A41;margin:0;word-break:keep-all;text-align:left}
+
+  /* ---- 시그니처: 숫자 카드 ---- */
+  .veg-wrap{margin:24px 0;font-family:var(--sans)}
+  .veg-lead{font-size:13.5px;color:#5C6B60;margin-bottom:16px;line-height:1.6;word-break:keep-all}
+  .veg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .veg{
+    background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px 14px;
+    display:flex;flex-direction:column;text-align:center;
+  }
+  .veg .emoji{font-size:34px;line-height:1;margin-bottom:8px}
+  .veg .vname{font-size:15px;font-weight:700;color:var(--pine);margin-bottom:3px}
+  .veg .vtag{font-size:11.5px;color:#8A968D;margin-bottom:12px;word-break:keep-all}
+  .veg .why-btn{
+    margin-top:auto;font-family:var(--sans);font-weight:700;font-size:13px;
+    background:var(--mala-soft);color:var(--mala);border:1.5px solid var(--mala);
+    border-radius:9px;padding:9px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;
+    transition:background .15s,color .15s;
+  }
+  .veg .why-btn:hover{background:var(--mala);color:#fff}
+  .veg .why-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .veg .vexp{
+    display:none;margin-top:12px;font-size:12.5px;line-height:1.7;color:#3D4A41;
+    background:#FAFCF8;border-radius:10px;padding:11px 12px;text-align:left;word-break:keep-all;
+  }
+  .veg.open .vexp{display:block;animation:reveal .3s ease}
+  .veg.open .why-btn{background:var(--mala);color:#fff}
+  .veg .vexp .gene-tag{
+    display:inline-block;font-size:11px;font-weight:700;color:var(--mala);
+    background:var(--mala-soft);border-radius:6px;padding:2px 7px;margin-bottom:6px;
+  }
+  .veg .vexp b{color:var(--carrot)}
+
+  /* ---- 말 바꾸기 4가지 ---- */
+  .att{display:grid;grid-template-columns:1fr;gap:10px;margin:22px 0;font-family:var(--sans)}
+  .att .arow{
+    background:#fff;border:1px solid var(--line);border-left:4px solid var(--mala);
+    border-radius:0 12px 12px 0;padding:14px 16px;
+  }
+  .att .arow h4{font-size:14.5px;color:var(--mala);margin-bottom:4px;word-break:keep-all}
+  .att .arow p{font-size:13.5px;line-height:1.7;color:#3D4A41;margin:0;text-align:left;word-break:keep-all}
+
+  /* ---- 아코디언 ---- */
+  .tips{display:flex;flex-direction:column;gap:12px;margin:22px 0;font-family:var(--sans)}
+  details{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  summary{
+    list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:12px;
+    font-weight:700;font-size:15px;color:var(--ink);word-break:keep-all;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:2px solid var(--carrot);outline-offset:-2px}
+  summary .num{
+    flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--mala-soft);
+    color:var(--mala);font-size:14px;display:flex;align-items:center;justify-content:center;
+  }
+  summary .chev{margin-left:auto;color:var(--pine);transition:transform .2s;font-size:13px}
+  details[open] .chev{transform:rotate(180deg)}
+  details .body{padding:0 18px 16px 60px;font-size:14.5px;line-height:1.75;color:#3D4A41;word-break:keep-all}
+  details .body .ex{
+    margin-top:8px;background:#FAFCF8;border-left:3px solid var(--line);
+    padding:8px 12px;border-radius:0 8px 8px 0;font-size:13.5px;
+  }
+  details .body b{color:var(--carrot)}
+
+  /* ---- 챌린지 ---- */
+  .challenge{margin:26px 0;background:var(--carrot-soft);border-radius:16px;padding:24px 20px;font-family:var(--sans)}
+  .challenge h3{font-size:16px;color:var(--carrot);margin-bottom:4px}
+  .challenge .hint{font-size:13.5px;color:#7A5A33;margin-bottom:16px;word-break:keep-all}
+  .check{
+    display:flex;align-items:flex-start;gap:12px;background:#fff;border-radius:10px;
+    padding:13px 14px;margin-bottom:10px;cursor:pointer;font-size:14.5px;line-height:1.6;word-break:keep-all;
+  }
+  .check input{
+    appearance:none;-webkit-appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--carrot);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;
+  }
+  .check input:checked{background:var(--carrot)}
+  .check input:checked::after{content:"\2713";color:#fff;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .check input:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .check.done span{text-decoration:line-through;color:#9B8A72}
+  .challenge-msg{font-size:14px;font-weight:700;color:var(--carrot);text-align:center;min-height:1.5em;margin-top:6px}
+
+  /* ---- 맺음 ---- */
+  .closing{margin-top:44px;padding:28px 24px;border-top:3px double var(--pine);text-align:center;word-break:keep-all}
+  .closing p{text-align:center}
+  .closing .sign{font-family:var(--sans);font-size:13.5px;color:#5C6B60;margin-top:14px;margin-bottom:0}
+  .med-note{
+    font-family:var(--sans);font-size:12px;color:#8A7A66;background:#FAF6EE;border-radius:10px;
+    padding:13px 15px;margin-top:22px;line-height:1.6;word-break:keep-all;text-align:left;
+  }
+  footer{font-family:var(--sans);font-size:12px;color:#8A968D;text-align:center;margin-top:30px;line-height:1.7;word-break:keep-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">영양교사 칼럼 · 우리 아이 식생활 이야기 · 서른한 번째</span>
+    <h1>마라탕과 탕후루,<br><em>왜 아이들은 이렇게 좋아할까요?</em></h1>
+    <p class="subtitle">아이의 의지가 약해서가 아닙니다. 얼얼한 맛 뒤에 오는 단맛에는 아이의 뇌가 거절하기 어려운 이유가 있습니다.</p>
+    <div class="byline">
+      <span class="avatar">🍡</span>
+      <span>영양상담 선도학교 전주서일초등학교 영양교사 · 읽는 시간 약 6분</span>
+    </div>
+  </header>
+
+  <nav aria-label="칼럼 목차">
+    <a href="#s1">우리 집 관찰</a>
+    <a href="#s2">끌리는 네 가지 이유</a>
+    <a href="#s3">숫자로 보는 한 끼</a>
+    <a href="#s4">말 바꿔 보기</a>
+    <a href="#s5">먹는 방법 바꾸기</a>
+    <a href="#s6">이번 주 챌린지</a>
+  </nav>
+
+  <section id="s0">
+    <p class="lead">"오늘도 마라탕 먹고 왔대요. 그러고는 저녁을 안 먹어요." 상담실에서 가장 자주 듣는 이야기 중 하나입니다. 학교 앞 골목에도, 아이들의 대화에도, 휴대전화 화면에도 마라탕과 탕후루가 있습니다. 부모님 입장에서는 걱정이 되면서도, 막상 "먹지 마"라는 말이 잘 통하지 않아 답답하실 것입니다.</p>
+    <p>그런데 아이가 이 두 가지에 유난히 끌리는 데에는 분명한 이유가 있습니다. 이유를 알면 대응이 달라집니다. 오늘은 <strong>왜 그렇게 좋아하는지</strong>, 그리고 좋아하는 음식을 빼앗지 않고도 <strong>무엇을 바꿀 수 있는지</strong> 함께 살펴보려 합니다.</p>
+    <div class="pull">아이의 의지가 약한 것이 아니라,<br>그만큼 잘 만들어진 맛입니다.</div>
+  </section>
+
+  <section id="s1">
+    <h2>먼저, 우리 집 모습을 떠올려 볼까요?</h2>
+    <p>평가가 아니라 관찰입니다. 맞고 틀린 답은 없습니다. 요즘 우리 아이 모습과 비슷한 항목을 편하게 눌러 보시고, 버튼을 누르시면 함께 읽어 드리겠습니다.</p>
+
+    <div class="diag">
+      <h3>🍲 우리 아이 간식 관찰 체크</h3>
+      <p class="hint">해당하는 항목을 눌러 주세요. 다 고르신 뒤 '결과 보기'를 누르면 해석이 나타납니다.</p>
+
+      <label class="row"><input type="checkbox"><span>일주일에 두 번 이상 마라탕이나 탕후루를 먹는 것 같다</span></label>
+      <label class="row"><input type="checkbox"><span>간식을 먹고 온 날은 저녁밥을 거의 먹지 않는다</span></label>
+      <label class="row"><input type="checkbox"><span>맵기 단계를 점점 올려서 먹는다</span></label>
+      <label class="row"><input type="checkbox"><span>마라탕 국물까지 거의 다 먹는 편이다</span></label>
+      <label class="row"><input type="checkbox"><span>"먹지 마"라고 말했다가 다툰 적이 있다</span></label>
+
+      <button type="button" class="reveal-btn" id="diagBtn">결과 보기</button>
+      <p class="diag-result" id="diagResult" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2>아이가 이 맛에 끌리는 네 가지 이유</h2>
+    <p>마라탕과 탕후루는 우연히 유행한 음식이 아닙니다. 아이의 몸과 마음이 가장 강하게 반응하는 요소들이 한 자리에 모여 있습니다.</p>
+
+    <div class="cards">
+      <div class="icard">
+        <span class="ic">🔥</span>
+        <div>
+          <h4>얼얼함 뒤에 찾아오는 기분 좋음</h4>
+          <p>매운맛은 미각이 아니라 통각입니다. 캡사이신이 입안의 통증 수용체를 자극하면, 몸은 그 통증을 가라앉히려 엔도르핀을 내보냅니다. 아이가 느끼는 것은 '맵다'가 아니라 '맵고 나서 시원하고 개운하다'입니다. 이 흐름이 반복되면 자연스럽게 다시 찾게 됩니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">🍬</span>
+        <div>
+          <h4>매운맛과 단맛의 짝꿍 효과</h4>
+          <p>얼얼해진 입안을 달고 시원한 것이 씻어 줄 때 만족감이 가장 큽니다. 마라탕 뒤에 탕후루가 따라오는 '마라탕후루'라는 말이 생긴 이유입니다. 하나씩 먹을 때보다 이어서 먹을 때 훨씬 강한 보상이 되기 때문에, 한 번 굳어지면 끊기 어려운 순서가 됩니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">📱</span>
+        <div>
+          <h4>맛보다 클 수 있는 '함께'의 힘</h4>
+          <p>친구들과 나눠 먹고, 사진을 찍어 올리고, 맵기 단계를 서로 견주는 놀이가 됩니다. 아이에게 이 간식은 음식이자 또래 문화입니다. 그래서 "몸에 안 좋다"는 설명만으로는 잘 움직이지 않습니다. 아이가 지키려는 것이 맛이 아니라 관계일 수 있기 때문입니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">🥢</span>
+        <div>
+          <h4>내가 직접 고르는 드문 경험</h4>
+          <p>마라탕은 아이가 재료를 직접 담고 맵기를 스스로 정합니다. 하루 대부분을 정해진 대로 보내는 아이에게 이것은 흔치 않은 자기 결정의 경험입니다. 다만 이 점은 약점이 아니라 <b>기회</b>이기도 합니다. 고르는 힘이 있다면, 더 잘 고르는 법도 배울 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <p>즉 아이는 <span class="cool">자극과 보상, 또래 관계, 자기 결정</span>이라는 세 가지를 한 번에 얻고 있습니다. 이 세 가지를 이길 만한 잔소리는 없습니다. 그래서 방향을 조금 바꿔 보려 합니다.</p>
+  </section>
+
+  <section id="s3">
+    <h2>숫자로 보는 한 끼</h2>
+    <p>겁을 드리려는 것이 아니라, 무엇을 조절하면 좋을지 고르기 위한 정보입니다. 카드의 버튼을 누르면 하나씩 확인하실 수 있습니다.</p>
+
+    <div class="veg-wrap">
+      <p class="veg-lead">아래 네 장의 카드를 눌러, 우리 아이가 실제로 먹는 양을 함께 살펴보세요.</p>
+      <div class="veg-grid">
+
+        <div class="veg">
+          <div class="emoji">🍲</div>
+          <div class="vname">마라탕 한 그릇</div>
+          <div class="vtag">진짜 주인공은 국물</div>
+          <button type="button" class="why-btn">숫자 보기</button>
+          <div class="vexp">
+            <span class="gene-tag">나트륨</span>
+            마라탕 1인분의 나트륨은 대체로 <b>2,000~3,000mg</b> 수준으로 알려져 있습니다. 9~11세 어린이의 하루 나트륨 충분섭취량이 <b>1,300mg</b>인 점을 생각하면, 한 그릇으로 하루치의 두 배 가까이가 됩니다. 그중 상당 부분이 국물에 녹아 있어, 국물을 남기는 것만으로도 차이가 꽤 큽니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🍡</div>
+          <div class="vname">탕후루 한 꼬치</div>
+          <div class="vtag">과일이 아니라 코팅</div>
+          <button type="button" class="why-btn">숫자 보기</button>
+          <div class="vexp">
+            <span class="gene-tag">당류</span>
+            조사에 따르면 한 꼬치의 당류는 과일 종류에 따라 <b>약 10g에서 25g</b>까지 차이가 납니다. 9~11세 어린이의 하루 첨가당 권고 수준을 45g 안팎으로 볼 때, 한 꼬치로 하루치의 <b>4분의 1에서 절반</b>이 채워지는 셈입니다. 과일이라 안심되지만, 문제가 되는 것은 겉을 감싼 설탕 코팅 쪽입니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🔁</div>
+          <div class="vname">이어서 먹으면</div>
+          <div class="vtag">짠맛 다음의 단맛</div>
+          <button type="button" class="why-btn">숫자 보기</button>
+          <div class="vexp">
+            <span class="gene-tag">한 세트의 합</span>
+            두 가지를 이어서 먹으면 한 번의 간식으로 <b>하루치 나트륨을 넘기고, 하루치 당류의 절반가량</b>을 채우게 됩니다. 게다가 짠 음식을 먹으면 단 것이 더 당기고, 단 것을 먹으면 다시 짠 것이 당깁니다. 두 음식이 짝을 이루는 순간, 양은 각각보다 훨씬 늘어납니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🍚</div>
+          <div class="vname">그다음 저녁 식탁</div>
+          <div class="vtag">가장 큰 손해는 여기</div>
+          <button type="button" class="why-btn">숫자 보기</button>
+          <div class="vexp">
+            <span class="gene-tag">밀려나는 영양</span>
+            더 중요한 문제는 뒤에 옵니다. 늦은 오후에 배가 부르면 저녁 식사가 줄고, 성장기에 꼭 필요한 <b>단백질·칼슘·철분·식이섬유</b>가 조용히 빠져나갑니다. 강한 자극에 익숙해진 입에는 집밥과 급식이 밍밍하게 느껴지기도 합니다. 열량이 아니라 <b>밀려난 자리</b>가 진짜 손해입니다.
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <p>정리하면 이렇습니다. 마라탕은 국물, 탕후루는 코팅, 그리고 둘을 이어 먹는 순서. <span class="cool">바꿀 지점은 음식 자체가 아니라 먹는 방식</span>에 있습니다.</p>
+  </section>
+
+  <section id="s4">
+    <h2>"먹지 마" 대신 해볼 수 있는 말</h2>
+    <p>금지된 음식은 더 매력적으로 보입니다. 못 먹게 하면 아이는 끊는 대신 부모님 몰래 먹는 법을 먼저 배웁니다. 대화의 방향을 조금만 바꿔 보시면 어떨까요.</p>
+
+    <div class="att">
+      <div class="arow">
+        <h4>먼저 물어봐 주세요</h4>
+        <p>"그거 왜 그렇게 맛있어?"라고 진심으로 물어봐 주세요. 아이가 스스로 설명하는 동안, 아이도 자기 입맛을 처음으로 들여다보게 됩니다. 설득은 그다음입니다.</p>
+      </div>
+      <div class="arow">
+        <h4>아이의 두 마음을 인정해 주세요</h4>
+        <p>아이도 대개 알고 있습니다. "맛있는데 배가 아팠던 적도 있어"처럼 좋은 점과 걸리는 점이 함께 있을 때, 그 두 마음을 모두 말할 수 있게 해 주세요. 변화는 야단이 아니라 아이 자신의 말에서 시작됩니다.</p>
+      </div>
+      <div class="arow">
+        <h4>금지가 아니라 조건을 함께 정하세요</h4>
+        <p>"먹지 마"가 아니라 "언제, 얼마나 먹을까?"입니다. 아이가 직접 정한 선은 부모님이 정해 준 선보다 훨씬 오래 지켜집니다. 지킬 수 있을 것 같은 선에서 시작하시면 충분합니다.</p>
+      </div>
+      <div class="arow">
+        <h4>이미 잘하고 있는 것을 짚어 주세요</h4>
+        <p>국물을 조금 남긴 날, 채소를 더 담은 날에 그 사실을 알아봐 주세요. "오늘은 국물 남겼네"라는 한마디가 다음 선택을 바꿉니다. 잘한 것을 말해 주는 편이, 잘못한 것을 지적하는 것보다 훨씬 힘이 셉니다.</p>
+      </div>
+    </div>
+
+    <div class="pull">끊게 하는 것이 목표가 아니라,<br>더 잘 고르게 하는 것이 목표입니다.</div>
+  </section>
+
+  <section id="s5">
+    <h2>먹는 방법을 바꾸는 여섯 가지</h2>
+    <p>전부 하실 필요는 전혀 없습니다. 아래에서 <strong>우리 집에서 이번 주에 해볼 수 있는 것 하나</strong>만 골라 보세요. 하나로 충분합니다.</p>
+    <div class="tips">
+      <details>
+        <summary><span class="num">1</span>국물은 '남기는 것'을 기본으로<span class="chev">▼</span></summary>
+        <div class="body">나트륨의 상당량은 국물에 있습니다. 건더기 위주로 먹고 국물을 남기는 습관 하나만으로도 부담이 눈에 띄게 줄어듭니다. 아이에게는 이유까지 짧게 설명해 주세요.
+          <div class="ex">"국물에 짠맛이 다 모여 있대. 건더기만 먹고 국물은 반 남겨 볼까?"</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">2</span>담는 순서를 바꿔 보세요<span class="chev">▼</span></summary>
+        <div class="body">재료를 고를 때 <b>채소와 단백질을 먼저</b> 담고, 나머지를 나중에 담게 해 보세요. 청경채·배추·숙주·버섯·두부·달걀을 먼저 채우면 포만감은 그대로면서 부담은 줄어듭니다.
+          <div class="ex">분모자·중국당면·소시지·완자류는 좋아하는 것으로 한두 가지만 골라 담기</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">3</span>맵기 단계는 한 칸 아래로<span class="chev">▼</span></summary>
+        <div class="body">맵기는 올리기는 쉬워도 내리기는 어렵습니다. 자극이 세질수록 급식과 집밥이 심심하게 느껴지고, 위장이 예민한 아이는 복통이나 속쓰림을 겪기도 합니다. 지금 먹는 단계에서 <b>한 칸만 낮춰 보기</b>를 제안해 주세요.
+          <div class="ex">"오늘은 한 단계만 내려서 먹어 볼래? 맛이 어떻게 다른지 알려 줘."</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">4</span>탕후루는 '식후 한 꼬치'로<span class="chev">▼</span></summary>
+        <div class="body">빈속에 먹는 단 간식은 혈당을 빠르게 올리고 다음 끼니를 밀어냅니다. 같은 한 꼬치라도 <b>식사를 마친 뒤 디저트로</b> 먹으면 부담이 덜하고, 저녁 식사를 거르는 일도 줄어듭니다.
+          <div class="ex">"이건 밥 먹고 나서 후식으로 먹자"라고 자리를 정해 주세요.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">5</span>먹는 날을 아이와 함께 정하세요<span class="chev">▼</span></summary>
+        <div class="body">매일도 아니고 금지도 아닌, 그 사이 어딘가에 답이 있습니다. "주말에 한 번", "친구 만나는 날" 처럼 아이가 스스로 말한 선에서 시작해 보세요. 특별한 날이 되면 만족감은 오히려 커집니다.
+          <div class="ex">"네가 지킬 수 있을 것 같은 횟수는 어느 정도야?" 하고 먼저 물어봐 주세요.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">6</span>집에서 한 번 만들어 보세요<span class="chev">▼</span></summary>
+        <div class="body">마라 소스는 표시량보다 적게 쓰고 육수로 양을 늘리면 맵기와 짠맛을 조절할 수 있습니다. 냉장고 속 채소를 아이가 직접 고르게 하면, 아이가 좋아하는 <b>'내가 고르는 재미'</b>는 그대로 살릴 수 있습니다. 물이나 보리차를 함께 곁들여 주세요.
+          <div class="ex">과일을 꼬치에 꽂아 그대로 내면 코팅 없는 우리 집 과일 꼬치가 됩니다.</div>
+        </div>
+      </details>
+    </div>
+    <p>이미 몇 가지를 하고 계신 분도 많으실 것입니다. 새로 시작하시는 것보다, <span class="cool">이미 하고 계신 것을 알아차리고 이어가시는 것</span>이 훨씬 큰 힘이 됩니다.</p>
+  </section>
+
+  <section id="s6">
+    <div class="challenge">
+      <h3>🍡 이번 주 '조금만 바꾸기' 챌린지</h3>
+      <p class="hint">이번 주에 하나만 골라 실천해 보세요. 하나면 충분합니다.</p>
+      <label class="check"><input type="checkbox"><span>마라탕 먹는 날, 국물 절반 이상 남겨 보기</span></label>
+      <label class="check"><input type="checkbox"><span>재료 담을 때 채소나 두부 한 가지 더 넣어 보기</span></label>
+      <label class="check"><input type="checkbox"><span>탕후루는 식사 후 한 꼬치로 자리 정해 보기</span></label>
+      <label class="check"><input type="checkbox"><span>"먹지 마" 대신 "언제 먹을까?" 하고 한 번 물어보기</span></label>
+      <p class="challenge-msg" id="challengeMsg"></p>
+    </div>
+  </section>
+
+  <div class="closing">
+    <h2 style="border:none;padding:0;margin-bottom:14px">좋아하는 것을 빼앗지 않아도 됩니다</h2>
+    <p>아이가 마라탕과 탕후루를 좋아하는 것은 자연스러운 일입니다.<br>
+    끊게 만드는 것은 어렵고, 대개 성공하지도 않습니다.<br>
+    국물을 남기고, 채소를 하나 더 담고, 먹는 시간을 함께 정하는 것.<br>
+    작아 보이는 이 선택들이 아이의 입맛을 지켜 줍니다.</p>
+    <p class="sign">오늘도 아이의 식탁을 지키시는 학부모님을 응원합니다.</p>
+
+    <div class="med-note">
+      이 자료는 학부모 영양교육을 위한 정보 제공용이며, 진단이나 치료를 대신하지 않습니다. 소개해 드린 함량은 조사 시점과 매장·재료에 따라 차이가 있으므로 참고용으로 보아 주세요. 탕후루의 굳은 설탕 코팅은 딱딱하고 뜨거울 수 있어 어린 아이의 치아 손상이나 입안 화상, 질식 위험에 주의가 필요합니다. 위장이 예민하거나 알레르기 이력이 있는 아이, 그리고 아이의 성장·체중·식사량이 걱정되시는 경우에는 학교 영양교사나 소아청소년과 등 전문가와 상담하시기 바랍니다.
+    </div>
+  </div>
+
+  <footer>본 자료는 학부모 영양교육을 위해 제작되었습니다.<br>영양상담 선도학교 전주서일초등학교 영양교육</footer>
+</div>
+
+<script>
+(function(){
+  // ----- 자가 관찰: 결과 보기 (버튼 공개) -----
+  var diagBtn = document.getElementById('diagBtn');
+  var diagResult = document.getElementById('diagResult');
+  var diagChecks = document.querySelectorAll('.diag .row input');
+
+  diagBtn.addEventListener('click', function(){
+    var n = 0, i;
+    for(i = 0; i < diagChecks.length; i++){ if(diagChecks[i].checked){ n++; } }
+    var msg;
+    if(n === 0){
+      msg = '<b>해당하는 항목이 없으시군요.</b> 지금은 간식과 식사의 균형이 잘 잡혀 있는 편입니다. 특별히 더하실 것보다, 아이가 스스로 조절하고 있는 그 모습을 한 번 알아봐 주시는 것이 가장 좋은 응원이 됩니다.';
+    } else if(n <= 2){
+      msg = '<b>몇 가지가 해당되시네요.</b> 요즘 아이들에게는 아주 흔한 모습입니다. 아래에서 소개해 드리는 방법 중 <b>하나만</b> 더해 보셔도 충분합니다. 끊게 하실 필요는 전혀 없습니다.';
+    } else {
+      msg = '<b>여러 항목이 해당되시는군요.</b> 부모님의 관리가 부족해서가 아니라, 그만큼 아이가 좋아할 수밖에 없는 맛이기 때문입니다. 오늘은 <b>국물 남기기</b> 하나만 함께 정해 보시는 것부터 시작해 보시면 좋겠습니다.';
+    }
+    diagResult.innerHTML = msg;
+    if(diagResult.className.indexOf('show') < 0){ diagResult.className = diagResult.className + ' show'; }
+  });
+
+  // ----- 시그니처: 숫자 카드 공개 -----
+  var vegs = document.querySelectorAll('.veg');
+  function bindVeg(v){
+    var btn = v.querySelector('.why-btn');
+    btn.addEventListener('click', function(){
+      var isOpen = v.className.indexOf('open') >= 0;
+      if(isOpen){
+        v.className = v.className.replace(' open', '');
+        btn.textContent = '숫자 보기';
+      } else {
+        v.className = v.className + ' open';
+        btn.textContent = '닫기';
+      }
+    });
+  }
+  var vi;
+  for(vi = 0; vi < vegs.length; vi++){ bindVeg(vegs[vi]); }
+
+  // ----- 챌린지 체크 -----
+  var checks = document.querySelectorAll('.check input');
+  var chMsg = document.getElementById('challengeMsg');
+  var cheers = [
+    "",
+    "좋아요! 이번 주는 이 하나면 충분합니다. 🍡",
+    "두 가지나! 아이의 선택이 조금씩 달라질 거예요.",
+    "세 가지 도전, 대단합니다. 저녁 식탁이 달라집니다.",
+    "🎉 전부 도전! 좋아하는 음식과 잘 지내는 법을 배우는 중입니다."
+  ];
+  function bindCheck(c){
+    c.addEventListener('change', function(){
+      var row = c.parentNode;
+      if(c.checked){
+        if(row.className.indexOf('done') < 0){ row.className = row.className + ' done'; }
+      } else {
+        row.className = row.className.replace(' done', '');
+      }
+      var n = 0, k;
+      for(k = 0; k < checks.length; k++){ if(checks[k].checked){ n++; } }
+      chMsg.textContent = cheers[n];
+    });
+  }
+  var t;
+  for(t = 0; t < checks.length; t++){ bindCheck(checks[t]); }
+})();
+</script>
+</body>
+</html>

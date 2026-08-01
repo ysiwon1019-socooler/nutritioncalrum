@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>채소, 어떻게 내면 먹을까요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F8F1;        /* 연한 잎맥색 종이 */
+    --ink:#26332A;          /* 짙은 먹색 */
+    --pine:#1E5631;         /* 소나무 녹색 */
+    --pine-soft:#DCEBDC;    /* 옅은 녹색 면 */
+    --carrot:#D9750F;       /* 당근 주황 */
+    --carrot-soft:#FBEEDC;  /* 옅은 주황 면 */
+    --pan:#17696E;          /* 냄비에서 오르는 김 (이번 화 포인트) */
+    --pan-soft:#E1EFF0;     /* 옅은 김빛 면 */
+    --line:#C9D8C6;
+    --serif:'Gowun Batang', serif;
+    --sans:'IBM Plex Sans KR', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    background:var(--paper);color:var(--ink);font-family:var(--serif);
+    line-height:1.85;font-size:17px;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 22px 80px}
+
+  /* ---- 헤더 ---- */
+  header{padding:44px 0 28px;border-bottom:3px double var(--pine)}
+  .eyebrow{
+    font-family:var(--sans);font-size:12.5px;font-weight:700;letter-spacing:.14em;
+    color:var(--pine);text-transform:uppercase;
+    display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--carrot);display:inline-block}
+  h1{font-size:clamp(26px,6vw,36px);font-weight:700;line-height:1.42;color:var(--pine);word-break:keep-all}
+  h1 em{font-style:normal;color:var(--pan)}
+  .subtitle{margin-top:14px;font-size:15.5px;color:#4E5D52;word-break:keep-all}
+  .byline{margin-top:20px;font-family:var(--sans);font-size:13.5px;color:#5C6B60;display:flex;align-items:center;gap:10px}
+  .byline .avatar{
+    width:34px;height:34px;border-radius:50%;background:var(--pan);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;
+  }
+
+  /* ---- 목차 ---- */
+  nav{
+    position:sticky;top:0;z-index:10;background:var(--paper);
+    padding:12px 0;border-bottom:1px solid var(--line);
+    display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none}
+  nav a{
+    font-family:var(--sans);font-size:12.5px;font-weight:500;white-space:nowrap;
+    color:var(--pine);text-decoration:none;background:var(--pine-soft);
+    padding:7px 13px;border-radius:999px;
+  }
+  nav a:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+
+  /* ---- 본문 ---- */
+  section{padding-top:40px}
+  h2{
+    font-size:21px;color:var(--pine);line-height:1.5;word-break:keep-all;
+    padding-left:14px;border-left:4px solid var(--carrot);margin-bottom:18px;
+  }
+  p{margin-bottom:18px;word-break:keep-all;text-align:justify}
+  strong{color:var(--carrot);font-weight:700}
+  .cool{color:var(--pan);font-weight:700}
+  .lead::first-letter{font-size:2.6em;float:left;line-height:1;padding:6px 10px 0 0;color:var(--pine);font-weight:700}
+  .pull{
+    margin:28px 0;padding:22px 24px;background:var(--pan-soft);border-radius:4px 22px 4px 22px;
+    font-size:18px;line-height:1.7;color:var(--pan);font-weight:700;text-align:center;word-break:keep-all;
+  }
+
+  /* ---- 자가 관찰 (버튼 공개) ---- */
+  .diag{
+    margin:26px 0;background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:24px 20px;font-family:var(--sans);
+  }
+  .diag h3{font-size:16px;color:var(--pine);margin-bottom:6px;word-break:keep-all}
+  .diag .hint{font-size:13.5px;color:#5C6B60;margin-bottom:18px;line-height:1.6;word-break:keep-all}
+  .diag .row{
+    display:flex;align-items:flex-start;gap:12px;background:#FAFCF8;border:1px solid var(--line);
+    border-radius:11px;padding:13px 14px;margin-bottom:10px;cursor:pointer;
+    font-size:14px;line-height:1.6;word-break:keep-all;
+  }
+  .diag .row input{
+    appearance:none;-webkit-appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--pan);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;
+  }
+  .diag .row input:checked{background:var(--pan)}
+  .diag .row input:checked::after{content:"\2713";color:#fff;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .diag .row input:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .reveal-btn{
+    width:100%;margin-top:8px;font-family:var(--sans);font-weight:700;font-size:15px;
+    background:var(--pan);color:#fff;border:none;border-radius:11px;padding:14px 0;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .reveal-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .reveal-btn:disabled{opacity:.55;cursor:default}
+  .diag-result{
+    display:none;margin-top:16px;font-size:14px;line-height:1.75;color:#3D4A41;
+    background:var(--pan-soft);border-left:3px solid var(--pan);
+    padding:14px 15px;border-radius:0 12px 12px 0;word-break:keep-all;
+  }
+  .diag-result.show{display:block;animation:reveal .3s ease}
+  .diag-result b{color:var(--pan)}
+  @keyframes reveal{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  /* ---- 개념 아이콘 카드 ---- */
+  .cards{display:grid;grid-template-columns:1fr;gap:12px;margin:24px 0;font-family:var(--sans)}
+  .icard{
+    background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 18px;
+    display:flex;gap:14px;align-items:flex-start;
+  }
+  .icard .ic{
+    flex-shrink:0;width:44px;height:44px;border-radius:12px;background:var(--pan-soft);
+    display:flex;align-items:center;justify-content:center;font-size:22px;
+  }
+  .icard h4{font-size:15px;color:var(--pine);margin-bottom:4px;word-break:keep-all}
+  .icard p{font-size:13.5px;line-height:1.7;color:#3D4A41;margin:0;word-break:keep-all;text-align:left}
+
+  /* ---- 시그니처: 조리법 카드 ---- */
+  .veg-wrap{margin:24px 0;font-family:var(--sans)}
+  .veg-lead{font-size:13.5px;color:#5C6B60;margin-bottom:16px;line-height:1.6;word-break:keep-all}
+  .veg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .veg{
+    background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px 14px;
+    display:flex;flex-direction:column;text-align:center;
+  }
+  .veg .emoji{font-size:34px;line-height:1;margin-bottom:8px}
+  .veg .vname{font-size:15px;font-weight:700;color:var(--pine);margin-bottom:3px}
+  .veg .vtag{font-size:11.5px;color:#8A968D;margin-bottom:12px;word-break:keep-all}
+  .veg .why-btn{
+    margin-top:auto;font-family:var(--sans);font-weight:700;font-size:13px;
+    background:var(--pan-soft);color:var(--pan);border:1.5px solid var(--pan);
+    border-radius:9px;padding:9px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;
+    transition:background .15s,color .15s;
+  }
+  .veg .why-btn:hover{background:var(--pan);color:#fff}
+  .veg .why-btn:focus-visible{outline:2px solid var(--carrot);outline-offset:2px}
+  .veg .vexp{
+    display:none;margin-top:12px;font-size:12.5px;line-height:1.7;color:#3D4A41;
+    background:#FAFCF8;border-radius:10px;padding:11px 12px;text-align:left;word-break:keep-all;
+  }
+  .veg.open .vexp{display:block;animation:reveal .3s ease}
+  .veg.open .why-btn{background:var(--pan);color:#fff}
+  .veg .vexp .gene-tag{
+    display:inline-block;font-size:11px;font-weight:700;color:var(--pan);
+    background:var(--pan-soft);border-radius:6px;padding:2px 7px;margin-bottom:6px;
+  }
+  .veg .vexp b{color:var(--carrot)}
+
+  /* ---- 원칙 4가지 ---- */
+  .att{display:grid;grid-template-columns:1fr;gap:10px;margin:22px 0;font-family:var(--sans)}
+  .att .arow{
+    background:#fff;border:1px solid var(--line);border-left:4px solid var(--pan);
+    border-radius:0 12px 12px 0;padding:14px 16px;
+  }
+  .att .arow h4{font-size:14.5px;color:var(--pan);margin-bottom:4px;word-break:keep-all}
+  .att .arow p{font-size:13.5px;line-height:1.7;color:#3D4A41;margin:0;text-align:left;word-break:keep-all}
+
+  /* ---- 아코디언 ---- */
+  .tips{display:flex;flex-direction:column;gap:12px;margin:22px 0;font-family:var(--sans)}
+  details{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  summary{
+    list-style:none;cursor:pointer;padding:16px 18px;display:flex;align-items:center;gap:12px;
+    font-weight:700;font-size:15px;color:var(--ink);word-break:keep-all;
+  }
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:2px solid var(--carrot);outline-offset:-2px}
+  summary .num{
+    flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--pan-soft);
+    color:var(--pan);font-size:14px;display:flex;align-items:center;justify-content:center;
+  }
+  summary .chev{margin-left:auto;color:var(--pine);transition:transform .2s;font-size:13px}
+  details[open] .chev{transform:rotate(180deg)}
+  details .body{padding:0 18px 16px 60px;font-size:14.5px;line-height:1.75;color:#3D4A41;word-break:keep-all}
+  details .body .ex{
+    margin-top:8px;background:#FAFCF8;border-left:3px solid var(--line);
+    padding:8px 12px;border-radius:0 8px 8px 0;font-size:13.5px;
+  }
+
+  /* ---- 챌린지 ---- */
+  .challenge{margin:26px 0;background:var(--carrot-soft);border-radius:16px;padding:24px 20px;font-family:var(--sans)}
+  .challenge h3{font-size:16px;color:var(--carrot);margin-bottom:4px}
+  .challenge .hint{font-size:13.5px;color:#7A5A33;margin-bottom:16px;word-break:keep-all}
+  .check{
+    display:flex;align-items:flex-start;gap:12px;background:#fff;border-radius:10px;
+    padding:13px 14px;margin-bottom:10px;cursor:pointer;font-size:14.5px;line-height:1.6;word-break:keep-all;
+  }
+  .check input{
+    appearance:none;-webkit-appearance:none;flex-shrink:0;width:22px;height:22px;border:2px solid var(--carrot);
+    border-radius:6px;margin-top:1px;cursor:pointer;position:relative;
+  }
+  .check input:checked{background:var(--carrot)}
+  .check input:checked::after{content:"\2713";color:#fff;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .check input:focus-visible{outline:2px solid var(--pine);outline-offset:2px}
+  .check.done span{text-decoration:line-through;color:#9B8A72}
+  .challenge-msg{font-size:14px;font-weight:700;color:var(--carrot);text-align:center;min-height:1.5em;margin-top:6px}
+
+  /* ---- 맺음 ---- */
+  .closing{margin-top:44px;padding:28px 24px;border-top:3px double var(--pine);text-align:center;word-break:keep-all}
+  .closing p{text-align:center}
+  .closing .sign{font-family:var(--sans);font-size:13.5px;color:#5C6B60;margin-top:14px;margin-bottom:0}
+  .med-note{
+    font-family:var(--sans);font-size:12px;color:#8A7A66;background:#FAF6EE;border-radius:10px;
+    padding:13px 15px;margin-top:22px;line-height:1.6;word-break:keep-all;text-align:left;
+  }
+  footer{font-family:var(--sans);font-size:12px;color:#8A968D;text-align:center;margin-top:30px;line-height:1.7;word-break:keep-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="eyebrow">영양교사 칼럼 · 우리 아이 식생활 이야기 · 서른아홉 번째</span>
+    <h1>채소, 어떻게 내면 먹을까요<br><em>조리법이 바꾸는 것</em></h1>
+    <p class="subtitle">"우리 아이는 채소를 안 먹어요"라는 말 뒤에는, 사실 "그렇게 낸 채소를 안 먹어요"인 경우가 적지 않습니다.</p>
+    <div class="byline">
+      <span class="avatar">🍳</span>
+      <span>영양상담 선도학교 전주서일초등학교 영양교사 · 읽는 시간 약 6분</span>
+    </div>
+  </header>
+
+  <nav aria-label="칼럼 목차">
+    <a href="#s1">우리 집 채소 관찰</a>
+    <a href="#s2">왜 어려울까요</a>
+    <a href="#s3">조리법 네 가지</a>
+    <a href="#s4">기억할 네 가지</a>
+    <a href="#s5">집에서 해보기</a>
+    <a href="#s6">이번 주 챌린지</a>
+  </nav>
+
+  <section id="s0">
+    <p class="lead">브로콜리를 푹 삶아 냈더니 아이가 냄새부터 밀어냈는데, 며칠 뒤 에어프라이어에 노릇하게 구워 냈더니 손이 먼저 갔다는 이야기를 상담에서 자주 듣습니다. 같은 채소, 같은 아이인데 결과가 달라진 것입니다. 아이가 채소를 밀어낼 때 우리는 흔히 아이의 입맛을 탓하지만, 바뀔 수 있는 것이 하나 더 있습니다. 바로 <span class="cool">채소가 식탁에 오르는 방식</span>입니다. 오늘은 조리법이 채소의 맛과 영양을 어떻게 바꾸는지, 그리고 우리 집 부엌에서 무엇을 조금 달리해 볼 수 있을지 함께 살펴보려 합니다.</p>
+    <div class="pull">아이가 거부한 것은 채소가 아니라,<br>그날의 쓴맛과 물컹한 식감일 수 있습니다.</div>
+  </section>
+
+  <section id="s1">
+    <h2>먼저, 우리 집 채소를 떠올려 볼까요?</h2>
+    <p>진단이 아니라 관찰입니다. 맞고 틀린 답은 없고, 어느 항목이든 대부분의 가정에서 자연스럽게 일어나는 모습입니다. 요즘 우리 집과 비슷한 항목을 편하게 눌러 보시고, 버튼을 누르면 함께 읽어 드리겠습니다.</p>
+
+    <div class="diag">
+      <h3>🥦 우리 집 채소 관찰 체크</h3>
+      <p class="hint">해당하는 항목을 눌러 주세요. 다 고르신 뒤 '결과 보기'를 누르면 해석이 나타납니다.</p>
+
+      <label class="row"><input type="checkbox"><span>채소는 주로 국이나 찌개에 넣어서 내는 편이다</span></label>
+      <label class="row"><input type="checkbox"><span>브로콜리·시금치 같은 채소는 늘 푹 삶거나 데쳐서만 낸다</span></label>
+      <label class="row"><input type="checkbox"><span>아이가 "물컹해서 싫어"라고 말한 적이 있다</span></label>
+      <label class="row"><input type="checkbox"><span>채소는 기름 없이 담백하게 내는 것이 좋다고 생각해 왔다</span></label>
+      <label class="row"><input type="checkbox"><span>안 먹으니 잘게 다져 요리 속에 숨겨 낸 적이 있다</span></label>
+
+      <button type="button" class="reveal-btn" id="diagBtn">결과 보기</button>
+      <p class="diag-result" id="diagResult" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2>아이가 채소를 어려워하는 데에는 이유가 있습니다</h2>
+    <p>아이의 채소 거부는 고집이나 버릇의 문제가 아닙니다. 아이의 감각은 어른보다 예민하게 설계되어 있고, 그 예민함은 오히려 몸을 지키기 위한 장치에 가깝습니다. 다행히 이 세 가지 벽은 모두 <span class="cool">조리 과정에서 상당 부분 낮출 수 있는 벽</span>입니다.</p>
+
+    <div class="cards">
+      <div class="icard">
+        <span class="ic">😖</span>
+        <div>
+          <h4>쓴맛에 훨씬 민감합니다</h4>
+          <p>브로콜리·양배추·케일 같은 십자화과 채소에는 글루코시놀레이트라는 성분이 있어, 자르거나 씹을 때 효소와 만나 쓴맛 물질로 바뀝니다. 아이는 어른보다 쓴맛 수용체가 예민한 경우가 많아 같은 채소를 훨씬 강하게 느낍니다. 이 효소는 열에 약해서, 짧게 익히기만 해도 쓴맛이 눈에 띄게 줄어듭니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">🥄</span>
+        <div>
+          <h4>물컹한 식감을 특히 싫어합니다</h4>
+          <p>아이들의 채소 거부 이유를 물어보면 맛보다 식감을 먼저 말하는 경우가 많습니다. 오래 익혀 흐물흐물해진 채소는 입안에서 뭉개지며 아이에게 불쾌한 느낌을 줍니다. 반대로 살짝 익혀 아삭함이 남아 있는 채소는 같은 아이가 잘 먹기도 합니다.</p>
+        </div>
+      </div>
+      <div class="icard">
+        <span class="ic">👃</span>
+        <div>
+          <h4>냄새가 먼저 도착합니다</h4>
+          <p>브로콜리나 양배추를 오래 삶으면 황을 포함한 냄새 물질이 늘어나, 아이가 접시를 보기도 전에 거부하게 됩니다. 맛은 코로 먼저 판단됩니다. 조리 시간을 줄이고 뚜껑을 열어 두는 것만으로도 이 벽은 상당히 낮아집니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <p>즉 아이가 밀어낸 것은 '채소'라는 범주가 아니라, <strong>그날 그 접시 위의 특정한 경험</strong>이었을 가능성이 큽니다. 그렇다면 다음 접시는 다르게 만들어 볼 수 있습니다.</p>
+  </section>
+
+  <section id="s3">
+    <h2>조리법 네 가지, 무엇이 달라질까요?</h2>
+    <p>어떤 조리법이 무조건 옳은 것은 아닙니다. 채소마다, 아이마다 잘 맞는 방식이 다릅니다. 네 가지 방식이 각각 무엇을 살리고 무엇을 잃는지 카드를 눌러 확인해 보세요.</p>
+
+    <div class="veg-wrap">
+      <p class="veg-lead">카드의 버튼을 누르면 그 조리법이 바꾸는 것이 나타납니다.</p>
+      <div class="veg-grid">
+
+        <div class="veg">
+          <div class="emoji">🫧</div>
+          <div class="vname">짧게 데치기 · 찌기</div>
+          <div class="vtag">쓴맛은 덜고 색은 살리고</div>
+          <button type="button" class="why-btn">무엇이 달라질까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">쓴맛과 풋내 낮추기</span>
+            끓는 물에 <b>30초에서 1분</b>만 담갔다가 바로 찬물에 헹구면, 쓴맛을 만드는 효소는 잦아들고 초록색은 오히려 선명해집니다. 다만 오래 삶으면 비타민C와 엽산 같은 수용성 영양소가 물로 빠져나가고 냄새는 강해집니다. 물에 담그는 삶기보다 <b>김으로 익히는 찌기</b>가 영양소 손실이 적습니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🔥</div>
+          <div class="vname">굽기 · 로스팅</div>
+          <div class="vtag">단맛을 끌어올리는 방법</div>
+          <button type="button" class="why-btn">무엇이 달라질까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">아이 입맛에 가장 효과적</span>
+            오븐이나 에어프라이어에서 수분이 날아가면 채소 속 당이 농축되고, 겉면이 노릇해지면서 고소한 향이 생깁니다. <b>당근·단호박·고구마·양파·가지·파프리카</b>가 특히 잘 어울립니다. 아이가 "달다"고 느끼는 순간 첫 젓가락의 문턱이 크게 낮아집니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🫒</div>
+          <div class="vname">기름에 볶기 · 무치기</div>
+          <div class="vtag">흡수를 여는 열쇠</div>
+          <button type="button" class="why-btn">무엇이 달라질까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">지용성 영양소</span>
+            당근의 베타카로틴, 토마토의 라이코펜, 시금치의 루테인은 <b>기름과 함께 먹을 때 흡수가 좋아집니다</b>. 가열이 세포벽을 허물어 몸이 쓸 수 있는 형태로 바뀌기도 합니다. 참기름·들기름에 무치거나 살짝 볶기, 샐러드에 드레싱 한 스푼이면 충분합니다.
+          </div>
+        </div>
+
+        <div class="veg">
+          <div class="emoji">🥕</div>
+          <div class="vname">생채소 + 찍어 먹기</div>
+          <div class="vtag">아삭함이 좋은 아이도 있습니다</div>
+          <button type="button" class="why-btn">무엇이 달라질까요?</button>
+          <div class="vexp">
+            <span class="gene-tag">식감으로 접근하기</span>
+            익힌 채소의 물컹함 때문에 거부하는 아이에게는 오히려 생채소 스틱이 답일 때가 있습니다. 오이·당근·파프리카를 손에 쥐기 좋은 크기로 썰고, <b>요거트·후무스·된장 소스</b> 같은 찍어 먹을 것을 곁들이면 섭취량이 늘어난다는 보고가 여러 차례 있었습니다. 소스는 타협이 아니라 다리입니다.
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <p>네 가지 중 무엇이 우리 아이에게 맞는지는 해 보기 전에는 알 수 없습니다. 중요한 것은 <span class="cool">한 가지 방식으로 거부당했다고 해서 그 채소가 실패한 것은 아니라는 점</span>입니다.</p>
+  </section>
+
+  <section id="s4">
+    <h2>조리할 때 기억하면 좋은 네 가지</h2>
+    <p>복잡한 규칙은 필요하지 않습니다. 다음 네 가지만 기억하셔도 맛과 영양을 동시에 챙기실 수 있습니다.</p>
+
+    <div class="att">
+      <div class="arow">
+        <h4>물은 적게, 시간은 짧게</h4>
+        <p>비타민C·엽산·비타민B군은 물에 녹고 열에 약합니다. 많은 물에 오래 삶을수록 손실이 커집니다. 찌기, 전자레인지, 짧게 볶기가 영양소를 더 잘 남깁니다. 데친 물을 국물로 쓰시면 빠져나간 영양소도 함께 드실 수 있습니다.</p>
+      </div>
+      <div class="arow">
+        <h4>기름 한 스푼은 낭비가 아닙니다</h4>
+        <p>지용성 비타민(A·D·E·K)과 카로티노이드는 기름이 있어야 잘 흡수됩니다. "채소는 담백하게"라는 생각에 기름을 완전히 빼면 오히려 영양소를 흘려보내게 됩니다. 튀김이 아니라 한 스푼이면 충분합니다.</p>
+      </div>
+      <div class="arow">
+        <h4>식감을 살려 주세요</h4>
+        <p>아이의 거부는 맛보다 식감에서 오는 경우가 많습니다. 젓가락으로 눌렀을 때 살짝 저항이 남는 정도가 좋습니다. 어른에게 조금 덜 익은 듯한 지점이 아이에게는 가장 먹기 좋은 지점일 때가 많습니다.</p>
+      </div>
+      <div class="arow">
+        <h4>같은 채소, 다른 얼굴로</h4>
+        <p>새로운 채소를 아이가 받아들이기까지는 여러 번의 만남이 필요합니다. 한 번 거부했다고 식탁에서 지우지 마시고, 조리법과 모양을 바꿔 가며 다시 만나게 해 주세요. 권하되 강요하지 않는 것이 핵심입니다.</p>
+      </div>
+    </div>
+
+    <div class="pull">채소를 바꾸기 전에,<br>채소를 내는 방법을 먼저 바꿔 봅니다.</div>
+  </section>
+
+  <section id="s5">
+    <h2>우리 집 부엌으로 옮겨오기</h2>
+    <p>전부 하실 필요는 전혀 없습니다. 아래에서 <strong>이번 주에 시도해 볼 만한 것 하나</strong>만 골라 보세요. 하나면 충분합니다.</p>
+    <div class="tips">
+      <details>
+        <summary><span class="num">1</span>한 가지 채소를 두 가지 방식으로 내 보세요<span class="chev">▼</span></summary>
+        <div class="body">같은 브로콜리를 데쳐서 한 번, 구워서 한 번 내 보시면 아이의 반응이 눈에 띄게 다를 수 있습니다. 아이가 어느 쪽을 고르는지 알게 되면 그 다음부터는 훨씬 수월해집니다.
+          <div class="ex">"오늘은 지난번이랑 다르게 구워 봤어. 어느 쪽이 더 나아?" 하고 선택권을 주시면 거부감이 줄어듭니다.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">2</span>숨기기보다 '보이기'를 조금씩 늘려 보세요<span class="chev">▼</span></summary>
+        <div class="body">다져 넣는 방법은 영양을 챙기는 데 도움이 되지만, 그것만으로는 아이가 채소를 배우지 못합니다. 숨긴 채소는 그대로 두시되, 접시 한쪽에 <b>보이는 채소 한두 조각</b>을 함께 올려 주세요. 먹지 않아도 괜찮습니다. 보는 것도 만남입니다.
+          <div class="ex">"먹으라는 건 아니고, 오늘은 그냥 놓아 둘게" 정도의 말이 부담을 크게 낮춥니다.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">3</span>색과 모양을 바꿔 보세요<span class="chev">▼</span></summary>
+        <div class="body">같은 당근이라도 동그란 모양, 길쭉한 스틱, 얇게 저민 모양은 아이에게 전혀 다른 음식으로 느껴집니다. 색이 선명하게 살아 있으면 먹고 싶은 마음도 함께 올라갑니다. 짧게 데쳐 찬물에 헹구면 초록색이 훨씬 선명해집니다.
+          <div class="ex">아이가 직접 모양을 고르게 해 보세요. 고른 사람은 먹어 볼 확률이 조금 더 높아집니다.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">4</span>찍어 먹을 것 한 종지를 곁들여 주세요<span class="chev">▼</span></summary>
+        <div class="body">플레인 요거트에 소금을 아주 조금, 또는 된장에 참기름과 다진 견과를 섞은 소스면 충분합니다. 처음 만나는 채소일수록 익숙한 맛이 함께 있으면 도전이 쉬워집니다. 익숙해지면 소스는 자연스럽게 줄여 가시면 됩니다.
+          <div class="ex">시판 소스를 쓰실 때는 나트륨과 당 함량을 한 번만 확인해 주세요.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">5</span>부엌에 아이를 초대해 보세요<span class="chev">▼</span></summary>
+        <div class="body">씻기, 뜯기, 담기처럼 안전한 일부터 맡겨 보세요. 자기 손이 닿은 음식에 대한 아이의 태도는 확실히 달라집니다. 조리 과정에서 채소가 변하는 모습을 직접 보는 것 자체가 좋은 식생활 교육입니다.
+          <div class="ex">"이 브로콜리가 구우면 어떻게 될 것 같아?" 하고 먼저 예상해 보게 하면 훨씬 흥미를 갖습니다.</div>
+        </div>
+      </details>
+      <details>
+        <summary><span class="num">6</span>급식에서 먹은 채소를 집에서 이어 주세요<span class="chev">▼</span></summary>
+        <div class="body">학교에서는 친구들과 함께 먹는 분위기 덕분에 집에서 안 먹던 채소를 먹는 경우가 많습니다. 급식에서 잘 먹은 채소와 조리 방식을 아이에게 물어보시고 집에서 한 번 더 내 주시면, 성공 경험이 이어집니다.
+          <div class="ex">"오늘 급식 나물은 어땠어?"라는 질문 하나로 시작하실 수 있습니다. 필요하시면 학교 영양교사에게 조리 방법을 문의해 주셔도 좋습니다.</div>
+        </div>
+      </details>
+    </div>
+    <p>이미 몇 가지를 하고 계신 분도 많으실 것입니다. 새로 시작하시는 것보다 <span class="cool">이미 하고 계신 것을 알아차리고 이어가시는 것</span>이 훨씬 큰 힘이 됩니다.</p>
+  </section>
+
+  <section id="s6">
+    <div class="challenge">
+      <h3>🍳 이번 주 '채소 다시 만나기' 챌린지</h3>
+      <p class="hint">이번 주에 하나만 골라 실천해 보세요. 하나면 충분합니다.</p>
+      <label class="check"><input type="checkbox"><span>늘 삶던 채소 하나를 이번엔 구워서 내 보기</span></label>
+      <label class="check"><input type="checkbox"><span>데치는 시간을 평소의 절반으로 줄여 보기</span></label>
+      <label class="check"><input type="checkbox"><span>채소 요리에 기름 한 스푼 더해 보기</span></label>
+      <label class="check"><input type="checkbox"><span>찍어 먹을 소스 한 종지 곁들여 내 보기</span></label>
+      <p class="challenge-msg" id="challengeMsg"></p>
+    </div>
+  </section>
+
+  <div class="closing">
+    <h2 style="border:none;padding:0;margin-bottom:14px">아이의 입맛은 아직 완성되지 않았습니다</h2>
+    <p>채소를 좋아하는 아이로 태어나는 경우는 드뭅니다.<br>
+    쓴맛이 덜하고, 식감이 좋고, 향이 반가운 경험이 쌓이면서<br>
+    아이의 입맛은 천천히 넓어집니다.<br>
+    오늘 저녁 한 접시부터, 방법을 조금만 바꿔 보셔도 좋겠습니다.</p>
+    <p class="sign">오늘도 아이의 접시를 고민하시는 학부모님을 응원합니다.</p>
+
+    <div class="med-note">
+      이 자료는 학부모 영양교육을 위한 정보 제공용이며, 특정 조리법이나 식품을 권유하는 자료가 아닙니다. 딱딱한 생채소는 어린 연령의 아이에게 질식 위험이 있을 수 있으므로 연령과 씹는 능력에 맞게 크기와 익힘 정도를 조절해 주시고, 식사 중에는 곁에서 지켜봐 주시기 바랍니다. 식품 알레르기가 있는 경우에는 해당 식품을 피하시고 담당 의료진의 안내를 우선해 주세요. 아이의 식사량이나 성장, 편식 정도가 걱정되신다면 학교 영양교사나 소아청소년과 등 전문가와 상담하시기 바랍니다.
+    </div>
+  </div>
+
+  <footer>본 자료는 학부모 영양교육을 위해 제작되었습니다.<br>영양상담 선도학교 전주서일초등학교 영양교육</footer>
+</div>
+
+<script>
+(function(){
+  // ----- 자가 관찰: 결과 보기 (버튼 공개) -----
+  var diagBtn = document.getElementById('diagBtn');
+  var diagResult = document.getElementById('diagResult');
+  var diagChecks = document.querySelectorAll('.diag .row input');
+
+  diagBtn.addEventListener('click', function(){
+    var n = 0, i;
+    for(i = 0; i < diagChecks.length; i++){ if(diagChecks[i].checked){ n++; } }
+    var msg;
+    if(n === 0){
+      msg = '<b>해당하는 항목이 없으시군요.</b> 이미 조리법을 다양하게 바꿔 가며 채소를 내고 계신 가정입니다. 새로 더하실 것보다, 지금 하고 계신 그 방식을 꾸준히 이어가시는 것이 가장 좋은 방법입니다.';
+    } else if(n <= 2){
+      msg = '<b>몇 가지가 해당되시네요.</b> 아주 자연스럽고 흔한 모습입니다. 아래에서 소개해 드리는 조리법 중 <b>하나만</b> 바꿔 보셔도, 같은 채소에 대한 아이의 반응이 달라지는 것을 느끼실 수 있습니다.';
+    } else {
+      msg = '<b>여러 항목이 해당되시는군요.</b> 부모님의 정성이 부족해서가 아니라, 바쁜 일상에서 익숙한 방식이 자리를 잡았기 때문입니다. 채소를 바꾸실 필요는 없습니다. <b>내는 방법 한 가지</b>만 이번 주에 바꿔 보시면 충분합니다.';
+    }
+    diagResult.innerHTML = msg;
+    if(diagResult.className.indexOf('show') < 0){ diagResult.className = diagResult.className + ' show'; }
+  });
+
+  // ----- 시그니처: 조리법 카드 공개 -----
+  var vegs = document.querySelectorAll('.veg');
+  function bindVeg(v){
+    var btn = v.querySelector('.why-btn');
+    btn.addEventListener('click', function(){
+      var isOpen = v.className.indexOf('open') >= 0;
+      if(isOpen){
+        v.className = v.className.replace(' open', '');
+        btn.textContent = '무엇이 달라질까요?';
+      } else {
+        v.className = v.className + ' open';
+        btn.textContent = '닫기';
+      }
+    });
+  }
+  var vi;
+  for(vi = 0; vi < vegs.length; vi++){ bindVeg(vegs[vi]); }
+
+  // ----- 챌린지 체크 -----
+  var checks = document.querySelectorAll('.check input');
+  var chMsg = document.getElementById('challengeMsg');
+  var cheers = [
+    "",
+    "좋아요! 이번 주는 이 하나면 충분합니다. 🥦",
+    "두 가지나! 아이의 접시가 조금씩 달라질 거예요.",
+    "세 가지 도전, 대단합니다. 아이가 먼저 손을 뻗을지도 몰라요.",
+    "🎉 전부 도전! 오늘 저녁 식탁이 기대됩니다."
+  ];
+  function bindCheck(c){
+    c.addEventListener('change', function(){
+      var row = c.parentNode;
+      if(c.checked){
+        if(row.className.indexOf('done') < 0){ row.className = row.className + ' done'; }
+      } else {
+        row.className = row.className.replace(' done', '');
+      }
+      var n = 0, k;
+      for(k = 0; k < checks.length; k++){ if(checks[k].checked){ n++; } }
+      chMsg.textContent = cheers[n];
+    });
+  }
+  var t;
+  for(t = 0; t < checks.length; t++){ bindCheck(checks[t]); }
+})();
+</script>
+</body>
+</html>
