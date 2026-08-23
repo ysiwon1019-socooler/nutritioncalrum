@@ -68,6 +68,60 @@ h1{
 .lede strong{color:var(--ink);font-weight:500}
 
 
+
+/* ── 만든 사람 정보 박스 ───────── */
+.made-by{
+  display:inline-flex;align-items:center;
+  flex-wrap:wrap;justify-content:center;
+  gap:0 22px;
+  margin-top:26px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px 24px;
+  text-align:left;
+}
+.made-item{display:flex;flex-direction:column;gap:1px}
+.made-label{
+  font-size:.7rem;color:var(--ink-soft);
+  letter-spacing:.06em;
+}
+.made-value{
+  font-size:.9rem;font-weight:500;
+  color:var(--ink);
+  line-height:1.4;
+}
+a.made-value.mail{
+  color:var(--pine);
+  text-decoration:none;
+  border-bottom:1px solid var(--pine-soft);
+  transition:border-color .18s ease;
+}
+a.made-value.mail:hover, a.made-value.mail:focus-visible{
+  border-color:var(--pine);
+  outline:none;
+}
+.made-div{
+  width:1px;height:26px;
+  background:var(--line);
+}
+@media (max-width:460px){
+  .made-by{
+    flex-direction:column;align-items:center;
+    gap:11px;text-align:center;
+  }
+  .made-item{align-items:center}
+  .made-div{width:32px;height:1px}
+}
+
+a.mail-inline{
+  color:var(--pine);font-weight:500;
+  text-decoration:none;
+  border-bottom:1px solid var(--pine-soft);
+  transition:border-color .18s ease;
+}
+a.mail-inline:hover, a.mail-inline:focus-visible{border-color:var(--pine);outline:none}
+
 /* ── 검색 영역 ─────────────────── */
 .search-zone{padding:34px 0 4px}
 .search-box{
@@ -350,6 +404,18 @@ footer .school{font-weight:500;color:var(--pine)}
     <h1>영양상담 교육 자료실</h1>
     <p class="lede">영양교사가 전해 드리는 <strong>우리 아이 식생활 이야기</strong>.<br>
     식탁 위 작은 실천이 아이의 평생 건강을 만듭니다.</p>
+
+    <div class="made-by">
+      <div class="made-item">
+        <span class="made-label">만든 사람</span>
+        <span class="made-value">시원소쿨 영양교사</span>
+      </div>
+      <span class="made-div" aria-hidden="true"></span>
+      <div class="made-item">
+        <span class="made-label">의견 보내실 곳</span>
+        <a class="made-value mail" href="mailto:ysiwon1019@gmail.com">ysiwon1019@gmail.com</a>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -777,7 +843,7 @@ footer .school{font-weight:500;color:var(--pine)}
     <div class="seed">🍃</div>
     <h3>찾으시는 내용이 아직 없습니다</h3>
     <p>다른 낱말로 다시 검색해 보시거나, 위의 갈래 목록에서 둘러봐 주세요.
-    필요하신 주제가 있다면 학교 영양상담실로 말씀해 주시면 다음 칼럼에서 다루어 보겠습니다.</p>
+    필요하신 주제가 있다면 <a class="mail-inline" href="mailto:ysiwon1019@gmail.com">ysiwon1019@gmail.com</a>으로 말씀해 주시면 다음 칼럼에서 다루어 보겠습니다.</p>
   </div>
 
   <section class="next-season">
@@ -786,7 +852,7 @@ footer .school{font-weight:500;color:var(--pine)}
       <h3>새 이야기를 준비하고 있습니다</h3>
       <p>「우리 아이 식생활 이야기」를 읽어 주셔서 감사합니다.
       우리 아이 식탁을 위한 다음 이야기를 차근차근 준비하고 있습니다.
-      다뤄 주었으면 하는 주제가 있다면 학교 영양상담실로 언제든 말씀해 주세요.</p>
+      다뤄 주었으면 하는 주제가 있다면 <a class="mail-inline" href="mailto:ysiwon1019@gmail.com">ysiwon1019@gmail.com</a>으로 언제든 말씀해 주세요.</p>
     </div>
   </section>
 
